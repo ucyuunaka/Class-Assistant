@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>通知组件测试 - 课堂助手</title>
+    <!-- 引入基础样式 -->
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <!-- 引入 Font Awesome 图标库 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- 引入通知组件样式 -->
+    <link rel="stylesheet" href="../notifications/notifications.css" />
+    <style>
+      .test-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: var(--background-color);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+      }
+
+      h1 {
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      .test-section {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .test-section h2 {
+        margin-bottom: 1rem;
+        color: var(--text-color);
+      }
+
+      .test-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      button {
+        padding: 0.5rem 1rem;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.2s;
+      }
+
+      button:hover {
+        background-color: var(--primary-dark);
+      }
+
+      .btn-success {
+        background-color: var(--success-color);
+      }
+
+      .btn-success:hover {
+        background-color: #0da271;
+      }
+
+      .btn-warning {
+        background-color: var(--warning-color);
+      }
+
+      .btn-warning:hover {
+        background-color: #e08e00;
+      }
+
+      .btn-error {
+        background-color: var(--danger-color);
+      }
+
+      .btn-error:hover {
+        background-color: #c53030;
+      }
+
+      .btn-info {
+        background-color: var(--primary-color);
+      }
+
+      .code-block {
+        background-color: var(--background-secondary);
+        padding: 1rem;
+        border-radius: var(--border-radius-sm);
+        margin: 1rem 0;
+        overflow-x: auto;
+        font-family: monospace;
+        line-height: 1.4;
+        color: var(--text-color);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-container">
+      <h1>通知组件测试</h1>
+
+      <div class="test-section">
+        <h2>基本通知类型</h2>
+        <p>
+          测试不同类型的通知样式和行为。点击下面的按钮触发不同类型的通知提示。
+        </p>
+
+        <div class="test-buttons">
+          <button id="btn-success" class="btn-success">成功通知</button>
+          <button id="btn-error" class="btn-error">错误通知</button>
+          <button id="btn-warning" class="btn-warning">警告通知</button>
+          <button id="btn-info" class="btn-info">信息通知</button>
+        </div>
+
+        <div class="code-block">
+          // 显示成功通知 showNotification("操作已成功完成！", "success"); //
+          显示错误通知 showNotification("操作失败，请重试", "error"); //
+          显示警告通知 showNotification("请注意，此操作可能有风险", "warning");
+          // 显示信息通知 showNotification("这是一条普通信息提示", "info");
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>持续时间测试</h2>
+        <p>测试不同持续时间的通知。默认持续时间为3秒，您可以自定义持续时间。</p>
+
+        <div class="test-buttons">
+          <button id="btn-duration-short">短时间通知 (1秒)</button>
+          <button id="btn-duration-default">默认时间通知 (3秒)</button>
+          <button id="btn-duration-long">长时间通知 (6秒)</button>
+        </div>
+
+        <div class="code-block">
+          // 显示短时间通知 showNotification("这是一条短时间通知", "info",
+          1000); // 显示默认时间通知 showNotification("这是一条默认时间通知",
+          "info"); // 显示长时间通知 showNotification("这是一条长时间通知",
+          "info", 6000);
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>"功能开发中"通知</h2>
+        <p>测试显示功能开发中的通知。您可以自定义功能名称。</p>
+
+        <div class="test-buttons">
+          <button id="btn-developing-default">默认开发中通知</button>
+          <button id="btn-developing-custom">自定义功能开发中通知</button>
+        </div>
+
+        <div class="code-block">
+          // 默认开发中通知 showDevelopingNotification(); //
+          自定义功能开发中通知 showDevelopingNotification("课程导出");
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>多个通知测试</h2>
+        <p>测试同时显示多个通知的堆叠和排列效果。</p>
+
+        <div class="test-buttons">
+          <button id="btn-multiple">显示多个通知</button>
+        </div>
+
+        <div class="code-block">
+          // 显示多个通知 showNotification("第一条通知", "info"); setTimeout(()
+          => showNotification("第二条通知", "success"), 300); setTimeout(() =>
+          showNotification("第三条通知", "warning"), 600); setTimeout(() =>
+          showNotification("第四条通知", "error"), 900);
+        </div>
+      </div>
+    </div>
+
+    <!-- 引入通知组件脚本 -->
+    <script src="../notifications/notifications.js"></script>
+    <script>
+      // 基本通知类型测试
+      document
+        .getElementById("btn-success")
+        .addEventListener("click", function () {
+          showNotification("操作已成功完成！", "success");
+        });
+
+      document
+        .getElementById("btn-error")
+        .addEventListener("click", function () {
+          showNotification("操作失败，请重试", "error");
+        });
+
+      document
+        .getElementById("btn-warning")
+        .addEventListener("click", function () {
+          showNotification("请注意，此操作可能有风险", "warning");
+        });
+
+      document
+        .getElementById("btn-info")
+        .addEventListener("click", function () {
+          showNotification("这是一条普通信息提示", "info");
+        });
+
+      // 持续时间测试
+      document
+        .getElementById("btn-duration-short")
+        .addEventListener("click", function () {
+          showNotification("这是一条短时间通知", "info", 1000);
+        });
+
+      document
+        .getElementById("btn-duration-default")
+        .addEventListener("click", function () {
+          showNotification("这是一条默认时间通知", "info");
+        });
+
+      document
+        .getElementById("btn-duration-long")
+        .addEventListener("click", function () {
+          showNotification("这是一条长时间通知", "info", 6000);
+        });
+
+      // 开发中通知测试
+      document
+        .getElementById("btn-developing-default")
+        .addEventListener("click", function () {
+          showDevelopingNotification();
+        });
+
+      document
+        .getElementById("btn-developing-custom")
+        .addEventListener("click", function () {
+          showDevelopingNotification("课程导出");
+        });
+
+      // 多个通知测试
+      document
+        .getElementById("btn-multiple")
+        .addEventListener("click", function () {
+          showNotification("第一条通知", "info");
+          setTimeout(() => showNotification("第二条通知", "success"), 300);
+          setTimeout(() => showNotification("第三条通知", "warning"), 600);
+          setTimeout(() => showNotification("第四条通知", "error"), 900);
+        });
+    </script>
+  </body>
+</html>

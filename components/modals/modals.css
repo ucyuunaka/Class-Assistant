@@ -1,0 +1,335 @@
+/**
+ * 模态弹窗组件 - CSS 样式
+ * 提供多种类型的模态弹窗样式
+ */
+
+/* 模态弹窗容器 - 覆盖整个屏幕 */
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* 激活的模态弹窗 */
+.modal-container.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* 模态弹窗内容 */
+.modal-content {
+  background-color: #fff; /* Explicit background color */
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 95%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 0;
+  transform: scale(0.9);
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Add opacity transition */
+  position: relative;
+  z-index: 1; /* Ensure it's above the container background if needed */
+  opacity: 0; /* Start hidden */
+}
+
+/* 激活时的内容动画 */
+.modal-container.active .modal-content {
+  transform: scale(1);
+  opacity: 1; /* Become visible */
+}
+
+/* 模态弹窗头部 */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* 模态弹窗头部 */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* 没有边框的头部 */
+.modal-header.no-border {
+  border-bottom: none;
+}
+
+/* 模态弹窗标题 */
+.modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* 关闭按钮 */
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 1rem;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  color: var(--text-color);
+}
+
+/* 模态弹窗正文 */
+.modal-body {
+  padding: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* 紧凑型正文 */
+.modal-body.compact {
+  padding: 1rem 1.5rem;
+}
+
+/* 模态弹窗底部 */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* 没有边框的底部 */
+.modal-footer.no-border {
+  border-top: none;
+}
+
+/* 居中对齐的底部按钮 */
+.modal-footer.centered {
+  justify-content: center;
+}
+
+/* 均匀分布的底部按钮 */
+.modal-footer.spaced {
+  justify-content: space-between;
+}
+
+/* 左对齐的底部按钮 */
+.modal-footer.left {
+  justify-content: flex-start;
+}
+
+/* 垂直排列的底部按钮（适合移动端）*/
+.modal-footer.stacked {
+  flex-direction: column;
+}
+
+/* 模态按钮 */
+.modal-btn {
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* 主要按钮 */
+.modal-btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.modal-btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+/* 危险按钮 */
+.modal-btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.modal-btn-danger:hover {
+  background-color: #c53030;
+}
+
+/* 成功按钮 */
+.modal-btn-success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.modal-btn-success:hover {
+  background-color: #0da271;
+}
+
+/* 警告按钮 */
+.modal-btn-warning {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.modal-btn-warning:hover {
+  background-color: #e08e00;
+}
+
+/* 次要按钮 */
+.modal-btn-secondary {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.modal-btn-secondary:hover {
+  background-color: var(--background-secondary);
+}
+
+/* 模态弹窗尺寸 */
+.modal-sm .modal-content {
+  max-width: 400px;
+}
+
+.modal-lg .modal-content {
+  max-width: 700px;
+}
+
+.modal-xl .modal-content {
+  max-width: 900px;
+}
+
+.modal-fullscreen .modal-content {
+  max-width: none;
+  width: 95%;
+  height: 95%;
+}
+
+/* 不同类型的模态弹窗 */
+/* 信息类型 */
+.modal-info .modal-header {
+  border-bottom-color: var(--primary-light);
+}
+
+.modal-info .modal-title {
+  color: var(--primary-color);
+}
+
+/* 成功类型 */
+.modal-success .modal-header {
+  border-bottom-color: rgba(49, 196, 141, 0.3);
+}
+
+.modal-success .modal-title {
+  color: var(--success-color);
+}
+
+/* 警告类型 */
+.modal-warning .modal-header {
+  border-bottom-color: rgba(253, 176, 34, 0.3);
+}
+
+.modal-warning .modal-title {
+  color: var(--warning-color);
+}
+
+/* 危险类型 */
+.modal-danger .modal-header {
+  border-bottom-color: rgba(229, 62, 62, 0.3);
+}
+
+.modal-danger .modal-title {
+  color: var(--danger-color);
+}
+
+/* 带图标的模态框 */
+.modal-icon {
+  display: flex;
+  justify-content: center;
+  padding-top: 1.5rem;
+}
+
+.modal-icon i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.modal-info .modal-icon i {
+  color: var(--primary-color);
+}
+
+.modal-success .modal-icon i {
+  color: var(--success-color);
+}
+
+.modal-warning .modal-icon i {
+  color: var(--warning-color);
+}
+
+.modal-danger .modal-icon i {
+  color: var(--danger-color);
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+  }
+  
+  .modal-btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .modal-footer .modal-btn:last-child {
+    margin-bottom: 0;
+  }
+}

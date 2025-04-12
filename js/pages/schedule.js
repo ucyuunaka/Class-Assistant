@@ -902,16 +902,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const targetDay = parseInt(this.dataset.day);
     const targetTime = parseInt(this.dataset.time);
 
-    // 检查目标单元格是否已被占用（仅检查起始时间）
+    // 检查目标单元格是否已被占用（检查时间范围）
     const isOccupied = scheduleData.courses.some(
       (course) =>
         course.id !== courseId && // 排除正在拖动的课程
         course.day === targetDay &&
-        course.startTime === targetTime
+        targetTime >= course.startTime && // 目标时间在课程开始之后
+        targetTime <= course.endTime    // 目标时间在课程结束之前
     );
 
     if (isOccupied) {
       showNotification("目标时间段已被占用", "error");
+      // 恢复拖动项的不透明度，因为拖放失败
+      if (draggedItem) {
+        draggedItem.style.opacity = "1";
+      }
+      draggedItem = null; // 清除拖动项引用
       return; // 不允许放置
     }
 
@@ -927,10 +933,21 @@ document.addEventListener("DOMContentLoaded", function () {
         showNotification("课程已移动", "success");
       } else {
         showNotification("移动课程失败", "error");
+        // 恢复拖动项的不透明度，因为移动失败
+        if (draggedItem) {
+          draggedItem.style.opacity = "1";
+        }
       }
     } catch (error) {
       console.error("移动课程时出错:", error);
       showNotification("移动课程时出错: " + error.message, "error");
+      // 恢复拖动项的不透明度，因为发生错误
+      if (draggedItem) {
+        draggedItem.style.opacity = "1";
+      }
+    } finally {
+       // 确保在拖放操作结束后清除拖动项引用
+       draggedItem = null;
     }
   }
 

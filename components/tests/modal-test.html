@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>模态弹窗组件测试 - 课堂助手</title>
+    <!-- 引入基础样式 -->
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <!-- 引入 Font Awesome 图标库 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- 引入模态弹窗组件样式 -->
+    <link rel="stylesheet" href="../modals/modals.css" />
+    <style>
+      .test-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: var(--background-color);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+      }
+
+      h1 {
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      .test-section {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .test-section h2 {
+        margin-bottom: 1rem;
+        color: var(--text-color);
+      }
+
+      .test-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      button {
+        padding: 0.5rem 1rem;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.2s;
+      }
+
+      button:hover {
+        background-color: var(--primary-dark);
+      }
+
+      .btn-success {
+        background-color: var(--success-color);
+      }
+
+      .btn-success:hover {
+        background-color: #0da271;
+      }
+
+      .btn-warning {
+        background-color: var(--warning-color);
+      }
+
+      .btn-warning:hover {
+        background-color: #e08e00;
+      }
+
+      .btn-danger {
+        background-color: var(--danger-color);
+      }
+
+      .btn-danger:hover {
+        background-color: #c53030;
+      }
+
+      .code-block {
+        background-color: var(--background-secondary);
+        padding: 1rem;
+        border-radius: var(--border-radius-sm);
+        margin: 1rem 0;
+        overflow-x: auto;
+        font-family: monospace;
+        line-height: 1.4;
+        color: var(--text-color);
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      /* 主题切换按钮 */
+      .theme-toggle {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        padding: 0.75rem;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        box-shadow: var(--shadow-md);
+        border: none;
+        cursor: pointer;
+        font-size: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-container">
+      <h1>模态弹窗组件测试</h1>
+
+      <div class="test-section">
+        <h2>基本模态弹窗</h2>
+        <p>测试基本的模态弹窗功能，包括不同大小和样式。</p>
+
+        <div class="test-buttons">
+          <button id="btn-basic-modal">基本模态弹窗</button>
+          <button id="btn-sm-modal">小型模态弹窗</button>
+          <button id="btn-lg-modal">大型模态弹窗</button>
+          <button id="btn-fullscreen-modal">全屏模态弹窗</button>
+        </div>
+
+        <div class="code-block">
+          // 显示基本模态弹窗 showModal("基本模态弹窗",
+          "这是一个基本的模态弹窗示例内容。"); // 显示小型模态弹窗
+          showModal("小型模态弹窗", "这是一个小型的模态弹窗。", [], { size: "sm"
+          }); // 显示大型模态弹窗 showModal("大型模态弹窗",
+          "这是一个大型的模态弹窗，适合显示更多内容。", [], { size: "lg" }); //
+          显示全屏模态弹窗 showModal("全屏模态弹窗",
+          "这是一个全屏的模态弹窗，适合展示重要内容。", [], { size: "fullscreen"
+          });
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>确认模态弹窗</h2>
+        <p>
+          测试需要用户确认的模态弹窗，包括基本确认、警告确认和危险操作确认。
+        </p>
+
+        <div class="test-buttons">
+          <button id="btn-confirm-modal">确认弹窗</button>
+          <button id="btn-warning-modal" class="btn-warning">
+            警告确认弹窗
+          </button>
+          <button id="btn-danger-modal" class="btn-danger">
+            危险操作确认弹窗
+          </button>
+        </div>
+
+        <div class="code-block">
+          // 显示基本确认弹窗 showConfirmModal( "确认操作",
+          "您确定要执行此操作吗？", function() { console.log("用户点击了确认");
+          } ); // 显示警告确认弹窗 showWarningModal( "警告确认",
+          "此操作可能导致数据变更，确定继续吗？", function() {
+          console.log("用户确认了警告操作"); } ); // 显示危险操作确认弹窗
+          showDangerModal( "危险操作确认",
+          "此操作将永久删除数据，无法恢复！确定继续吗？", function() {
+          console.log("用户确认了危险操作"); } );
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>状态反馈模态弹窗</h2>
+        <p>测试用于显示操作结果的模态弹窗，如成功或错误提示。</p>
+
+        <div class="test-buttons">
+          <button id="btn-success-modal" class="btn-success">成功弹窗</button>
+          <button id="btn-error-modal" class="btn-danger">错误弹窗</button>
+        </div>
+
+        <div class="code-block">
+          // 显示成功弹窗 showSuccessModal( "操作成功", "您的数据已成功保存！",
+          function() { console.log("用户关闭了成功弹窗"); } ); // 显示错误弹窗
+          showErrorModal( "操作失败", "保存数据时发生错误，请重试。", function()
+          { console.log("用户关闭了错误弹窗"); } );
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>自定义按钮弹窗</h2>
+        <p>
+          测试带有自定义按钮的模态弹窗，可以根据需求设置按钮数量、文本和样式。
+        </p>
+
+        <div class="test-buttons">
+          <button id="btn-custom-buttons">自定义按钮弹窗</button>
+          <button id="btn-centered-buttons">居中按钮弹窗</button>
+        </div>
+
+        <div class="code-block">
+          // 显示带有自定义按钮的弹窗 showModal( "自定义按钮弹窗",
+          "这个弹窗有多个自定义按钮，每个按钮都有不同的样式和功能。", [ { text:
+          "取消", type: "secondary", handler: function() {
+          console.log("用户点击了取消"); } }, { text: "保存草稿", type:
+          "primary", handler: function() { console.log("用户点击了保存草稿"); }
+          }, { text: "发布", type: "success", handler: function() {
+          console.log("用户点击了发布"); } } ] ); // 显示带有居中按钮的弹窗
+          showModal( "居中按钮弹窗", "这个弹窗的按钮居中对齐显示。", [ { text:
+          "知道了", type: "primary", handler: function() {
+          console.log("用户点击了知道了"); } } ], { footerAlign: "centered" } );
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>富内容模态弹窗</h2>
+        <p>测试带有丰富内容的模态弹窗，如HTML格式内容、表单等。</p>
+
+        <div class="test-buttons">
+          <button id="btn-rich-content">富内容弹窗</button>
+          <button id="btn-form-modal">表单弹窗</button>
+        </div>
+
+        <div class="code-block">
+          // 显示带有丰富内容的弹窗 showModal( "富内容弹窗", `
+          <h4>丰富的HTML内容</h4>
+          <p>
+            弹窗内容可以包含<strong>HTML标签</strong>、<em>样式</em>和<span
+              style="color: red"
+              >颜色</span
+            >。
+          </p>
+          <ul>
+            <li>列表项1</li>
+            <li>列表项2</li>
+            <li>列表项3</li>
+          </ul>
+          ` ); // 显示带有表单的弹窗 showModal( "表单弹窗", `
+          <form id="modal-form">
+            <div style="margin-bottom: 1rem">
+              <label for="name" style="display: block; margin-bottom: 0.5rem"
+                >姓名</label
+              >
+              <input
+                type="text"
+                id="name"
+                style="
+                  width: 100%;
+                  padding: 0.5rem;
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--border-radius-sm);
+                "
+              />
+            </div>
+            <div style="margin-bottom: 1rem">
+              <label for="email" style="display: block; margin-bottom: 0.5rem"
+                >邮箱</label
+              >
+              <input
+                type="email"
+                id="email"
+                style="
+                  width: 100%;
+                  padding: 0.5rem;
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--border-radius-sm);
+                "
+              />
+            </div>
+          </form>
+          `, [ { text: "取消", type: "secondary", handler: function() {
+          console.log("用户取消了表单"); } }, { text: "提交", type: "primary",
+          handler: function() { const name =
+          document.getElementById("name").value; const email =
+          document.getElementById("email").value; console.log("表单提交:", {
+          name, email }); } } ], { size: "lg" } );
+        </div>
+      </div>
+    </div>
+
+    <!-- 主题切换按钮 -->
+    <button class="theme-toggle" id="theme-toggle">
+      <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- 引入模态弹窗组件脚本 -->
+    <script src="../modals/modals.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 基本模态弹窗测试
+        document
+          .getElementById("btn-basic-modal")
+          .addEventListener("click", function () {
+            showModal("基本模态弹窗", "这是一个基本的模态弹窗示例内容。");
+          });
+
+        document
+          .getElementById("btn-sm-modal")
+          .addEventListener("click", function () {
+            showModal("小型模态弹窗", "这是一个小型的模态弹窗。", [], {
+              size: "sm",
+            });
+          });
+
+        document
+          .getElementById("btn-lg-modal")
+          .addEventListener("click", function () {
+            showModal(
+              "大型模态弹窗",
+              "这是一个大型的模态弹窗，适合显示更多内容。",
+              [],
+              { size: "lg" }
+            );
+          });
+
+        document
+          .getElementById("btn-fullscreen-modal")
+          .addEventListener("click", function () {
+            showModal(
+              "全屏模态弹窗",
+              "这是一个全屏的模态弹窗，适合展示重要内容。",
+              [],
+              { size: "fullscreen" }
+            );
+          });
+
+        // 确认模态弹窗测试
+        document
+          .getElementById("btn-confirm-modal")
+          .addEventListener("click", function () {
+            showConfirmModal("确认操作", "您确定要执行此操作吗？", function () {
+              showSuccessModal("操作完成", "您已确认操作！");
+            });
+          });
+
+        document
+          .getElementById("btn-warning-modal")
+          .addEventListener("click", function () {
+            showWarningModal(
+              "警告确认",
+              "此操作可能导致数据变更，确定继续吗？",
+              function () {
+                showSuccessModal("操作完成", "您已确认警告操作！");
+              }
+            );
+          });
+
+        document
+          .getElementById("btn-danger-modal")
+          .addEventListener("click", function () {
+            showDangerModal(
+              "危险操作确认",
+              "此操作将永久删除数据，无法恢复！确定继续吗？",
+              function () {
+                showSuccessModal("操作完成", "您已确认危险操作！");
+              }
+            );
+          });
+
+        // 状态反馈模态弹窗测试
+        document
+          .getElementById("btn-success-modal")
+          .addEventListener("click", function () {
+            showSuccessModal("操作成功", "您的数据已成功保存！", function () {
+              console.log("用户关闭了成功弹窗");
+            });
+          });
+
+        document
+          .getElementById("btn-error-modal")
+          .addEventListener("click", function () {
+            showErrorModal(
+              "操作失败",
+              "保存数据时发生错误，请重试。",
+              function () {
+                console.log("用户关闭了错误弹窗");
+              }
+            );
+          });
+
+        // 自定义按钮弹窗测试
+        document
+          .getElementById("btn-custom-buttons")
+          .addEventListener("click", function () {
+            showModal(
+              "自定义按钮弹窗",
+              "这个弹窗有多个自定义按钮，每个按钮都有不同的样式和功能。",
+              [
+                {
+                  text: "取消",
+                  type: "secondary",
+                  handler: function () {
+                    console.log("用户点击了取消");
+                    modalManager.close(modalId);
+                  },
+                },
+                {
+                  text: "保存草稿",
+                  type: "primary",
+                  handler: function () {
+                    console.log("用户点击了保存草稿");
+                    showSuccessModal("已保存", "草稿已保存成功！");
+                  },
+                },
+                {
+                  text: "发布",
+                  type: "success",
+                  handler: function () {
+                    console.log("用户点击了发布");
+                    showSuccessModal("已发布", "内容已成功发布！");
+                  },
+                },
+              ]
+            );
+          });
+
+        document
+          .getElementById("btn-centered-buttons")
+          .addEventListener("click", function () {
+            showModal(
+              "居中按钮弹窗",
+              "这个弹窗的按钮居中对齐显示。",
+              [
+                {
+                  text: "知道了",
+                  type: "primary",
+                  handler: function () {
+                    console.log("用户点击了知道了");
+                  },
+                },
+              ],
+              { footerAlign: "centered" }
+            );
+          });
+
+        // 富内容模态弹窗测试
+        document
+          .getElementById("btn-rich-content")
+          .addEventListener("click", function () {
+            showModal(
+              "富内容弹窗",
+              `
+            <h4 style="margin-bottom: 1rem;">丰富的HTML内容</h4>
+            <p>弹窗内容可以包含<strong>HTML标签</strong>、<em>样式</em>和<span style="color: red;">颜色</span>。</p>
+            <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+              <li>列表项1</li>
+              <li>列表项2</li>
+              <li>列表项3</li>
+            </ul>
+          `
+            );
+          });
+
+        document
+          .getElementById("btn-form-modal")
+          .addEventListener("click", function () {
+            const modalId = showModal(
+              "表单弹窗",
+              `
+            <form id="modal-form">
+              <div style="margin-bottom: 1rem;">
+                <label for="name" style="display: block; margin-bottom: 0.5rem;">姓名</label>
+                <input type="text" id="name" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm);">
+              </div>
+              <div style="margin-bottom: 1rem;">
+                <label for="email" style="display: block; margin-bottom: 0.5rem;">邮箱</label>
+                <input type="email" id="email" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm);">
+              </div>
+            </form>
+          `,
+              [
+                {
+                  text: "取消",
+                  type: "secondary",
+                  handler: function () {
+                    console.log("用户取消了表单");
+                    modalManager.close(modalId);
+                  },
+                },
+                {
+                  text: "提交",
+                  type: "primary",
+                  handler: function () {
+                    const name = document.getElementById("name").value;
+                    const email = document.getElementById("email").value;
+                    console.log("表单提交:", { name, email });
+
+                    if (name && email) {
+                      modalManager.close(modalId);
+                      showSuccessModal(
+                        "提交成功",
+                        `姓名: ${name}<br>邮箱: ${email}`
+                      );
+                    } else {
+                      showErrorModal("提交失败", "请填写完整的表单信息");
+                    }
+                  },
+                },
+              ],
+              { size: "lg" }
+            );
+          });
+
+        // 主题切换
+        const themeToggle = document.getElementById("theme-toggle");
+        const themeIcon = themeToggle.querySelector("i");
+
+        themeToggle.addEventListener("click", function () {
+          const currentTheme =
+            document.body.getAttribute("data-theme") || "light";
+          const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+          document.body.setAttribute("data-theme", newTheme);
+          themeIcon.className =
+            newTheme === "dark" ? "fas fa-sun" : "fas fa-moon";
+
+          // 保存主题设置
+          localStorage.setItem("theme", newTheme);
+        });
+
+        // 初始应用保存的主题
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.body.setAttribute("data-theme", savedTheme);
+          themeIcon.className =
+            savedTheme === "dark" ? "fas fa-sun" : "fas fa-moon";
+        }
+      });
+    </script>
+  </body>
+</html>

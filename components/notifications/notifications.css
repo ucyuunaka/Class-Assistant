@@ -1,0 +1,144 @@
+/**
+ * 通知组件 - CSS 样式
+ * 定义通知提示的外观和动画
+ */
+
+/* 通知容器 */
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  max-width: 350px;
+}
+
+/* 通知样式 */
+.notification {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  opacity: 0;
+  transform: translateX(30px);
+  animation: slideIn 0.3s forwards;
+  border-left: 4px solid var(--primary-color);
+}
+
+/* 通知内容区域 */
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+/* 通知图标样式 */
+.notification-content i {
+  font-size: 1.2rem;
+}
+
+/* 关闭按钮 */
+.notification-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0;
+  margin-left: 0.75rem;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.notification-close:hover {
+  opacity: 1;
+}
+
+/* 通知类型样式 */
+.notification-success {
+  border-left-color: var(--success-color);
+}
+
+.notification-success i {
+  color: var(--success-color);
+}
+
+.notification-error {
+  border-left-color: var(--danger-color);
+}
+
+.notification-error i {
+  color: var(--danger-color);
+}
+
+.notification-warning {
+  border-left-color: var(--warning-color);
+}
+
+.notification-warning i {
+  color: var(--warning-color);
+}
+
+.notification-info {
+  border-left-color: var(--primary-color);
+}
+
+.notification-info i {
+  color: var(--primary-color);
+}
+
+/* 通知动画 */
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fade-in {
+  animation: slideIn 0.3s forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.3s forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .notification-container {
+    max-width: calc(100vw - 40px);
+    right: 10px;
+    top: 10px;
+  }
+  
+  .notification {
+    padding: 10px 14px;
+  }
+}

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>按钮UI组件测试 - 课堂助手</title>
+    <!-- 引入基础样式 -->
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <!-- 引入 Font Awesome 图标库 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- 引入按钮组件样式 -->
+    <link rel="stylesheet" href="../buttons/buttons.css" />
+    <!-- 引入模态弹窗组件样式（用于确认按钮功能） -->
+    <link rel="stylesheet" href="../modals/modals.css" />
+    <style>
+      body {
+        padding: 2rem 0;
+      }
+
+      .test-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem;
+        background-color: var(--background-color);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+      }
+
+      h1 {
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+        text-align: center;
+      }
+
+      .test-section {
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .test-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .test-section h2 {
+        margin-bottom: 1rem;
+        color: var(--text-color);
+        font-size: 1.5rem;
+      }
+
+      .test-section h3 {
+        margin: 1.5rem 0 1rem;
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+      }
+
+      .test-section p {
+        margin-bottom: 1rem;
+        color: var(--text-secondary);
+      }
+
+      .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 1rem 0;
+        align-items: center;
+      }
+
+      .example-block {
+        background-color: var(--background-secondary);
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        margin: 1.5rem 0;
+      }
+
+      .code-block {
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+        padding: 1rem;
+        border-radius: var(--border-radius-sm);
+        margin: 1rem 0;
+        overflow-x: auto;
+        font-family: "Consolas", "Monaco", monospace;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        white-space: pre;
+      }
+
+      .theme-toggle {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        padding: 0.75rem;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        box-shadow: var(--shadow-md);
+        border: none;
+        cursor: pointer;
+        font-size: 1.2rem;
+        z-index: 99;
+      }
+
+      /* 涟漪效果样式（配合JS使用） */
+      .btn-ripple {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-ripple-effect {
+        position: absolute;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.3);
+        transform: scale(0);
+        animation: ripple 0.6s linear;
+        pointer-events: none;
+      }
+
+      @keyframes ripple {
+        to {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-container">
+      <h1>按钮UI组件测试</h1>
+
+      <div class="test-section">
+        <h2>基础按钮</h2>
+        <p>基础按钮样式展示各种颜色主题的按钮。</p>
+
+        <div class="button-group">
+          <button class="btn btn-primary">主要按钮</button>
+          <button class="btn btn-secondary">次要按钮</button>
+          <button class="btn btn-success">成功按钮</button>
+          <button class="btn btn-warning">警告按钮</button>
+          <button class="btn btn-danger">危险按钮</button>
+          <a href="#" class="btn btn-primary">链接按钮</a>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;button class="btn
+          btn-primary"&gt;主要按钮&lt;/button&gt; &lt;button class="btn
+          btn-secondary"&gt;次要按钮&lt;/button&gt; &lt;button class="btn
+          btn-success"&gt;成功按钮&lt;/button&gt; &lt;button class="btn
+          btn-warning"&gt;警告按钮&lt;/button&gt; &lt;button class="btn
+          btn-danger"&gt;危险按钮&lt;/button&gt; &lt;a href="#" class="btn
+          btn-primary"&gt;链接按钮&lt;/a&gt;
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>轮廓按钮</h2>
+        <p>轮廓按钮提供了更加低调的按钮样式，适合次要操作。</p>
+
+        <div class="button-group">
+          <button class="btn btn-outline-primary">主要轮廓按钮</button>
+          <button class="btn btn-outline-secondary">次要轮廓按钮</button>
+          <button class="btn btn-outline-success">成功轮廓按钮</button>
+          <button class="btn btn-outline-warning">警告轮廓按钮</button>
+          <button class="btn btn-outline-danger">危险轮廓按钮</button>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;button class="btn
+          btn-outline-primary"&gt;主要轮廓按钮&lt;/button&gt; &lt;button
+          class="btn btn-outline-secondary"&gt;次要轮廓按钮&lt;/button&gt;
+          &lt;button class="btn
+          btn-outline-success"&gt;成功轮廓按钮&lt;/button&gt; &lt;button
+          class="btn btn-outline-warning"&gt;警告轮廓按钮&lt;/button&gt;
+          &lt;button class="btn
+          btn-outline-danger"&gt;危险轮廓按钮&lt;/button&gt;
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>按钮尺寸</h2>
+        <p>按钮组件提供了多种尺寸，满足不同场景的需求。</p>
+
+        <h3>小型按钮</h3>
+        <div class="button-group">
+          <button class="btn btn-primary btn-sm">小型按钮</button>
+          <button class="btn btn-secondary btn-sm">小型按钮</button>
+          <button class="btn btn-outline-primary btn-sm">小型轮廓按钮</button>
+        </div>
+
+        <h3>默认尺寸</h3>
+        <div class="button-group">
+          <button class="btn btn-primary">默认按钮</button>
+          <button class="btn btn-secondary">默认按钮</button>
+          <button class="btn btn-outline-primary">默认轮廓按钮</button>
+        </div>
+
+        <h3>大型按钮</h3>
+        <div class="button-group">
+          <button class="btn btn-primary btn-lg">大型按钮</button>
+          <button class="btn btn-secondary btn-lg">大型按钮</button>
+          <button class="btn btn-outline-primary btn-lg">大型轮廓按钮</button>
+        </div>
+
+        <h3>超大按钮</h3>
+        <div class="button-group">
+          <button class="btn btn-primary btn-xl">超大按钮</button>
+          <button class="btn btn-secondary btn-xl">超大按钮</button>
+          <button class="btn btn-outline-primary btn-xl">超大轮廓按钮</button>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;!-- 小型按钮 --&gt; &lt;button class="btn btn-primary
+          btn-sm"&gt;小型按钮&lt;/button&gt; &lt;!-- 默认尺寸 --&gt; &lt;button
+          class="btn btn-primary"&gt;默认按钮&lt;/button&gt; &lt;!-- 大型按钮
+          --&gt; &lt;button class="btn btn-primary
+          btn-lg"&gt;大型按钮&lt;/button&gt; &lt;!-- 超大按钮 --&gt; &lt;button
+          class="btn btn-primary btn-xl"&gt;超大按钮&lt;/button&gt;
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>图标按钮</h2>
+        <p>图标按钮可以使用图标而不是文本，或者将图标与文本组合使用。</p>
+
+        <h3>仅图标按钮</h3>
+        <div class="button-group">
+          <button class="btn btn-primary btn-icon">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button class="btn btn-secondary btn-icon">
+            <i class="fas fa-pencil"></i>
+          </button>
+          <button class="btn btn-danger btn-icon">
+            <i class="fas fa-trash"></i>
+          </button>
+          <button class="btn btn-outline-primary btn-icon">
+            <i class="fas fa-download"></i>
+          </button>
+        </div>
+
+        <h3>图标加文本</h3>
+        <div class="button-group">
+          <button class="btn btn-primary btn-with-icon">
+            <i class="fas fa-plus"></i> 新建
+          </button>
+          <button class="btn btn-secondary btn-with-icon">
+            <i class="fas fa-pencil"></i> 编辑
+          </button>
+          <button class="btn btn-danger btn-with-icon">
+            <i class="fas fa-trash"></i> 删除
+          </button>
+          <button class="btn btn-success btn-with-icon icon-right">
+            下一步 <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;!-- 仅图标按钮 --&gt; &lt;button class="btn
+          btn-primary btn-icon"&gt;&lt;i class="fas
+          fa-plus"&gt;&lt;/i&gt;&lt;/button&gt; &lt;!-- 图标加文本 --&gt;
+          &lt;button class="btn btn-primary btn-with-icon"&gt;&lt;i class="fas
+          fa-plus"&gt;&lt;/i&gt; 新建&lt;/button&gt; &lt;!-- 文本加图标（右侧）
+          --&gt; &lt;button class="btn btn-success btn-with-icon
+          icon-right"&gt;下一步 &lt;i class="fas
+          fa-arrow-right"&gt;&lt;/i&gt;&lt;/button&gt;
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>按钮状态</h2>
+        <p>按钮可以有不同的状态，如禁用状态和加载状态。</p>
+
+        <h3>禁用状态</h3>
+        <div class="button-group">
+          <button class="btn btn-primary" disabled>禁用按钮</button>
+          <button class="btn btn-secondary" disabled>禁用按钮</button>
+          <button class="btn btn-outline-primary" disabled>禁用轮廓按钮</button>
+        </div>
+
+        <h3>加载状态</h3>
+        <div class="button-group">
+          <button
+            class="btn btn-primary"
+            id="loading-demo-1"
+            data-loading-text="加载中..."
+            data-demo
+          >
+            点击加载
+          </button>
+          <button
+            class="btn btn-secondary"
+            id="loading-demo-2"
+            data-loading-text="保存中..."
+            data-demo
+          >
+            点击保存
+          </button>
+          <button
+            class="btn btn-danger"
+            id="loading-demo-3"
+            data-loading-text="删除中..."
+            data-demo
+          >
+            点击删除
+          </button>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;!-- 禁用状态 --&gt; &lt;button class="btn btn-primary"
+          disabled&gt;禁用按钮&lt;/button&gt; &lt;!-- 加载状态 --&gt; &lt;button
+          class="btn btn-primary" id="loading-demo-1"
+          data-loading-text="加载中..."&gt;点击加载&lt;/button&gt; //
+          JavaScript代码 // 手动设置按钮加载状态
+          ButtonUI.setLoading('#my-button', true, '加载中...'); // 取消加载状态
+          ButtonUI.setLoading('#my-button', false);
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>按钮组</h2>
+        <p>按钮组可以将一系列相关的按钮组合在一起。</p>
+
+        <h3>水平按钮组</h3>
+        <div class="button-group">
+          <div class="btn-group">
+            <button class="btn btn-primary">左侧按钮</button>
+            <button class="btn btn-primary">中间按钮</button>
+            <button class="btn btn-primary">右侧按钮</button>
+          </div>
+        </div>
+
+        <h3>垂直按钮组</h3>
+        <div class="button-group">
+          <div class="btn-group-vertical">
+            <button class="btn btn-outline-primary">顶部按钮</button>
+            <button class="btn btn-outline-primary">中间按钮</button>
+            <button class="btn btn-outline-primary">底部按钮</button>
+          </div>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;!-- 水平按钮组 --&gt; &lt;div class="btn-group"&gt;
+          &lt;button class="btn btn-primary"&gt;左侧按钮&lt;/button&gt;
+          &lt;button class="btn btn-primary"&gt;中间按钮&lt;/button&gt;
+          &lt;button class="btn btn-primary"&gt;右侧按钮&lt;/button&gt;
+          &lt;/div&gt; &lt;!-- 垂直按钮组 --&gt; &lt;div
+          class="btn-group-vertical"&gt; &lt;button class="btn
+          btn-outline-primary"&gt;顶部按钮&lt;/button&gt; &lt;button class="btn
+          btn-outline-primary"&gt;中间按钮&lt;/button&gt; &lt;button class="btn
+          btn-outline-primary"&gt;底部按钮&lt;/button&gt; &lt;/div&gt;
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>块级按钮</h2>
+        <p>块级按钮会占据父容器的整个宽度，适合移动设备或需要强调的操作。</p>
+
+        <div class="example-block">
+          <button class="btn btn-primary btn-block">块级主要按钮</button>
+          <div style="height: 0.75rem"></div>
+          <button class="btn btn-outline-primary btn-block">
+            块级轮廓按钮
+          </button>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;button class="btn btn-primary
+          btn-block"&gt;块级主要按钮&lt;/button&gt; &lt;button class="btn
+          btn-outline-primary btn-block"&gt;块级轮廓按钮&lt;/button&gt;
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>交互效果</h2>
+        <p>按钮组件提供了一些交互效果，如涟漪效果和确认功能。</p>
+
+        <h3>涟漪效果按钮</h3>
+        <div class="button-group">
+          <button class="btn btn-primary btn-ripple">涟漪效果按钮</button>
+          <button class="btn btn-secondary btn-ripple">涟漪效果按钮</button>
+          <button class="btn btn-outline-primary btn-ripple">
+            涟漪效果按钮
+          </button>
+        </div>
+
+        <h3>确认按钮</h3>
+        <div class="button-group">
+          <button
+            class="btn btn-danger"
+            id="confirm-button-1"
+            data-confirm="此操作会删除数据，确定要继续吗？"
+          >
+            删除数据
+          </button>
+          <button
+            class="btn btn-warning"
+            id="confirm-button-2"
+            data-confirm="此操作会重置所有设置，确定要继续吗？"
+          >
+            重置设置
+          </button>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;!-- 涟漪效果按钮 --&gt; &lt;button class="btn
+          btn-primary btn-ripple"&gt;涟漪效果按钮&lt;/button&gt; &lt;!--
+          通过HTML属性设置确认按钮 --&gt; &lt;button class="btn btn-danger"
+          data-confirm="此操作会删除数据，确定要继续吗？"&gt;删除数据&lt;/button&gt;
+          // JavaScript代码 // 或者通过JavaScript创建确认按钮
+          ButtonUI.createConfirmButton('#my-button', '确定要执行此操作吗？',
+          function() { // 用户确认后的回调函数 console.log('用户已确认操作');
+          });
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>与表单集成</h2>
+        <p>按钮可以与表单元素结合使用，例如作为提交按钮或表单操作按钮。</p>
+
+        <div class="example-block">
+          <form>
+            <div style="margin-bottom: 1rem">
+              <label
+                for="demo-input"
+                style="
+                  display: block;
+                  margin-bottom: 0.5rem;
+                  color: var(--text-color);
+                "
+                >示例输入框</label
+              >
+              <input
+                type="text"
+                id="demo-input"
+                placeholder="请输入内容..."
+                style="
+                  width: 100%;
+                  padding: 0.5rem;
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--border-radius-sm);
+                  background-color: var(--background-color);
+                  color: var(--text-color);
+                "
+              />
+            </div>
+            <div class="button-group">
+              <button type="submit" class="btn btn-primary">提交</button>
+              <button type="reset" class="btn btn-outline-secondary">
+                重置
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;form&gt; &lt;div&gt; &lt;label
+          for="demo-input"&gt;示例输入框&lt;/label&gt; &lt;input type="text"
+          id="demo-input" placeholder="请输入内容..."&gt; &lt;/div&gt; &lt;div
+          class="button-group"&gt; &lt;button type="submit" class="btn
+          btn-primary"&gt;提交&lt;/button&gt; &lt;button type="reset" class="btn
+          btn-outline-secondary"&gt;重置&lt;/button&gt; &lt;/div&gt;
+          &lt;/form&gt;
+        </div>
+      </div>
+    </div>
+
+    <!-- 主题切换按钮 -->
+    <button class="theme-toggle" id="theme-toggle">
+      <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- 引入模态弹窗组件脚本 -->
+    <script src="../modals/modals.js"></script>
+    <!-- 引入按钮组件脚本 -->
+    <script src="../buttons/buttons.js"></script>
+    <script>
+      // 文档加载完成后执行
+      document.addEventListener("DOMContentLoaded", function () {
+        // 主题切换功能
+        const themeToggle = document.getElementById("theme-toggle");
+        const themeIcon = themeToggle.querySelector("i");
+
+        themeToggle.addEventListener("click", function () {
+          const currentTheme =
+            document.body.getAttribute("data-theme") || "light";
+          const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+          document.body.setAttribute("data-theme", newTheme);
+          themeIcon.className =
+            newTheme === "dark" ? "fas fa-sun" : "fas fa-moon";
+
+          // 保存主题设置
+          localStorage.setItem("theme", newTheme);
+        });
+
+        // 初始应用保存的主题
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.body.setAttribute("data-theme", savedTheme);
+          themeIcon.className =
+            savedTheme === "dark" ? "fas fa-sun" : "fas fa-moon";
+        }
+
+        // 测试确认按钮功能
+        document
+          .getElementById("confirm-button-1")
+          .addEventListener("click", function () {
+            console.log("确认删除数据");
+          });
+
+        document
+          .getElementById("confirm-button-2")
+          .addEventListener("click", function () {
+            console.log("确认重置设置");
+          });
+      });
+    </script>
+  </body>
+</html>
