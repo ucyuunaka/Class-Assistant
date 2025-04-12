@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>柔和粉彩调色板</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f7f2fa;
+        padding: 2rem;
+        color: #333;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #5a3d7a;
+      }
+
+      h2 {
+        margin: 2rem 0 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #ddd;
+        color: #5a3d7a;
+      }
+
+      .color-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .color-card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .color-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .color-sample {
+        height: 120px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 1rem;
+      }
+
+      .color-info {
+        background-color: white;
+        padding: 1rem;
+      }
+
+      .color-name {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .color-value {
+        font-family: monospace;
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      .usage {
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+        color: #666;
+      }
+
+      /* 对比展示样式 */
+      .comparison-section {
+        margin-bottom: 4rem;
+      }
+
+      .comparison-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .comparison-card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .comparison-title {
+        background-color: #5a3d7a;
+        color: white;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        text-align: center;
+      }
+
+      .comparison-sample {
+        height: 150px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 1rem;
+      }
+
+      .comparison-info {
+        background-color: white;
+        padding: 1rem;
+      }
+
+      .effect-name {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .effect-description {
+        font-size: 0.85rem;
+        color: #666;
+      }
+
+      /* 视觉增强效果类 */
+      .original {
+        background: linear-gradient(to right, #91defe, #f9bccc);
+      }
+
+      .blend-overlay {
+        background: linear-gradient(to right, #91defe, #f9bccc);
+        background-blend-mode: overlay;
+        background-attachment: fixed;
+      }
+
+      .multi-layer {
+        background-image: linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.1) 25%,
+            transparent 25%
+          ),
+          linear-gradient(to right, #91defe, #f9bccc);
+        background-size: 10px 10px, cover;
+      }
+
+      .radial-conic {
+        background-image: radial-gradient(
+            circle at top left,
+            #91defe 0%,
+            transparent 50%
+          ),
+          conic-gradient(from 90deg, #f9bccc, #91defe, #f9bccc);
+      }
+
+      .filter-effect {
+        background: linear-gradient(to right, #91defe, #f9bccc);
+        filter: contrast(1.05) saturate(1.2);
+      }
+
+      .mixed-directions {
+        background-image: linear-gradient(
+            45deg,
+            transparent 20%,
+            rgba(255, 255, 255, 0.2) 40%,
+            transparent 60%
+          ),
+          linear-gradient(to right, #91defe, #f9bccc);
+      }
+
+      /* 模块关系展示 */
+      .module-relation {
+        background-color: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .relation-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .module-card {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 1rem;
+        border-left: 5px solid;
+      }
+
+      .module-card.primary {
+        border-left-color: #91defe;
+      }
+
+      .module-card.secondary {
+        border-left-color: #e6c6ff;
+      }
+
+      .module-card.combination {
+        border-left-color: #ffb7c5;
+      }
+
+      .module-title {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #5a3d7a;
+      }
+
+      .module-desc {
+        font-size: 0.85rem;
+        color: #666;
+      }
+
+      .arrows {
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0;
+      }
+
+      .arrow-right {
+        font-size: 1.5rem;
+        color: #5a3d7a;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>柔和粉彩调色板</h1>
+
+    <h2>原始配色</h2>
+    <div class="color-grid">
+      <!-- 背景色 -->
+      <div class="color-card">
+        <div class="color-sample" style="background-color: #f7d6ff">
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >背景色</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">淡紫色背景</div>
+          <div class="color-value">#f7d6ff</div>
+          <div class="usage">用于页面背景，营造柔和基调</div>
+        </div>
+      </div>
+
+      <!-- 卡片渐变开始色 -->
+      <div class="color-card">
+        <div class="color-sample" style="background-color: #91defe">
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >渐变开始</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">淡蓝色</div>
+          <div class="color-value">#91defe</div>
+          <div class="usage">卡片渐变起始色</div>
+        </div>
+      </div>
+
+      <!-- 卡片渐变结束色 -->
+      <div class="color-card">
+        <div class="color-sample" style="background-color: #f9bccc">
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >渐变结束</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">粉红色</div>
+          <div class="color-value">#f9bccc</div>
+          <div class="usage">卡片渐变结束色</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>扩展配色</h2>
+    <div class="color-grid">
+      <!-- 薰衣草雾 -->
+      <div class="color-card">
+        <div class="color-sample" style="background-color: #e6c6ff">
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >薰衣草雾</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">薰衣草雾</div>
+          <div class="color-value">#e6c6ff</div>
+          <div class="usage">按钮悬浮状态/次要背景</div>
+        </div>
+      </div>
+
+      <!-- 蜜桃腮红 -->
+      <div class="color-card">
+        <div class="color-sample" style="background-color: #ffd7e8">
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >蜜桃腮红</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">蜜桃腮红</div>
+          <div class="color-value">#ffd7e8</div>
+          <div class="usage">重要通知/强调元素</div>
+        </div>
+      </div>
+
+      <!-- 天空薄荷 -->
+      <div class="color-card">
+        <div class="color-sample" style="background-color: #a0e8e0">
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >天空薄荷</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">天空薄荷</div>
+          <div class="color-value">#a0e8e0</div>
+          <div class="usage">成功状态/清爽界面元素</div>
+        </div>
+      </div>
+
+      <!-- 淡丁香紫 -->
+      <div class="color-card">
+        <div class="color-sample" style="background-color: #d4bbfc">
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >淡丁香紫</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">淡丁香紫</div>
+          <div class="color-value">#d4bbfc</div>
+          <div class="usage">输入框焦点边框/装饰线</div>
+        </div>
+      </div>
+
+      <!-- 柔和珊瑚 -->
+      <div class="color-card">
+        <div class="color-sample" style="background-color: #ffb7c5">
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >柔和珊瑚</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">柔和珊瑚</div>
+          <div class="color-value">#ffb7c5</div>
+          <div class="usage">错误提示/删除操作</div>
+        </div>
+      </div>
+
+      <!-- 粉末蓝 -->
+      <div class="color-card">
+        <div class="color-sample" style="background-color: #b5d8ff">
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >粉末蓝</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">粉末蓝</div>
+          <div class="color-value">#b5d8ff</div>
+          <div class="usage">链接文字/图标底色</div>
+        </div>
+      </div>
+
+      <!-- 开心果绿 -->
+      <div class="color-card">
+        <div class="color-sample" style="background-color: #d2e8c8">
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >开心果绿</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">开心果绿</div>
+          <div class="color-value">#d2e8c8</div>
+          <div class="usage">完成状态/自然系元素</div>
+        </div>
+      </div>
+
+      <!-- 香草奶油 -->
+      <div class="color-card">
+        <div class="color-sample" style="background-color: #fff2d7">
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >香草奶油</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">香草奶油</div>
+          <div class="color-value">#fff2d7</div>
+          <div class="usage">卡片文字底色/深色文字背景</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>渐变组合示例</h2>
+    <div class="color-grid">
+      <!-- 原渐变 -->
+      <div class="color-card">
+        <div
+          class="color-sample"
+          style="background: linear-gradient(to right, #91defe, #f9bccc)"
+        >
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >原蓝粉渐变</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">经典蓝粉渐变</div>
+          <div class="color-value">#91defe → #f9bccc</div>
+          <div class="usage">主卡片/重要内容区</div>
+        </div>
+      </div>
+
+      <!-- 薄荷紫渐变 -->
+      <div class="color-card">
+        <div
+          class="color-sample"
+          style="background: linear-gradient(to right, #a0e8e0, #d4bbfc)"
+        >
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >薄荷紫渐变</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">薄荷紫渐变</div>
+          <div class="color-value">#a0e8e0 → #d4bbfc</div>
+          <div class="usage">信息类卡片/辅助内容</div>
+        </div>
+      </div>
+
+      <!-- 蜜桃珊瑚渐变 -->
+      <div class="color-card">
+        <div
+          class="color-sample"
+          style="background: linear-gradient(to right, #ffd7e8, #ffb7c5)"
+        >
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >蜜桃珊瑚渐变</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">蜜桃珊瑚渐变</div>
+          <div class="color-value">#ffd7e8 → #ffb7c5</div>
+          <div class="usage">警告/提示类卡片</div>
+        </div>
+      </div>
+
+      <!-- 绿蓝渐变 -->
+      <div class="color-card">
+        <div
+          class="color-sample"
+          style="background: linear-gradient(to right, #d2e8c8, #b5d8ff)"
+        >
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >绿蓝渐变</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">绿蓝渐变</div>
+          <div class="color-value">#d2e8c8 → #b5d8ff</div>
+          <div class="usage">成功状态/自然主题</div>
+        </div>
+      </div>
+
+      <!-- 薰衣草奶油渐变 -->
+      <div class="color-card">
+        <div
+          class="color-sample"
+          style="background: linear-gradient(to right, #e6c6ff, #fff2d7)"
+        >
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >薰衣草奶油</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">薰衣草奶油渐变</div>
+          <div class="color-value">#e6c6ff → #fff2d7</div>
+          <div class="usage">柔和背景/精美卡片</div>
+        </div>
+      </div>
+
+      <!-- 蓝紫渐变 -->
+      <div class="color-card">
+        <div
+          class="color-sample"
+          style="background: linear-gradient(to right, #b5d8ff, #d4bbfc)"
+        >
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >蓝紫渐变</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">蓝紫渐变</div>
+          <div class="color-value">#b5d8ff → #d4bbfc</div>
+          <div class="usage">按钮/链接元素</div>
+        </div>
+      </div>
+
+      <!-- 珊瑚薄荷渐变 -->
+      <div class="color-card">
+        <div
+          class="color-sample"
+          style="background: linear-gradient(to right, #ffb7c5, #a0e8e0)"
+        >
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >珊瑚薄荷</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">珊瑚薄荷渐变</div>
+          <div class="color-value">#ffb7c5 → #a0e8e0</div>
+          <div class="usage">对比元素/强调内容</div>
+        </div>
+      </div>
+
+      <!-- 夕阳渐变 -->
+      <div class="color-card">
+        <div
+          class="color-sample"
+          style="background: linear-gradient(to right, #f9bccc, #fff2d7)"
+        >
+          <span
+            style="
+              color: #333;
+              background: rgba(255, 255, 255, 0.7);
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+            "
+            >夕阳渐变</span
+          >
+        </div>
+        <div class="color-info">
+          <div class="color-name">夕阳渐变</div>
+          <div class="color-value">#f9bccc → #fff2d7</div>
+          <div class="usage">温暖提示/装饰背景</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>效果对比展示</h2>
+    <div class="comparison-section">
+      <h3>原始渐变 vs 增强效果</h3>
+      <div class="comparison-grid">
+        <!-- 原始效果 -->
+        <div class="comparison-card">
+          <div class="comparison-title">原始渐变效果</div>
+          <div class="comparison-sample original">
+            <span
+              style="
+                color: #333;
+                background: rgba(255, 255, 255, 0.7);
+                padding: 0.2rem 0.5rem;
+                border-radius: 4px;
+              "
+              >原始效果</span
+            >
+          </div>
+          <div class="comparison-info">
+            <div class="effect-name">基础线性渐变</div>
+            <div class="effect-description">
+              简单的从左到右线性渐变，无额外效果
+            </div>
+          </div>
+        </div>
+
+        <!-- 混合模式效果 -->
+        <div class="comparison-card">
+          <div class="comparison-title">混合模式效果</div>
+          <div class="comparison-sample blend-overlay">
+            <span
+              style="
+                color: #333;
+                background: rgba(255, 255, 255, 0.7);
+                padding: 0.2rem 0.5rem;
+                border-radius: 4px;
+              "
+              >混合模式</span
+            >
+          </div>
+          <div class="comparison-info">
+            <div class="effect-name">背景混合模式</div>
+            <div class="effect-description">
+              应用background-blend-mode: overlay与background-attachment: fixed
+            </div>
+          </div>
+        </div>
+
+        <!-- 多层渐变 -->
+        <div class="comparison-card">
+          <div class="comparison-title">多层渐变效果</div>
+          <div class="comparison-sample multi-layer">
+            <span
+              style="
+                color: #333;
+                background: rgba(255, 255, 255, 0.7);
+                padding: 0.2rem 0.5rem;
+                border-radius: 4px;
+              "
+              >多层渐变</span
+            >
+          </div>
+          <div class="comparison-info">
+            <div class="effect-name">渐变叠加层</div>
+            <div class="effect-description">主渐变上叠加45°角的透明图案层</div>
+          </div>
+        </div>
+
+        <!-- 径向与圆锥渐变 -->
+        <div class="comparison-card">
+          <div class="comparison-title">径向与圆锥渐变</div>
+          <div class="comparison-sample radial-conic">
+            <span
+              style="
+                color: #333;
+                background: rgba(255, 255, 255, 0.7);
+                padding: 0.2rem 0.5rem;
+                border-radius: 4px;
+              "
+              >混合渐变</span
+            >
+          </div>
+          <div class="comparison-info">
+            <div class="effect-name">径向+圆锥渐变</div>
+            <div class="effect-description">
+              结合径向渐变和圆锥渐变创造复杂效果
+            </div>
+          </div>
+        </div>
+
+        <!-- 滤镜效果 -->
+        <div class="comparison-card">
+          <div class="comparison-title">滤镜增强效果</div>
+          <div class="comparison-sample filter-effect">
+            <span
+              style="
+                color: #333;
+                background: rgba(255, 255, 255, 0.7);
+                padding: 0.2rem 0.5rem;
+                border-radius: 4px;
+              "
+              >滤镜效果</span
+            >
+          </div>
+          <div class="comparison-info">
+            <div class="effect-name">CSS滤镜</div>
+            <div class="effect-description">使用filter增强对比度和饱和度</div>
+          </div>
+        </div>
+
+        <!-- 混合渐变方向 -->
+        <div class="comparison-card">
+          <div class="comparison-title">混合渐变方向</div>
+          <div class="comparison-sample mixed-directions">
+            <span
+              style="
+                color: #333;
+                background: rgba(255, 255, 255, 0.7);
+                padding: 0.2rem 0.5rem;
+                border-radius: 4px;
+              "
+              >多向渐变</span
+            >
+          </div>
+          <div class="comparison-info">
+            <div class="effect-name">多方向渐变</div>
+            <div class="effect-description">叠加45°角高光效果于主渐变</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>模块关系对比</h2>
+    <div class="module-relation">
+      <p>三个模块间的关系与各自特点展示：</p>
+
+      <div class="relation-grid">
+        <div class="module-card primary">
+          <div class="module-title">原始配色</div>
+          <div class="module-desc">
+            提供基础色彩基调，包含背景色与主要渐变配色。这些颜色决定了整体设计风格的基础。
+          </div>
+        </div>
+
+        <div class="module-card secondary">
+          <div class="module-title">扩展配色</div>
+          <div class="module-desc">
+            衍生于基础配色的多种辅助色，丰富调色板多样性，为不同UI元素提供独立色彩识别。
+          </div>
+        </div>
+
+        <div class="module-card combination">
+          <div class="module-title">渐变组合</div>
+          <div class="module-desc">
+            将基础色与扩展色进行多种组合，创造丰富的渐变效果，适用于各类UI元素的视觉层次。
+          </div>
+        </div>
+      </div>
+
+      <div class="arrows">
+        <div class="arrow-right">基础色 → 扩展色 → 组合效果</div>
+      </div>
+
+      <table style="width: 100%; border-collapse: collapse; margin-top: 1.5rem">
+        <tr style="background-color: #f7f2fa">
+          <th style="padding: 0.8rem; border: 1px solid #ddd; text-align: left">
+            模块
+          </th>
+          <th style="padding: 0.8rem; border: 1px solid #ddd; text-align: left">
+            色彩数量
+          </th>
+          <th style="padding: 0.8rem; border: 1px solid #ddd; text-align: left">
+            主要用途
+          </th>
+          <th style="padding: 0.8rem; border: 1px solid #ddd; text-align: left">
+            特点
+          </th>
+        </tr>
+        <tr>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">原始配色</td>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">3色</td>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">定义设计基调</td>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">
+            简洁、基础、统一性
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">扩展配色</td>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">8色</td>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">丰富UI元素</td>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">
+            多样性、互补性、功能性
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">渐变组合</td>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">8种组合</td>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">创造视觉层次</td>
+          <td style="padding: 0.8rem; border: 1px solid #ddd">
+            动态性、过渡性、协调性
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

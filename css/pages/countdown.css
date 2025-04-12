@@ -1,0 +1,233 @@
+/* 考试倒计时页面特定样式 */
+.countdown-list {
+  margin-top: 2rem;
+}
+
+.countdown-item {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.countdown-main {
+  flex: 2;
+  min-width: 300px;
+}
+
+.countdown-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
+}
+
+.countdown-details {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.countdown-details div {
+  margin-bottom: 0.5rem;
+}
+
+.countdown-detail-label {
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+.countdown-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.countdown-display {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-light);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+}
+
+.countdown-label {
+  font-weight: 500;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.countdown-timer {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+
+.countdown-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  background-color: var(--background-color);
+  border-radius: var(--border-radius-sm);
+  padding: 0.5rem;
+  min-width: 60px;
+  text-align: center;
+}
+
+.countdown-unit-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: var(--background-secondary);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+
+/* 添加考试弹框样式 */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 500px;
+  padding: 2rem;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.urgent {
+  border-left: 4px solid var(--danger-color);
+}
+
+.upcoming {
+  border-left: 4px solid var(--warning-color);
+}
+
+.distant {
+  border-left: 4px solid var(--success-color);
+}
+
+.status-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: white;
+  border-bottom-left-radius: var(--border-radius-sm);
+}
+
+.status-urgent {
+  background-color: var(--danger-color);
+}
+
+.status-upcoming {
+  background-color: var(--warning-color);
+}
+
+.status-distant {
+  background-color: var(--success-color);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  background-color: var(--background-secondary);
+  border-radius: var(--border-radius);
+  margin-top: 2rem;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* 过滤和排序控件 */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.filter-label {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.search-box {
+  flex-grow: 1;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding-left: 2.5rem;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+}

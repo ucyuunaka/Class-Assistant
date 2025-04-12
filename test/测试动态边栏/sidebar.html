@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>动态侧边栏</title>
+    <!-- 引入修正后的CSS文件 -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- 使用在线图标库替代本地图标库 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="iconfont.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="nav">
+        <!--按钮-->
+        <div class="btn">
+          <div class="btn-item"></div>
+          <div class="btn-item"></div>
+          <div class="btn-item"></div>
+        </div>
+        <!--头像-->
+        <div class="icon">
+          <div class="icon-img">
+            <img
+              src="https://randomuser.me/api/portraits/men/32.jpg"
+              alt="avatar"
+            />
+          </div>
+          <div class="icon-con">
+            <p>Good Day</p>
+            <h2>Vitaliy D.</h2>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="title">
+          <p>Menu</p>
+        </div>
+        <div class="menu">
+          <div class="item active">
+            <div class="light"></div>
+            <div class="licon"><i class="ri-dashboard-line"></i></div>
+            <div class="con">Dashboard</div>
+            <div class="ricon"><i class="ri-settings-3-line"></i></div>
+          </div>
+          <div class="item">
+            <div class="light"></div>
+            <div class="licon"><i class="ri-file-list-line"></i></div>
+            <div class="con">Documents</div>
+            <div class="ricon"><i class="ri-arrow-right-s-line"></i></div>
+          </div>
+          <div class="item">
+            <div class="light"></div>
+            <div class="licon"><i class="ri-user-line"></i></div>
+            <div class="con">Profile</div>
+            <div class="ricon"><i class="ri-arrow-right-s-line"></i></div>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="title">
+          <p>Services</p>
+        </div>
+        <div class="serve">
+          <div class="item">
+            <div class="light"></div>
+            <div class="licon"><i class="ri-calendar-line"></i></div>
+            <div class="con">Calendar</div>
+            <div class="ricon">
+              <i class="ri-arrow-right-s-line"></i>
+            </div>
+          </div>
+          <div class="item">
+            <div class="light"></div>
+            <div class="licon"><i class="ri-mail-line"></i></div>
+            <div class="con">Messages</div>
+            <div class="ricon">
+              <i class="ri-notification-badge-line"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    // 获取所有菜单项
+    const menuItems = document.querySelectorAll(".item");
+
+    // 为每个菜单项添加点击事件
+    menuItems.forEach((item) => {
+      item.addEventListener("click", function () {
+        // 移除所有菜单项的active类
+        menuItems.forEach((i) => i.classList.remove("active"));
+
+        // 为当前点击的菜单项添加active类
+        this.classList.add("active");
+      });
+    });
+  </script>
+</html>

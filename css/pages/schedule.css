@@ -1,0 +1,584 @@
+/* 课表页面特定样式 */
+.page-header {
+  padding: 2rem 0;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.schedule-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.schedule-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.schedule-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* 课表网格 */
+.timetable {
+  background: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+  width: 100%;
+}
+
+.timetable-grid {
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr);
+  min-width: 800px;
+  /* 明确设置行高和网格结构 */
+  grid-auto-rows: 110px; /* 保持行高为110px以确保内容完全显示 */
+}
+
+.timetable-header {
+  background-color: var(--primary-light);
+  font-weight: 600;
+  text-align: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex; /* 使用flex布局确保内容居中 */
+  align-items: center;
+  justify-content: center;
+  height: 110px; /* 调整为与grid-auto-rows相同的高度 */
+}
+
+.timetable-time {
+  grid-column: 1;
+  padding: 0.5rem;
+  text-align: center;
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 500;
+  background-color: var(--background-secondary);
+  display: flex; /* 使用flex布局确保内容居中 */
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* 填满整个单元格 */
+}
+
+.timetable-cell {
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.4rem;
+  height: 100%; /* 确保所有单元格高度一致 */
+  position: relative;
+  overflow: visible; /* 允许内容显示完整 */
+  box-sizing: border-box;
+  display: flex; /* 使用flex布局更好地控制内容定位 */
+  flex-direction: column;
+  justify-content: center;
+  transition: min-height 0.3s ease;
+}
+
+.timetable-cell:last-child {
+  border-right: none;
+}
+
+.timetable-cell:has(.course-card.deleting) {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* 课程卡片样式 */
+.course-card {
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+  border-radius: var(--border-radius-sm);
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  justify-content: space-between; /* 优化内容分布 */
+  overflow: hidden; /* 防止内容溢出 */
+}
+
+.course-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.course-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  overflow: visible;
+  white-space: nowrap; /* 确保文本在一行显示 */
+  line-height: 1.2;
+}
+
+.course-info {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  overflow: visible;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  white-space: normal;
+  line-height: 1.2;
+  margin-bottom: 0.15rem;
+}
+
+.course-location {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  overflow: visible;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+/* 课程颜色变量 */
+.course-math {
+  background-color: #e1f1ff;
+  color: #0368b2;
+}
+
+.course-physics {
+  background-color: #feedc9;
+  color: #c25e00;
+}
+
+.course-chemistry {
+  background-color: #d7f8e8;
+  color: #00714b;
+}
+
+.course-biology {
+  background-color: #ffe2ec;
+  color: #b30047;
+}
+
+.course-literature {
+  background-color: #e6e6ff;
+  color: #3333cc;
+}
+
+.course-history {
+  background-color: #f2e8ff;
+  color: #6200ea;
+}
+
+.course-english {
+  background-color: #e0f7fa;
+  color: #006064;
+}
+
+/* 新增课程颜色 */
+.course-computer {
+  background-color: #e6f7ff;
+  color: #0050b3;
+}
+
+.course-art {
+  background-color: #fff1f0;
+  color: #cf1322;
+}
+
+.course-music {
+  background-color: #f9f0ff;
+  color: #722ed1;
+}
+
+.course-sports {
+  background-color: #f0f5ff;
+  color: #096dd9;
+}
+
+.course-politics {
+  background-color: #fff0f6;
+  color: #c41d7f;
+}
+
+.course-geography {
+  background-color: #f4ffb8;
+  color: #5b8c00;
+}
+
+/* 编辑模式样式 */
+.edit-mode .course-card {
+  position: relative;
+  border: 2px dashed var(--primary-color);
+  opacity: 0.9;
+}
+
+.edit-mode .course-card:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.course-delete-icon {
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+  color: var(--danger-color);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.edit-mode .course-delete-icon {
+  display: block;
+}
+
+.course-delete-icon:hover {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+/* 添加课程弹窗 */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-close {
+  position: absolute;
+  right: 1.5rem;
+  top: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.modal-close:hover {
+  color: var(--danger-color);
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group.col-6 {
+  flex: 0 0 calc(50% - 0.5rem);
+}
+
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.color-option {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.color-option:hover,
+.color-option.selected {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--border-color);
+}
+
+.empty-state-text {
+  margin-bottom: 1.5rem;
+}
+
+/* 导入导出按钮 */
+.import-export {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.export-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.export-dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: var(--background-color);
+  min-width: 160px;
+  box-shadow: var(--shadow-md);
+  z-index: 1;
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+}
+
+.export-dropdown-content a {
+  color: var(--text-color);
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.2s;
+}
+
+.export-dropdown-content a:hover {
+  background-color: var(--background-secondary);
+}
+
+.export-dropdown:hover .export-dropdown-content {
+  display: block;
+}
+
+/* 切换视图按钮 */
+.view-toggle {
+  display: flex;
+  background-color: var(--background-secondary);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.view-toggle button {
+  border: none;
+  background: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.view-toggle button.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .schedule-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .timetable-grid {
+    grid-template-columns: 60px repeat(7, 1fr);
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0rem;
+  }
+
+  .form-group.col-6 {
+    flex: 0 0 100%;
+  }
+}
+
+/* 删除确认弹窗样式 */
+#delete-confirm-modal .modal-content {
+  max-width: 400px;
+}
+
+#delete-confirm-modal p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-dark);
+}
+
+/* 删除动画增强 */
+.course-card.deleting {
+    animation: fadeOut 0.3s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+    pointer-events: none;
+}
+
+@keyframes fadeOut {
+    0% { 
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        max-height: 200px;
+        margin: 4px 0;
+    }
+    100% { 
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+        max-height: 0;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* 确保列表视图中的卡片动画效果 */
+#list-view-container .course-card.deleting {
+    animation: fadeOut 0.3s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+/* 防止动画过程中布局跳动 */
+.timetable-cell {
+    transition: min-height 0.3s ease;
+}
+
+.timetable-cell:has(.course-card.deleting) {
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* 编辑模式下的单元格高亮效果 */
+.edit-mode .timetable-cell {
+  background-color: rgba(0, 123, 255, 0.05);
+  transition: background-color 0.3s ease;
+}
+
+.edit-mode .timetable-cell:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+  cursor: pointer;
+}
+
+.edit-mode .timetable-cell:has(.course-card) {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.edit-mode .timetable-cell:has(.course-card):hover {
+  background-color: rgba(255, 193, 7, 0.15);
+}
+
+/* 添加成功/失败的动画反馈 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.course-card.added {
+  animation: fadeIn 0.5s ease;
+}
+
+.course-card.updated {
+  animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* 添加提示样式 */
+.edit-mode-hint {
+  background-color: var(--warning-light);
+  color: var(--warning-dark);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 拖拽相关样式 */
+.course-card.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 修改拖拽目标样式 */
+.timetable-cell.drop-target {
+  background-color: rgba(0, 200, 83, 0.1);
+  box-shadow: inset 0 0 0 2px #00c853;
+}
+
+.timetable-cell.drop-target-invalid {
+  background-color: rgba(255, 0, 0, 0.1);
+  box-shadow: inset 0 0 0 2px #ff5252;
+}
+
+/* 添加拖拽成功动画 */
+@keyframes dropSuccess {
+  0% { background-color: rgba(0, 200, 83, 0.3); }
+  100% { background-color: transparent; }
+}
+
+.timetable-cell.drop-success {
+  animation: dropSuccess 1s ease;
+}
+
+/* 拖拽手柄样式 */
+.course-drag-handle {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  cursor: move;
+  color: var(--text-secondary);
+  z-index: 10;
+  display: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+}
+
+.edit-mode .course-drag-handle {
+  display: block;
+}
+
+.course-drag-handle:hover {
+  color: var(--primary-color);
+  background-color: var(--primary-light);
+}

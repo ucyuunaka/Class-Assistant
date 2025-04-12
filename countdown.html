@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>考试倒计时 - 课堂助手</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <!-- 添加页脚样式 -->
+    <link rel="stylesheet" href="css/footer.css" />
+    <!-- 添加滚动动画样式 -->
+    <link rel="stylesheet" href="css/scrollAnimation.css" />
+    <!-- 添加主题样式 -->
+    <link rel="stylesheet" href="css/themes/themes.css" />
+    <!-- 使用图标库 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- 添加 Remix Icon 库，用于侧边栏图标 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <!-- 添加页面特定样式 -->
+    <link rel="stylesheet" href="css/pages/countdown.css" />
+  </head>
+  <body>
+    <!-- 侧边栏导航 - 只保留容器元素 -->
+    <aside class="sidebar"></aside>
+
+    <!-- 移动端菜单切换按钮 -->
+    <div class="sidebar-toggle">
+      <i class="ri-menu-line"></i>
+    </div>
+
+    <!-- 移动端遮罩层 -->
+    <div class="sidebar-overlay"></div>
+
+    <!-- 主内容区 -->
+    <div class="container py-4 sidebar-active">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <h1 class="mb-3 animate-on-scroll fade-up">考试倒计时</h1>
+        <button class="btn animate-on-scroll fade-up" id="add-exam-btn">
+          <i class="fas fa-plus"></i> 添加考试
+        </button>
+      </div>
+
+      <!-- 筛选和排序 -->
+      <div class="filters animate-on-scroll fade-up">
+        <div class="search-box">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="搜索考试..."
+            id="search-input"
+          />
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">排序：</span>
+          <select class="form-control" id="sort-select">
+            <option value="date-asc">日期升序</option>
+            <option value="date-desc" selected>日期降序</option>
+            <option value="name-asc">名称升序</option>
+            <option value="name-desc">名称降序</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">状态：</span>
+          <select class="form-control" id="filter-select">
+            <option value="all" selected>全部</option>
+            <option value="urgent">紧急 (7天内)</option>
+            <option value="upcoming">即将到来 (30天内)</option>
+            <option value="distant">较远 (30天以上)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 考试倒计时列表 -->
+      <div class="countdown-list" id="countdown-list">
+        <!-- 紧急考试 -->
+        <div class="countdown-item urgent animate-on-scroll fade-up">
+          <div class="status-badge status-urgent">紧急</div>
+          <div class="countdown-main">
+            <h3 class="countdown-title">数据结构期末考试</h3>
+            <div class="countdown-details">
+              <div>
+                <span class="countdown-detail-label">科目：</span>数据结构与算法
+              </div>
+              <div>
+                <span class="countdown-detail-label">时间：</span>2025年4月12日
+                09:00
+              </div>
+              <div>
+                <span class="countdown-detail-label">地点：</span>教学楼B-303
+              </div>
+              <div>
+                <span class="countdown-detail-label">备注：</span
+                >考试范围为教材第1-10章，开卷考试
+              </div>
+            </div>
+            <div class="countdown-actions">
+              <button class="btn btn-outline edit-btn">
+                <i class="fas fa-edit"></i> 编辑
+              </button>
+              <button
+                class="btn btn-outline delete-btn"
+                style="color: var(--danger-color)"
+              >
+                <i class="fas fa-trash"></i> 删除
+              </button>
+            </div>
+          </div>
+          <div class="countdown-display">
+            <div class="countdown-label">距离考试还剩</div>
+            <div class="countdown-timer">
+              <div class="countdown-unit">
+                <div class="countdown-value" id="days-1">5</div>
+                <div class="countdown-unit-label">天</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value" id="hours-1">08</div>
+                <div class="countdown-unit-label">时</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value" id="minutes-1">42</div>
+                <div class="countdown-unit-label">分</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value" id="seconds-1">12</div>
+                <div class="countdown-unit-label">秒</div>
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 80%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 即将到来的考试 -->
+        <div
+          class="countdown-item upcoming animate-on-scroll fade-up delay-100"
+        >
+          <div class="status-badge status-upcoming">即将到来</div>
+          <div class="countdown-main">
+            <h3 class="countdown-title">计算机网络期中考试</h3>
+            <div class="countdown-details">
+              <div>
+                <span class="countdown-detail-label">科目：</span>计算机网络
+              </div>
+              <div>
+                <span class="countdown-detail-label">时间：</span>2025年4月22日
+                14:00
+              </div>
+              <div>
+                <span class="countdown-detail-label">地点：</span>实验楼C-210
+              </div>
+              <div>
+                <span class="countdown-detail-label">备注：</span
+                >考试内容为TCP/IP协议和网络安全，闭卷考试
+              </div>
+            </div>
+            <div class="countdown-actions">
+              <button class="btn btn-outline edit-btn">
+                <i class="fas fa-edit"></i> 编辑
+              </button>
+              <button
+                class="btn btn-outline delete-btn"
+                style="color: var(--danger-color)"
+              >
+                <i class="fas fa-trash"></i> 删除
+              </button>
+            </div>
+          </div>
+          <div class="countdown-display">
+            <div class="countdown-label">距离考试还剩</div>
+            <div class="countdown-timer">
+              <div class="countdown-unit">
+                <div class="countdown-value" id="days-2">15</div>
+                <div class="countdown-unit-label">天</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value" id="hours-2">06</div>
+                <div class="countdown-unit-label">时</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value" id="minutes-2">30</div>
+                <div class="countdown-unit-label">分</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value" id="seconds-2">42</div>
+                <div class="countdown-unit-label">秒</div>
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 50%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 较远的考试 -->
+        <div class="countdown-item distant animate-on-scroll fade-up delay-200">
+          <div class="status-badge status-distant">较远</div>
+          <div class="countdown-main">
+            <h3 class="countdown-title">操作系统期末考试</h3>
+            <div class="countdown-details">
+              <div>
+                <span class="countdown-detail-label">科目：</span>操作系统原理
+              </div>
+              <div>
+                <span class="countdown-detail-label">时间：</span>2025年5月15日
+                10:00
+              </div>
+              <div>
+                <span class="countdown-detail-label">地点：</span>教学楼A-501
+              </div>
+              <div>
+                <span class="countdown-detail-label">备注：</span
+                >考试范围全书，需重点复习进程管理和内存管理
+              </div>
+            </div>
+            <div class="countdown-actions">
+              <button class="btn btn-outline edit-btn">
+                <i class="fas fa-edit"></i> 编辑
+              </button>
+              <button
+                class="btn btn-outline delete-btn"
+                style="color: var(--danger-color)"
+              >
+                <i class="fas fa-trash"></i> 删除
+              </button>
+            </div>
+          </div>
+          <div class="countdown-display">
+            <div class="countdown-label">距离考试还剩</div>
+            <div class="countdown-timer">
+              <div class="countdown-unit">
+                <div class="countdown-value" id="days-3">38</div>
+                <div class="countdown-unit-label">天</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value" id="hours-3">12</div>
+                <div class="countdown-unit-label">时</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value" id="minutes-3">25</div>
+                <div class="countdown-unit-label">分</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value" id="seconds-3">08</div>
+                <div class="countdown-unit-label">秒</div>
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 20%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 无考试时显示的空状态 -->
+        <div
+          class="empty-state animate-on-scroll fade-up"
+          id="empty-state"
+          style="display: none"
+        >
+          <div class="empty-icon">
+            <i class="fas fa-calendar-xmark"></i>
+          </div>
+          <h3>暂无考试数据</h3>
+          <p>点击"添加考试"按钮创建你的第一个考试倒计时</p>
+          <button class="btn mt-3" id="add-exam-empty">
+            <i class="fas fa-plus"></i> 添加考试
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 添加/编辑考试弹框 -->
+    <div class="modal" id="exam-modal">
+      <div class="modal-content">
+        <div class="modal-close" id="close-exam-modal">×</div>
+        <h2 class="mb-3" id="modal-title">添加考试</h2>
+        <form id="exam-form">
+          <div class="form-group">
+            <label class="form-label" for="exam-name">考试名称</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exam-name"
+              required
+              placeholder="例如：高等数学期末考试"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="exam-subject">科目</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exam-subject"
+              placeholder="例如：高等数学"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="exam-date">考试日期</label>
+            <input type="date" class="form-control" id="exam-date" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="exam-time">考试时间</label>
+            <input type="time" class="form-control" id="exam-time" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="exam-location">考试地点</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exam-location"
+              placeholder="例如：教学楼A-301"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="exam-notes">备注</label>
+            <textarea
+              class="form-control"
+              id="exam-notes"
+              rows="3"
+              placeholder="例如：考试范围、注意事项等"
+            ></textarea>
+          </div>
+          <input type="hidden" id="exam-id" value="" />
+          <div class="text-center mt-4">
+            <button type="submit" class="btn">保存</button>
+            <button
+              type="button"
+              class="btn btn-outline"
+              style="margin-left: 0.5rem"
+              id="cancel-exam"
+            >
+              取消
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 页脚 - 简化为只保留容器 -->
+    <footer class="footer"></footer>
+    <script src="js/main.js"></script>
+    <script src="js/sidebar.js"></script>
+    <!-- 添加页脚脚本 -->
+    <script src="js/footer.js"></script>
+    <!-- 添加滚动动画脚本 -->
+    <script src="js/scrollAnimation.js"></script>
+    <!-- 添加主题管理脚本 -->
+    <script src="js/themes.js"></script>
+    <!-- 添加倒计时页面特定脚本 -->
+    <script src="js/pages/countdown.js"></script>
+  </body>
+</html>

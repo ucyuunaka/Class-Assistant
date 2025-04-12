@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>课评速记 - 课堂助手</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <!-- 添加页脚样式 -->
+    <link rel="stylesheet" href="css/footer.css" />
+    <!-- 添加滚动动画样式 -->
+    <link rel="stylesheet" href="css/scrollAnimation.css" />
+    <!-- 添加主题样式 -->
+    <link rel="stylesheet" href="css/themes/themes.css" />
+    <!-- 使用图标库 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- 添加 Remix Icon 库，用于侧边栏图标 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <!-- 添加 emoji picker -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.18.3/css/emoji-picker-element.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.18.3/index.js"></script>
+    <!-- 添加页面特定样式 -->
+    <link rel="stylesheet" href="css/pages/lesson.css" />
+  </head>
+  <body>
+    <!-- 侧边栏导航 - 只保留容器元素 -->
+    <aside class="sidebar"></aside>
+
+    <!-- 移动端菜单切换按钮 -->
+    <div class="sidebar-toggle">
+      <i class="ri-menu-line"></i>
+    </div>
+
+    <!-- 移动端遮罩层 -->
+    <div class="sidebar-overlay"></div>
+
+    <!-- 主要内容 -->
+    <main class="sidebar-active">
+      <!-- 课评速记标题区域 -->
+      <section class="lesson-header">
+        <div class="container">
+          <h1 class="lesson-title animate-on-scroll fade-up">课评速记</h1>
+          <p class="lesson-subtitle animate-on-scroll fade-up delay-100">
+            用简短的评价和表情记录你对课程的感受
+          </p>
+        </div>
+      </section>
+
+      <div class="container">
+        <!-- 过滤器 -->
+        <section class="lesson-section">
+          <div class="filter-container animate-on-scroll fade-up">
+            <button class="filter-btn active" data-filter="all">
+              全部课程
+            </button>
+            <button class="filter-btn" data-filter="math">数学类</button>
+            <button class="filter-btn" data-filter="cs">计算机类</button>
+            <button class="filter-btn" data-filter="eng">英语类</button>
+            <button class="filter-btn" data-filter="physics">物理类</button>
+          </div>
+
+          <!-- 输入区域 -->
+          <div class="input-container animate-on-scroll fade-up">
+            <div class="input-header">
+              <div class="input-title">记录新评价</div>
+            </div>
+            <div class="input-content">
+              <select class="course-select" id="courseSelect">
+                <option value="">选择课程...</option>
+                <option value="高等数学" data-category="math">高等数学</option>
+                <option value="线性代数" data-category="math">线性代数</option>
+                <option value="概率统计" data-category="math">概率统计</option>
+                <option value="程序设计" data-category="cs">程序设计</option>
+                <option value="数据库原理" data-category="cs">
+                  数据库原理
+                </option>
+                <option value="操作系统" data-category="cs">操作系统</option>
+                <option value="计算机网络" data-category="cs">
+                  计算机网络
+                </option>
+                <option value="软件工程" data-category="cs">软件工程</option>
+                <option value="人工智能导论" data-category="cs">
+                  人工智能导论
+                </option>
+                <option value="计算机图形学" data-category="cs">
+                  计算机图形学
+                </option>
+                <option value="大学英语" data-category="eng">大学英语</option>
+                <option value="大学物理" data-category="physics">
+                  大学物理
+                </option>
+              </select>
+              <div class="input-action">
+                <button class="emoji-btn" id="emojiButton">😊</button>
+                <button class="send-btn" id="sendButton">发送评价</button>
+              </div>
+            </div>
+            <div class="reaction-tag-container" id="selectedReactions"></div>
+          </div>
+        </section>
+
+        <!-- 课评列表 -->
+        <section class="lesson-section">
+          <h2 class="section-title animate-on-scroll fade-up">历史评价</h2>
+
+          <div class="message-container">
+            <div class="message-list" id="messageList">
+              <!-- 示例消息 -->
+              <div
+                class="message sent"
+                data-course="程序设计"
+                data-category="cs"
+              >
+                <div class="message-content">
+                  <div class="course-name">程序设计</div>
+                  <div class="message-text">今天的课程内容真的很棒！</div>
+                  <div class="message-reactions">
+                    <div class="reaction-bubble" data-emoji="👍">
+                      <span class="reaction-emoji">👍</span>
+                      <span class="reaction-count">3</span>
+                    </div>
+                    <div class="reaction-bubble" data-emoji="❤️">
+                      <span class="reaction-emoji">❤️</span>
+                      <span class="reaction-count">2</span>
+                    </div>
+                    <div class="reaction-bubble" data-emoji="🎉">
+                      <span class="reaction-emoji">🎉</span>
+                      <span class="reaction-count">1</span>
+                    </div>
+                  </div>
+                  <div class="message-time">2025-04-08 10:30</div>
+                </div>
+              </div>
+
+              <div
+                class="message received"
+                data-course="高等数学"
+                data-category="math"
+              >
+                <div class="message-content">
+                  <div class="course-name">高等数学</div>
+                  <div class="message-text">今天讲的微积分有点难理解 😵</div>
+                  <div class="message-reactions">
+                    <div class="reaction-bubble" data-emoji="😢">
+                      <span class="reaction-emoji">😢</span>
+                      <span class="reaction-count">5</span>
+                    </div>
+                    <div class="reaction-bubble" data-emoji="💪">
+                      <span class="reaction-emoji">💪</span>
+                      <span class="reaction-count">2</span>
+                    </div>
+                  </div>
+                  <div class="message-time">2025-04-07 14:15</div>
+                </div>
+              </div>
+
+              <div
+                class="message sent"
+                data-course="计算机网络"
+                data-category="cs"
+              >
+                <div class="message-content">
+                  <div class="course-name">计算机网络</div>
+                  <div class="message-text">
+                    TCP/IP协议讲解很清晰，终于理解了！
+                  </div>
+                  <div class="message-reactions">
+                    <div class="reaction-bubble" data-emoji="🚀">
+                      <span class="reaction-emoji">🚀</span>
+                      <span class="reaction-count">4</span>
+                    </div>
+                    <div class="reaction-bubble" data-emoji="👏">
+                      <span class="reaction-emoji">👏</span>
+                      <span class="reaction-count">7</span>
+                    </div>
+                  </div>
+                  <div class="message-time">2025-04-06 16:45</div>
+                </div>
+              </div>
+
+              <div
+                class="message received"
+                data-course="大学英语"
+                data-category="eng"
+              >
+                <div class="message-content">
+                  <div class="course-name">大学英语</div>
+                  <div class="message-text">今天的听力练习很有挑战性</div>
+                  <div class="message-reactions">
+                    <div class="reaction-bubble" data-emoji="🎧">
+                      <span class="reaction-emoji">🎧</span>
+                      <span class="reaction-count">3</span>
+                    </div>
+                    <div class="reaction-bubble" data-emoji="🤔">
+                      <span class="reaction-emoji">🤔</span>
+                      <span class="reaction-count">2</span>
+                    </div>
+                  </div>
+                  <div class="message-time">2025-04-05 09:20</div>
+                </div>
+              </div>
+
+              <div
+                class="message sent"
+                data-course="数据库原理"
+                data-category="cs"
+              >
+                <div class="message-content">
+                  <div class="course-name">数据库原理</div>
+                  <div class="message-text">SQL优化技巧非常实用！</div>
+                  <div class="message-reactions">
+                    <div class="reaction-bubble" data-emoji="💡">
+                      <span class="reaction-emoji">💡</span>
+                      <span class="reaction-count">6</span>
+                    </div>
+                  </div>
+                  <div class="message-time">2025-04-04 13:50</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 空状态 -->
+            <div class="lesson-empty" id="emptyState" style="display: none">
+              <div class="lesson-empty-icon">
+                <i class="ri-chat-off-line"></i>
+              </div>
+              <div class="lesson-empty-text">还没有匹配的课程评价</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- 表情选择器 -->
+    <div class="emoji-picker-container" id="emojiPickerContainer">
+      <emoji-picker id="emojiPicker"></emoji-picker>
+    </div>
+
+    <!-- 页脚 - 简化为只保留容器 -->
+    <footer class="footer"></footer>
+    <script src="js/main.js"></script>
+    <script src="js/sidebar.js"></script>
+    <!-- 添加页脚脚本 -->
+    <script src="js/footer.js"></script>
+    <!-- 添加滚动动画脚本 -->
+    <script src="js/scrollAnimation.js"></script>
+    <!-- 添加主题管理脚本 -->
+    <script src="js/themes.js"></script>
+    <!-- 移除这里的内联脚本 -->
+    <!-- <script> ... </script> -->
+    <!-- 添加对 lesson.js 的引用 -->
+    <script src="js/pages/lesson.js"></script>
+  </body>
+</html>

@@ -1,0 +1,329 @@
+/* 课评速记页面特定样式 */
+.lesson-header {
+  background: linear-gradient(135deg, var(--primary-color), #0368b2);
+  color: white;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+}
+
+.lesson-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.lesson-subtitle {
+  opacity: 0.9;
+}
+
+.lesson-section {
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+/* 消息列表样式 - Telegram风格 */
+.message-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.message {
+  display: flex;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  background-color: var(--background-color);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.message.sent {
+  background-color: var(--primary-light);
+  margin-left: auto;
+  max-width: 80%;
+}
+
+.message.received {
+  margin-right: auto;
+  max-width: 80%;
+  background-color: var(--background-color);
+}
+
+.message-content {
+  flex: 1;
+}
+
+.course-name {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--primary-color);
+}
+
+.message-text {
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+.message-time {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-align: right;
+  margin-top: 0.25rem;
+}
+
+.message-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.reaction-bubble {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--background-secondary);
+  border-radius: 1rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reaction-bubble:hover {
+  background-color: var(--background-hover);
+}
+
+.reaction-emoji {
+  margin-right: 0.5rem;
+}
+
+.reaction-count {
+  font-weight: 500;
+}
+
+/* 快速反应选择器 */
+.quick-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  background-color: var(--background-secondary);
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 10;
+}
+
+.quick-reactions.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.quick-reaction-item {
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.quick-reaction-item:hover {
+  background-color: var(--background-hover);
+  transform: scale(1.2);
+}
+
+/* 输入区域 */
+.input-container {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  margin-top: 2rem;
+}
+
+.input-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.input-title {
+  font-weight: 600;
+  flex: 1;
+}
+
+.input-content {
+  display: flex;
+}
+
+.course-select {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  margin-right: 0.5rem;
+}
+
+.emoji-btn {
+  background-color: var(--background-secondary);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  width: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-color);
+  font-size: 1.25rem;
+}
+
+.emoji-btn:hover {
+  background-color: var(--background-hover);
+}
+
+.send-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: 0.75rem 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.send-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+/* 表情选择器容器 */
+.emoji-picker-container {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 1000;
+  display: none;
+}
+
+.emoji-picker-container.visible {
+  display: block;
+}
+
+emoji-picker {
+  width: 300px;
+  height: 400px;
+  --background: var(--background-color);
+  --border-color: var(--border-color);
+  --category-emoji-padding: 0.5rem;
+  --emoji-size: 1.5rem;
+}
+
+.reaction-tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.reaction-tag {
+  background-color: var(--background-secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--border-radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.reaction-tag-emoji {
+  font-size: 1.25rem;
+}
+
+.reaction-tag-text {
+  color: var(--text-color);
+}
+
+/* 课程过滤器 */
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.lesson-empty {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--text-secondary);
+}
+
+.lesson-empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .message.sent,
+  .message.received {
+    max-width: 100%;
+  }
+
+  .input-content {
+    flex-direction: column;
+  }
+
+  .course-select {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .input-action {
+    display: flex;
+  }
+
+  .emoji-btn {
+    flex: 1;
+    margin-right: 0.5rem;
+  }
+
+  .send-btn {
+    flex: 2;
+    margin-left: 0;
+  }
+}

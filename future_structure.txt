@@ -1,0 +1,180 @@
+\
+.
+├── assets/                 # 需要构建处理的静态资源
+│   ├── fonts/
+│   └── images/
+├── components/             # 可重用 UI 组件 (HTML/CSS/JS)
+│   ├── Footer/
+│   │   ├── footer.html
+│   │   ├── footer.css
+│   │   └── footer.js
+│   ├── Sidebar/
+│   │   ├── sidebar.html
+│   │   ├── sidebar.css
+│   │   └── sidebar.js
+│   └── ScrollAnimation/
+│       ├── scrollAnimation.css
+│       └── scrollAnimation.js
+├── css/                    # 全局和基础样式
+│   ├── base/               # 基础样式和重置
+│   │   └── index.css
+│   ├── layout/             # 布局辅助类
+│   │   └── index.css
+│   ├── themes/             # 主题变量和定义
+│   │   ├── variables.css   # 核心主题变量 (亮/暗)
+│   │   └── themes.css      # 具体主题样式
+│   └── main.css            # CSS 入口文件 (导入其他全局样式)
+├── js/                     # JavaScript 模块
+│   ├── config/             # 应用配置
+│   │   └── index.js
+│   ├── data/               # 数据管理逻辑
+│   │   ├── schedule.js
+│   │   └── grades.js       # (示例)
+│   ├── utils/              # 工具函数
+│   │   └── index.js
+│   └── main.js             # JS 主入口, 初始化
+├── pages/                  # 页面特定代码 (HTML/CSS/JS)
+│   ├── countdown/
+│   │   ├── index.html      # 页面的主 HTML
+│   │   ├── index.css
+│   │   └── index.js
+│   ├── grades/
+│   │   ├── index.html
+│   │   ├── index.css
+│   │   └── index.js
+│   ├── home/               # (原 index.html)
+│   │   ├── index.html
+│   │   ├── index.css
+│   │   └── index.js
+│   ├── lesson/
+│   │   ├── index.html
+│   │   ├── index.css
+│   │   └── index.js
+│   ├── profile/
+│   │   ├── index.html
+│   │   ├── index.css
+│   │   └── index.js
+│   ├── schedule/
+│   │   ├── index.html
+│   │   ├── index.css
+│   │   └── index.js
+│   └── settings/
+│       ├── index.html
+│       ├── index.css
+│       └── index.js
+├── public/                 # 无需构建处理的静态资源 (如 favicon.ico)
+├── tests/                  # 自动化测试
+│   ├── unit/
+│   └── integration/
+├── .gitignore
+├── package.json            # (如果使用 npm/yarn)
+├── vite.config.js          # (如果使用 Vite)
+└── README.md
+
+## 详细迁移工作计划
+
+**目标:** 将项目迁移到根目录下的模块化结构，提高组织性和可维护性。
+
+**步骤:**
+
+1.  **备份项目:** 在开始任何修改之前，请务必完整备份当前的 `课堂助手` 文件夹。
+
+2.  **创建新目录结构 (在根目录):**
+    *   在项目根目录 (`d:\Users\linyu\Desktop\课堂助手\`) 创建以下文件夹 (如果尚不存在):
+        *   `assets` (及其子目录 `fonts`, `images`)
+        *   `components` (及其子目录 `Footer`, `Sidebar`, `ScrollAnimation`)
+        *   `css` (及其子目录 `base`, `layout`, `themes`)
+        *   `js` (及其子目录 `config`, `data`, `utils`)
+        *   `pages` (及其子目录 `countdown`, `grades`, `home`, `lesson`, `profile`, `schedule`, `settings`)
+        *   `public` (用于存放无需构建处理的静态文件，如 `favicon.ico`)
+
+3.  **移动文件:**
+    *   **HTML 页面:**
+        *   将根目录 `index.html` 移动到 `pages/home/index.html`。
+        *   将根目录 `countdown.html` 移动到 `pages/countdown/index.html`。
+        *   将根目录 `grades.html` 移动到 `pages/grades/index.html`。
+        *   将根目录 `lesson.html` 移动到 `pages/lesson/index.html`。
+        *   将根目录 `profile.html` 移动到 `pages/profile/index.html`。
+        *   将根目录 `schedule.html` 移动到 `pages/schedule/index.html`。
+        *   将根目录 `settings.html` 移动到 `pages/settings/index.html`。
+    *   **CSS 文件:**
+        *   将 `css/styles.css` 移动到 `css/main.css` (稍后可考虑将其内容拆分到 `base`, `layout` 等)。
+        *   将 `css/themes/themes.css` 移动到 `css/themes/themes.css`。
+        *   将 `css/pages/index.css` 移动到 `pages/home/index.css`。
+        *   将 `css/pages/countdown.css` 移动到 `pages/countdown/index.css`。
+        *   将 `css/pages/grades.css` 移动到 `pages/grades/index.css`。
+        *   将 `css/pages/lesson.css` 移动到 `pages/lesson/index.css`。
+        *   将 `css/pages/profile.css` 移动到 `pages/profile/index.css`。
+        *   将 `css/pages/schedule.css` 移动到 `pages/schedule/index.css`。
+        *   将 `css/pages/settings.css` 移动到 `pages/settings/index.css`。
+        *   将 `css/footer.css` 移动到 `components/Footer/footer.css`。
+        *   将 `css/sidebar.css` 移动到 `components/Sidebar/sidebar.css`。
+        *   将 `css/scrollAnimation.css` 移动到 `components/ScrollAnimation/scrollAnimation.css`。
+        *   **删除旧的 `css/pages/` 目录。**
+    *   **JavaScript 文件:**
+        *   将 `js/main.js` 移动到 `js/main.js` (位置不变，但内容可能需要调整)。
+        *   将 `js/themes.js` 移动到 `js/themes.js` (或 `js/utils/themes.js`)。
+        *   将 `js/data/schedule_data.js` 移动到 `js/data/schedule.js`。
+        *   将 `js/pages/index.js` 移动到 `pages/home/index.js`。
+        *   将 `js/pages/countdown.js` 移动到 `pages/countdown/index.js`。
+        *   将 `js/pages/grades.js` 移动到 `pages/grades/index.js`。
+        *   将 `js/pages/lesson.js` 移动到 `pages/lesson/index.js`。
+        *   将 `js/pages/profile.js` 移动到 `pages/profile/index.js`。
+        *   将 `js/pages/schedule.js` 移动到 `pages/schedule/index.js`。
+        *   将 `js/pages/settings.js` 移动到 `pages/settings/index.js`。
+        *   将 `js/footer.js` 移动到 `components/Footer/footer.js`。
+        *   将 `js/sidebar.js` 移动到 `components/Sidebar/sidebar.js`。
+        *   将 `js/scrollAnimation.js` 移动到 `components/ScrollAnimation/scrollAnimation.js`。
+        *   **删除旧的 `js/pages/` 目录。**
+    *   **HTML 片段:**
+        *   将 `pages/footer.html` 移动到 `components/Footer/footer.html`。
+        *   将 `pages/sidebar.html` 移动到 `components/Sidebar/sidebar.html`。
+        *   **删除旧的根目录下的 `pages/` 目录 (包含 HTML 片段的那个)。**
+    *   **静态资源:**
+        *   检查项目是否有图片、字体等资源，并将它们移动到 `assets/images/` 或 `assets/fonts/`。
+        *   如果存在 `favicon.ico` 或其他无需构建的根目录文件，移动到 `public/`。
+
+4.  **更新文件引用 (关键步骤):**
+    *   **遍历所有 `pages/**/*.html` 文件:**
+        *   修改 `<link rel="stylesheet" href="...">` 的 `href` 属性。例如，在 `pages/schedule/index.html` 中：
+            *   `href="css/styles.css"` -> `href="../../css/main.css"` (相对路径) 或 `/css/main.css` (如果使用构建工具)
+            *   `href="css/pages/schedule.css"` -> `href="./index.css"`
+            *   `href="css/sidebar.css"` -> `href="../../components/Sidebar/sidebar.css"` 或 `/components/Sidebar/sidebar.css`
+        *   修改 `<script src="...">` 的 `src` 属性。例如，在 `pages/schedule/index.html` 中：
+            *   `src="js/main.js"` -> `src="../../js/main.js"` 或 `/js/main.js`
+            *   `src="js/pages/schedule.js"` -> `src="./index.js"`
+            *   `src="js/sidebar.js"` -> `src="../../components/Sidebar/sidebar.js"` 或 `/components/Sidebar/sidebar.js`
+    *   **遍历所有 `js/**/*.js` 和 `components/**/*.js` 文件:**
+        *   修改 `fetch()` 请求的 URL。例如，在 `components/Sidebar/sidebar.js` 中：
+            *   `fetch('./pages/sidebar.html')` -> `fetch('./sidebar.html')` (因为目标 HTML 移到了同一目录下)
+        *   修改 `import` 语句的路径 (如果使用了 ES 模块)。例如，在 `pages/schedule/index.js` 中：
+            *   `import { ... } from "../data/schedule_data.js";` -> `import { ... } from "../../js/data/schedule.js";` (路径可能需要根据实际情况调整)
+    *   **遍历所有 `css/**/*.css` 和 `components/**/*.css` 文件:**
+        *   修改 `@import` 语句和 `url()` 函数中的路径 (例如背景图片)。
+
+5.  **测试:**
+    *   在浏览器中打开每个迁移后的 HTML 页面 (例如 `file:///.../课堂助手/pages/home/index.html`, `file:///.../课堂助手/pages/schedule/index.html` 等)。
+    *   仔细检查每个页面的布局、样式和交互功能是否按预期工作。
+    *   打开浏览器开发者控制台 (通常按 F12)，检查是否有任何 404 (Not Found) 错误或 JavaScript 运行时错误。
+
+6.  **(可选) 引入构建工具 (如 Vite):**
+    *   如果决定使用构建工具，现在是引入的好时机。
+    *   在项目根目录运行 `npm init -y` (如果还没有 `package.json`)。
+    *   运行 `npm install vite --save-dev`。
+    *   创建 `vite.config.js` 配置文件。
+    *   将根目录的 `index.html` (如果创建了) 或 `pages/home/index.html` 指定为入口点。
+    *   修改 HTML 文件中的引用路径为根相对路径 (例如 `/css/main.css`, `/js/main.js`, `/components/Sidebar/sidebar.js`)。Vite 会处理这些路径。
+    *   在 `package.json` 中添加 `scripts`: `"dev": "vite"`, `"build": "vite build"`。
+    *   使用 `npm run dev` 启动开发服务器。
+
+7.  **清理旧文件/目录:**
+    *   在确认所有功能在新结构下正常工作后，可以安全地删除项目根目录下的旧 `css/pages/`, `js/pages/` 文件夹，以及根目录下的原始 `.html` 文件 (`countdown.html`, `grades.html`, etc.) 和旧的 `pages/` 文件夹 (包含 HTML 片段的那个)。
+
+8.  **更新 README.md:**
+    *   编辑 `README.md` 文件，将项目结构部分更新为新的根目录结构。
+
+**注意事项:**
+
+*   **路径:** 更新引用路径时要特别小心相对路径 (`./`, `../`) 的计算。使用构建工具可以简化此过程。
+*   **缓存:** 测试时注意清除浏览器缓存，或使用开发者工具中的“禁用缓存”选项，以确保加载的是最新文件。
+*   **逐步进行:** 可以先迁移一个页面及其相关资源，测试无误后再迁移下一个，降低复杂度。

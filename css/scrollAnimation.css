@@ -1,0 +1,84 @@
+/**
+ * 课堂助手 - 滚动动画样式
+ */
+
+/* 基本的滚动动画元素样式 */
+.animate-on-scroll {
+  opacity: 0;
+  transform: scale(0.8) translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+/* 激活状态 */
+.animate-on-scroll.active {
+  opacity: 1;
+  transform: none;
+}
+
+/* 预设的不同动画效果变体 */
+
+/* 从下向上淡入 */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+/* 从上向下淡入 */
+.fade-down {
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: all 0.6s ease-out;
+}
+
+/* 从左向右淡入 */
+.fade-right {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.6s ease-out;
+}
+
+/* 从右向左淡入 */
+.fade-left {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.6s ease-out;
+}
+
+/* 缩放淡入 */
+.zoom-in {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.6s ease-out;
+}
+
+/* 激活状态对于所有动画效果都一样 */
+.fade-up.active,
+.fade-down.active,
+.fade-right.active,
+.fade-left.active,
+.zoom-in.active {
+  opacity: 1;
+  transform: none;
+}
+
+/* 延迟类，可以组合使用创建序列动画效果 */
+.delay-100 {
+  transition-delay: 0.1s;
+}
+
+.delay-200 {
+  transition-delay: 0.2s;
+}
+
+.delay-300 {
+  transition-delay: 0.3s;
+}
+
+.delay-400 {
+  transition-delay: 0.4s;
+}
+
+.delay-500 {
+  transition-delay: 0.5s;
+}

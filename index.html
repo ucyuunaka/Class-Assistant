@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>课堂助手 - 你的学习管理伙伴</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <!-- 添加页脚样式 -->
+    <link rel="stylesheet" href="css/footer.css" />
+    <!-- 添加滚动动画样式 -->
+    <link rel="stylesheet" href="css/scrollAnimation.css" />
+    <!-- 添加主题样式 -->
+    <link rel="stylesheet" href="css/themes/themes.css" />
+    <!-- 使用图标库 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- 添加 Remix Icon 库，用于侧边栏图标 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <!-- 添加页面特定样式 -->
+    <link rel="stylesheet" href="css/pages/index.css" />
+  </head>
+  <body>
+    <!-- 侧边栏导航 - 只保留容器元素 -->
+    <aside class="sidebar"></aside>
+
+    <!-- 移动端菜单切换按钮 -->
+    <div class="sidebar-toggle">
+      <i class="ri-menu-line"></i>
+    </div>
+
+    <!-- 移动端遮罩层 -->
+    <div class="sidebar-overlay"></div>
+
+    <!-- 主要内容 -->
+    <main class="sidebar-active">
+      <!-- 英雄区域 -->
+      <section class="hero-section">
+        <div class="container">
+          <div class="hero-content">
+            <h1 class="hero-title animate-on-scroll fade-up">
+              让你的学习生活更高效有序
+            </h1>
+            <p class="hero-text animate-on-scroll fade-up delay-100">
+              课堂助手帮你管理课程安排、记录学习进度、提醒考试日期，让你专注于学习本身。
+            </p>
+            <div class="hero-buttons animate-on-scroll fade-up delay-200">
+              <a href="schedule.html" class="btn">查看我的课表</a>
+              <a
+                href="countdown.html"
+                class="btn btn-outline"
+                style="
+                  background-color: rgba(255, 255, 255, 0.2);
+                  border-color: white;
+                  color: white;
+                "
+                >考试倒计时</a
+              >
+            </div>
+          </div>
+          <div class="hero-decoration"></div>
+        </div>
+      </section>
+
+      <!-- 特色功能区域 -->
+      <section class="features-section">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll fade-up">核心功能</h2>
+          <div class="features-grid">
+            <!-- 课表特性 -->
+            <div class="feature-card animate-on-scroll fade-up">
+              <div class="feature-icon">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              <h3 class="feature-title">课程管理</h3>
+              <p class="feature-text">
+                轻松创建和自定义你的课表，可视化地展示每周课程安排，并支持导出和分享功能。
+              </p>
+              <a href="schedule.html" class="feature-link">
+                管理我的课表 <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- 成绩管理特性 -->
+            <div class="feature-card animate-on-scroll fade-up delay-100">
+              <div class="feature-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h3 class="feature-title">成绩管理</h3>
+              <p class="feature-text">
+                记录并分析你的考试和作业成绩，计算GPA和平均分，生成直观的成绩趋势图表。
+              </p>
+              <a href="grades.html" class="feature-link">
+                管理我的成绩 <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- 倒计时特性 -->
+            <div class="feature-card animate-on-scroll fade-up delay-200">
+              <div class="feature-icon">
+                <i class="fas fa-hourglass-half"></i>
+              </div>
+              <h3 class="feature-title">考试倒计时</h3>
+              <p class="feature-text">
+                设置重要的考试日期，系统会自动计算剩余时间并提醒你，确保你的备考计划有条不紊。
+              </p>
+              <a href="countdown.html" class="feature-link">
+                查看考试倒计时 <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- 个性化特性 -->
+            <div class="feature-card animate-on-scroll fade-up">
+              <div class="feature-icon">
+                <i class="fas fa-user-graduate"></i>
+              </div>
+              <h3 class="feature-title">个人资料</h3>
+              <p class="feature-text">
+                定制你的个人学习资料，包括专业、课程喜好等信息，让系统为你提供更个性化的服务。
+              </p>
+              <a href="profile.html" class="feature-link">
+                编辑个人资料 <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+            <!-- 设置特性 -->
+            <div class="feature-card animate-on-scroll fade-up delay-100">
+              <div class="feature-icon">
+                <i class="fas fa-cog"></i>
+              </div>
+              <h3 class="feature-title">偏好设置</h3>
+              <p class="feature-text">
+                根据个人喜好调整界面主题、语言选择等，让使用体验更符合你的习惯。
+              </p>
+              <a href="settings.html" class="feature-link">
+                调整设置 <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- 课评速记特性 -->
+            <div class="feature-card animate-on-scroll fade-up delay-200">
+              <div class="feature-icon">
+                <i class="fas fa-comment-dots"></i>
+              </div>
+              <h3 class="feature-title">课评速记</h3>
+              <p class="feature-text">
+                用简短评价和表情记录你对课程的感受，轻松分享你的课堂体验和反馈。
+              </p>
+              <a href="lesson.html" class="feature-link">
+                记录课程评价 <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 统计数据 -->
+      <section class="stats-section">
+        <div class="container">
+          <div class="stats-grid">
+            <div class="stat-item animate-on-scroll zoom-in">
+              <div class="stat-number">3000+</div>
+              <div class="stat-label">活跃用户</div>
+            </div>
+            <div class="stat-item animate-on-scroll zoom-in delay-100">
+              <div class="stat-number">12,000+</div>
+              <div class="stat-label">课程管理</div>
+            </div>
+            <div class="stat-item animate-on-scroll zoom-in delay-200">
+              <div class="stat-number">98%</div>
+              <div class="stat-label">用户满意度</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 呼吁行动区域 -->
+      <section class="cta-section">
+        <div class="container">
+          <h2 class="cta-title animate-on-scroll fade-up">开始使用课堂助手</h2>
+          <p class="cta-text animate-on-scroll fade-up delay-100">
+            无需注册，立即开始管理你的学习，只需选择你想使用的功能，即可体验课堂助手带来的便利。
+          </p>
+          <a
+            href="schedule.html"
+            class="btn animate-on-scroll fade-up delay-200"
+            >开始使用</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <!-- 页脚 - 简化为只保留容器 -->
+    <footer class="footer"></footer>
+    <script src="js/main.js"></script>
+    <script src="js/sidebar.js"></script>
+    <!-- 添加页脚脚本 -->
+    <script src="js/footer.js"></script>
+    <!-- 添加滚动动画脚本 -->
+    <script src="js/scrollAnimation.js"></script>
+    <!-- 添加主题管理脚本 -->
+    <script src="js/themes.js"></script>
+    <!-- 添加首页特定脚本 -->
+    <script src="js/pages/index.js"></script>
+  </body>
+</html>

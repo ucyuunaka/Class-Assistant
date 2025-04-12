@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>设置 - 课堂助手</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <!-- 添加页脚样式 -->
+    <link rel="stylesheet" href="css/footer.css" />
+    <!-- 添加滚动动画样式 -->
+    <link rel="stylesheet" href="css/scrollAnimation.css" />
+    <!-- 添加主题样式 -->
+    <link rel="stylesheet" href="css/themes/themes.css" />
+    <!-- 使用图标库 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- 添加 Remix Icon 库，用于侧边栏图标 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <!-- 添加页面特定样式 -->
+    <link rel="stylesheet" href="css/pages/settings.css" />
+  </head>
+  <body>
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+      <!-- 按钮组 -->
+      <div class="sidebar-btn">
+        <div class="sidebar-btn-item"></div>
+        <div class="sidebar-btn-item"></div>
+        <div class="sidebar-btn-item"></div>
+      </div>
+
+      <!-- 用户资料 -->
+      <div class="sidebar-profile">
+        <div class="sidebar-profile-img">
+          <img
+            src="https://randomuser.me/api/portraits/men/32.jpg"
+            alt="用户头像"
+          />
+        </div>
+        <div class="sidebar-profile-text">
+          <p>欢迎使用</p>
+          <h2>课堂助手</h2>
+        </div>
+      </div>
+
+      <div class="sidebar-line"></div>
+
+      <!-- 主菜单 -->
+      <div class="sidebar-title">
+        <p>主菜单</p>
+      </div>
+
+      <div class="sidebar-menu">
+        <div class="sidebar-item" data-href="index.html">
+          <div class="sidebar-light"></div>
+          <div class="sidebar-icon-left"><i class="ri-home-line"></i></div>
+          <div class="sidebar-text">首页</div>
+          <div class="sidebar-icon-right">
+            <i class="ri-dashboard-line"></i>
+          </div>
+        </div>
+
+        <div class="sidebar-item" data-href="schedule.html">
+          <div class="sidebar-light"></div>
+          <div class="sidebar-icon-left"><i class="ri-calendar-line"></i></div>
+          <div class="sidebar-text">课表</div>
+          <div class="sidebar-icon-right">
+            <i class="ri-arrow-right-s-line"></i>
+          </div>
+        </div>
+
+        <div class="sidebar-item" data-href="grades.html">
+          <div class="sidebar-light"></div>
+          <div class="sidebar-icon-left"><i class="ri-bar-chart-line"></i></div>
+          <div class="sidebar-text">成绩管理</div>
+          <div class="sidebar-icon-right">
+            <i class="ri-arrow-right-s-line"></i>
+          </div>
+        </div>
+
+        <div class="sidebar-item" data-href="countdown.html">
+          <div class="sidebar-light"></div>
+          <div class="sidebar-icon-left"><i class="ri-time-line"></i></div>
+          <div class="sidebar-text">考试倒计时</div>
+          <div class="sidebar-icon-right">
+            <i class="ri-arrow-right-s-line"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-line"></div>
+
+      <!-- 个人中心 -->
+      <div class="sidebar-title">
+        <p>个人中心</p>
+      </div>
+
+      <div class="sidebar-menu">
+        <div class="sidebar-item" data-href="profile.html">
+          <div class="sidebar-light"></div>
+          <div class="sidebar-icon-left"><i class="ri-user-line"></i></div>
+          <div class="sidebar-text">个人资料</div>
+          <div class="sidebar-icon-right">
+            <i class="ri-arrow-right-s-line"></i>
+          </div>
+        </div>
+
+        <div class="sidebar-item active" data-href="settings.html">
+          <div class="sidebar-light"></div>
+          <div class="sidebar-icon-left">
+            <i class="ri-settings-3-line"></i>
+          </div>
+          <div class="sidebar-text">设置</div>
+          <div class="sidebar-icon-right">
+            <i class="ri-settings-3-line"></i>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 移动端菜单切换按钮 -->
+    <div class="sidebar-toggle">
+      <i class="ri-menu-line"></i>
+    </div>
+
+    <!-- 移动端遮罩层 -->
+    <div class="sidebar-overlay"></div>
+
+    <!-- 主内容区 -->
+    <div class="container py-4 sidebar-active">
+      <h1 class="mb-4 animate-on-scroll fade-up">设置</h1>
+
+      <div class="settings-container">
+        <!-- 显示设置 -->
+        <div class="settings-card animate-on-scroll fade-up">
+          <div class="settings-section">
+            <div class="settings-header">
+              <i class="fas fa-palette"></i>
+              <h2 class="settings-title">显示设置</h2>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-label">
+                <div class="settings-name">主题颜色</div>
+                <div class="settings-description">选择您喜欢的配色主题</div>
+              </div>
+              <div class="settings-content">
+                <div class="theme-switcher" id="theme-switcher">
+                  <!-- 经典蓝粉渐变 -->
+                  <div
+                    class="theme-ball classic-blue-pink-ball"
+                    data-theme="classic-blue-pink"
+                  >
+                    <div class="tooltip">
+                      经典蓝粉<br />
+                      渐变: #91defe → #f9bccc
+                    </div>
+                  </div>
+
+                  <!-- 薄荷紫渐变 -->
+                  <div
+                    class="theme-ball mint-purple-ball"
+                    data-theme="mint-purple"
+                  >
+                    <div class="tooltip">
+                      薄荷紫<br />
+                      渐变: #a0e8e0 → #d4bbfc
+                    </div>
+                  </div>
+
+                  <!-- 蜜桃珊瑚渐变 -->
+                  <div
+                    class="theme-ball peach-coral-ball"
+                    data-theme="peach-coral"
+                  >
+                    <div class="tooltip">
+                      蜜桃珊瑚<br />
+                      渐变: #ffd7e8 → #ffb7c5
+                    </div>
+                  </div>
+
+                  <!-- 绿蓝渐变 -->
+                  <div
+                    class="theme-ball green-blue-ball"
+                    data-theme="green-blue"
+                  >
+                    <div class="tooltip">
+                      绿蓝渐变<br />
+                      渐变: #d2e8c8 → #b5d8ff
+                    </div>
+                  </div>
+
+                  <!-- 薰衣草奶油渐变 -->
+                  <div
+                    class="theme-ball lavender-cream-ball"
+                    data-theme="lavender-cream"
+                  >
+                    <div class="tooltip">
+                      薰衣草奶油<br />
+                      渐变: #e6c6ff → #fff2d7
+                    </div>
+                  </div>
+
+                  <!-- 蓝紫渐变 -->
+                  <div
+                    class="theme-ball blue-violet-ball"
+                    data-theme="blue-violet"
+                  >
+                    <div class="tooltip">
+                      蓝紫渐变<br />
+                      渐变: #b5d8ff → #d4bbfc
+                    </div>
+                  </div>
+
+                  <!-- 珊瑚薄荷渐变 -->
+                  <div
+                    class="theme-ball coral-mint-ball"
+                    data-theme="coral-mint"
+                  >
+                    <div class="tooltip">
+                      珊瑚薄荷<br />
+                      渐变: #ffb7c5 → #a0e8e0
+                    </div>
+                  </div>
+
+                  <!-- 夕阳渐变 -->
+                  <div class="theme-ball sunset-ball" data-theme="sunset">
+                    <div class="tooltip">
+                      夕阳渐变<br />
+                      渐变: #f9bccc → #fff2d7
+                    </div>
+                  </div>
+
+                  <!-- 深色模式 -->
+                  <div class="theme-ball dark-ball" data-theme="dark">
+                    <div class="tooltip">
+                      深色模式<br />
+                      渐变: #4a7b9b → #7a4a6b
+                    </div>
+                  </div>
+                </div>
+                <div class="current-theme" id="current-theme">
+                  当前主题: 经典蓝粉
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-label">
+                <div class="settings-name">字体大小</div>
+                <div class="settings-description">调整界面文字大小</div>
+              </div>
+              <div class="font-size-controls">
+                <button class="btn btn-outline" id="decrease-font">A-</button>
+                <button class="btn" id="reset-font">重置</button>
+                <button class="btn btn-outline" id="increase-font">A+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 语言设置 -->
+        <div class="settings-card animate-on-scroll fade-up delay-100">
+          <div class="settings-section">
+            <div class="settings-header">
+              <i class="fas fa-language"></i>
+              <h2 class="settings-title">语言设置</h2>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-label">
+                <div class="settings-name">界面语言</div>
+                <div class="settings-description">选择您偏好的语言</div>
+              </div>
+              <div class="language-selector">
+                <div class="language-option active" data-lang="zh">
+                  <img
+                    src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/cn.svg"
+                    alt="中文"
+                  />
+                  中文
+                </div>
+                <div class="language-option" data-lang="en">
+                  <img
+                    src="https://cdn.jsdelivr.net/npm/flag-icon-css@3.5.0/flags/4x3/us.svg"
+                    alt="English"
+                  />
+                  English
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 通知设置 -->
+        <div class="settings-card animate-on-scroll fade-up delay-200">
+          <div class="settings-section">
+            <div class="settings-header">
+              <i class="fas fa-bell"></i>
+              <h2 class="settings-title">通知设置</h2>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-label">
+                <div class="settings-name">课程提醒</div>
+                <div class="settings-description">课程开始前提醒</div>
+              </div>
+              <label class="theme-switch">
+                <input type="checkbox" id="course-notification" checked />
+                <span class="theme-slider"></span>
+              </label>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-label">
+                <div class="settings-name">考试提醒</div>
+                <div class="settings-description">考试日期提醒</div>
+              </div>
+              <label class="theme-switch">
+                <input type="checkbox" id="exam-notification" checked />
+                <span class="theme-slider"></span>
+              </label>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-label">
+                <div class="settings-name">提前提醒时间</div>
+                <div class="settings-description">选择提醒时间</div>
+              </div>
+              <select class="form-control" id="reminder-time">
+                <option value="15">15分钟前</option>
+                <option value="30" selected>30分钟前</option>
+                <option value="60">1小时前</option>
+                <option value="120">2小时前</option>
+                <option value="1440">1天前</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 数据管理 -->
+        <div class="settings-card animate-on-scroll fade-up delay-300">
+          <div class="settings-section">
+            <div class="settings-header">
+              <i class="fas fa-database"></i>
+              <h2 class="settings-title">数据管理</h2>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-label">
+                <div class="settings-name">备份数据</div>
+                <div class="settings-description">导出所有课表和考试数据</div>
+              </div>
+              <button class="btn btn-outline" id="backup-data">
+                <i class="fas fa-download"></i> 备份
+              </button>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-label">
+                <div class="settings-name">恢复数据</div>
+                <div class="settings-description">从备份文件导入数据</div>
+              </div>
+              <div>
+                <input
+                  type="file"
+                  id="restore-input"
+                  style="display: none"
+                  accept=".json"
+                />
+                <label for="restore-input" class="btn btn-outline">
+                  <i class="fas fa-upload"></i> 恢复
+                </label>
+              </div>
+            </div>
+
+            <div class="data-management">
+              <div class="settings-name mb-2">清除数据</div>
+              <div class="settings-description mb-3">
+                清除应用中存储的部分或全部数据
+              </div>
+              <div class="data-action-buttons">
+                <button class="btn btn-warning" id="clear-schedule-data">
+                  <i class="fas fa-calendar-times"></i> 清除课表数据
+                </button>
+                <button class="btn btn-warning" id="clear-exams-data">
+                  <i class="fas fa-calendar-minus"></i> 清除考试数据
+                </button>
+                <button class="btn btn-danger" id="clear-all-data">
+                  <i class="fas fa-trash-alt"></i> 清除全部数据
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 关于 -->
+        <div class="settings-card animate-on-scroll fade-up delay-400">
+          <div class="settings-section">
+            <div class="settings-header">
+              <i class="fas fa-info-circle"></i>
+              <h2 class="settings-title">关于</h2>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-label">
+                <div class="settings-name">版本</div>
+                <div class="settings-description">课堂助手 1.0.0</div>
+              </div>
+              <button class="btn btn-outline" id="check-updates">
+                检查更新
+              </button>
+            </div>
+
+            <div class="settings-row">
+              <div class="settings-label">
+                <div class="settings-name">开发者</div>
+                <div class="settings-description">课堂助手开发团队</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 确认弹窗 -->
+    <div class="modal" id="confirm-modal">
+      <div class="modal-content">
+        <div class="modal-close" id="close-confirm-modal">×</div>
+        <h2 class="mb-3" id="confirm-title">确认操作</h2>
+        <p id="confirm-message">您确定要执行此操作吗？此操作无法撤销。</p>
+        <div class="modal-footer">
+          <button class="btn btn-outline" id="cancel-action">取消</button>
+          <button class="btn btn-danger" id="confirm-action">确认</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 页脚 - 简化为只保留容器 -->
+    <footer class="footer"></footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/sidebar.js"></script>
+    <!-- 添加页脚脚本 -->
+    <script src="js/footer.js"></script>
+    <!-- 添加滚动动画脚本 -->
+    <script src="js/scrollAnimation.js"></script>
+    <!-- 添加主题管理脚本 -->
+    <script src="js/themes.js"></script>
+    <!-- 添加页面特定脚本 -->
+    <script src="js/pages/settings.js"></script>
+  </body>
+</html>

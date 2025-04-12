@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>小球主题切换器</title>
+    <style>
+      :root {
+        /* 默认白天模式 */
+        --bg-color: #f5f7fa;
+        --text-color: #333;
+        --primary: #4a6bdf;
+      }
+
+      /* 炫彩黑模式 */
+      [data-theme="colorful-dark"] {
+        --bg-color: #121212;
+        --text-color: #e0e0e0;
+        --primary: #bb86fc;
+      }
+
+      /* 极简黑模式 */
+      [data-theme="minimal-dark"] {
+        --bg-color: #000;
+        --text-color: #fff;
+        --primary: #fff;
+      }
+
+      /* 日出渐变模式 */
+      [data-theme="sunrise-gradient"] {
+        --bg-color: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        --text-color: #5a3d5a;
+        --primary: #ff6b6b;
+      }
+
+      /* 海洋渐变模式 */
+      [data-theme="ocean-gradient"] {
+        --bg-color: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --text-color: #003366;
+        --primary: #0077cc;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: var(--bg-color);
+        color: var(--text-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      h1 {
+        margin-bottom: 3rem;
+        color: var(--primary);
+        text-align: center;
+        font-weight: 300;
+        font-size: 2.5rem;
+      }
+
+      .theme-switcher {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 800px;
+      }
+
+      .theme-ball {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .theme-ball:hover {
+        transform: scale(1.1) translateY(-10px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      /* 增强的选中状态效果 */
+      .theme-ball.active {
+        transform: scale(1.1);
+        animation: pulse 2s infinite;
+        box-shadow: 0 0 0 4px var(--primary),
+          0 0 20px 8px color-mix(in srgb, var(--primary) 30%, transparent),
+          0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 4px var(--primary),
+            0 0 20px 8px color-mix(in srgb, var(--primary) 30%, transparent),
+            0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        50% {
+          box-shadow: 0 0 0 6px var(--primary),
+            0 0 30px 12px color-mix(in srgb, var(--primary) 40%, transparent),
+            0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        100% {
+          box-shadow: 0 0 0 4px var(--primary),
+            0 0 20px 8px color-mix(in srgb, var(--primary) 30%, transparent),
+            0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+      }
+
+      .tooltip {
+        position: absolute;
+        bottom: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        opacity: 0;
+        pointer-events: none;
+        white-space: nowrap;
+        transition: opacity 0.2s;
+      }
+
+      .theme-ball:hover .tooltip {
+        opacity: 1;
+      }
+
+      .current-theme {
+        margin-top: 3rem;
+        padding: 1rem 2rem;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border: 2px solid var(--primary);
+      }
+
+      /* 主题小球颜色 */
+      .light-ball {
+        background: #f5f7fa;
+      }
+      .colorful-dark-ball {
+        background: #1e1e1e;
+      }
+      .minimal-dark-ball {
+        background: #000;
+      }
+      .sunrise-ball {
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      }
+      .ocean-ball {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>选择您的主题</h1>
+
+    <div class="theme-switcher">
+      <!-- 白天模式 -->
+      <div class="theme-ball light-ball active" data-theme="light">
+        <div class="tooltip">
+          白天模式<br />
+          背景: #f5f7fa<br />
+          主色: #4a6bdf
+        </div>
+      </div>
+
+      <!-- 炫彩黑模式 -->
+      <div class="theme-ball colorful-dark-ball" data-theme="colorful-dark">
+        <div class="tooltip">
+          炫彩黑模式<br />
+          背景: #121212<br />
+          主色: #bb86fc
+        </div>
+      </div>
+
+      <!-- 极简黑模式 -->
+      <div class="theme-ball minimal-dark-ball" data-theme="minimal-dark">
+        <div class="tooltip">
+          极简黑模式<br />
+          背景: #000000<br />
+          主色: #ffffff
+        </div>
+      </div>
+
+      <!-- 日出渐变模式 -->
+      <div class="theme-ball sunrise-ball" data-theme="sunrise-gradient">
+        <div class="tooltip">
+          日出渐变<br />
+          渐变: #ff9a9e → #fad0c4<br />
+          主色: #ff6b6b
+        </div>
+      </div>
+
+      <!-- 海洋渐变模式 -->
+      <div class="theme-ball ocean-ball" data-theme="ocean-gradient">
+        <div class="tooltip">
+          海洋渐变<br />
+          渐变: #4facfe → #00f2fe<br />
+          主色: #0077cc
+        </div>
+      </div>
+    </div>
+
+    <div class="current-theme">当前主题: 白天模式</div>
+
+    <script>
+      const themeBalls = document.querySelectorAll(".theme-ball");
+      const html = document.documentElement;
+      const currentThemeDisplay = document.querySelector(".current-theme");
+
+      // 从本地存储获取保存的主题
+      const savedTheme = localStorage.getItem("theme") || "light";
+      html.setAttribute("data-theme", savedTheme);
+
+      // 更新当前选中的小球和显示文本
+      function updateActiveBall(theme) {
+        themeBalls.forEach((ball) => {
+          if (ball.dataset.theme === theme) {
+            ball.classList.add("active");
+
+            // 更新显示文本
+            const themeNames = {
+              light: "白天模式",
+              "colorful-dark": "炫彩黑模式",
+              "minimal-dark": "极简黑模式",
+              "sunrise-gradient": "日出渐变",
+              "ocean-gradient": "海洋渐变",
+            };
+            currentThemeDisplay.textContent = `当前主题: ${themeNames[theme]}`;
+          } else {
+            ball.classList.remove("active");
+          }
+        });
+      }
+
+      updateActiveBall(savedTheme);
+
+      // 特殊处理渐变背景
+      function applyBackground(theme) {
+        if (theme.includes("gradient")) {
+          document.body.style.background =
+            theme === "sunrise-gradient"
+              ? "linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)"
+              : "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)";
+        } else {
+          document.body.style.background = "";
+        }
+      }
+
+      applyBackground(savedTheme);
+
+      // 点击切换主题
+      themeBalls.forEach((ball) => {
+        ball.addEventListener("click", () => {
+          const theme = ball.dataset.theme;
+          html.setAttribute("data-theme", theme);
+          localStorage.setItem("theme", theme);
+
+          updateActiveBall(theme);
+          applyBackground(theme);
+        });
+      });
+    </script>
+  </body>
+</html>

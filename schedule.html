@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>课表 - 课堂助手</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <!-- 添加页脚样式 -->
+    <link rel="stylesheet" href="css/footer.css" />
+    <!-- 添加滚动动画样式 -->
+    <link rel="stylesheet" href="css/scrollAnimation.css" />
+    <!-- 添加主题样式 -->
+    <link rel="stylesheet" href="css/themes/themes.css" />
+    <!-- 使用图标库 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- 添加 Remix Icon 库，用于侧边栏图标 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <!-- 添加页面特定样式 -->
+    <link rel="stylesheet" href="css/pages/schedule.css" />
+  </head>
+  <body>
+    <!-- 侧边栏导航 - 只保留容器元素 -->
+    <aside class="sidebar"></aside>
+
+    <!-- 移动端菜单切换按钮 -->
+    <div class="sidebar-toggle">
+      <i class="ri-menu-line"></i>
+    </div>
+
+    <!-- 移动端遮罩层 -->
+    <div class="sidebar-overlay"></div>
+    <!-- 主要内容 -->
+    <div class="container py-4 sidebar-active">
+      <!-- 页面标题和描述 -->
+      <div class="page-header">
+        <div class="container">
+          <h1 class="mb-2 animate-on-scroll fade-up">我的课程表</h1>
+          <p class="text-secondary animate-on-scroll fade-up delay-100">
+            管理和安排你的课程，清晰掌握每周学习时间
+          </p>
+        </div>
+      </div>
+
+      <div class="schedule-container">
+        <!-- 课表控制区域 -->
+        <div class="schedule-controls animate-on-scroll fade-up">
+          <div class="view-toggle">
+            <button class="active" id="week-view">周视图</button>
+            <button id="list-view">列表视图</button>
+          </div>
+          <div class="schedule-actions">
+            <button class="btn" id="edit-schedule-btn">
+              <i class="fas fa-edit"></i> 编辑课表
+            </button>
+
+            <div class="import-export">
+              <div class="export-dropdown">
+                <button class="btn btn-outline">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <div class="export-dropdown-content">
+                  <a href="#" id="export-ical">
+                    <i class="far fa-calendar"></i> 导出为iCal
+                  </a>
+                  <a href="#" id="export-csv">
+                    <i class="far fa-file-excel"></i> 导出为CSV
+                  </a>
+                  <a href="#" id="import-courses">
+                    <i class="fas fa-file-import"></i> 导入课程
+                  </a>
+                  <a href="#" id="print-schedule">
+                    <i class="fas fa-print"></i> 打印课表
+                  </a>
+                  <a href="#" id="clear-schedule" class="text-danger">
+                    <i class="fas fa-trash-alt"></i> 清空课表
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 周视图课表 -->
+        <div
+          id="week-view-container"
+          class="animate-on-scroll fade-up delay-100"
+        >
+          <div class="timetable">
+            <div class="timetable-grid" id="timetable-grid">
+              <!-- 表头将由JavaScript动态生成 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 列表视图 -->
+        <div
+          id="list-view-container"
+          style="display: none"
+          class="animate-on-scroll fade-up delay-100"
+          id="list-container"
+        >
+          <!-- 列表视图内容将由JavaScript动态生成 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 添加课程弹窗 -->
+    <div class="modal" id="add-course-modal">
+      <div class="modal-content">
+        <div class="modal-close" id="close-course-modal">×</div>
+        <h2 class="mb-3">添加新课程</h2>
+        <form id="add-course-form">
+          <div class="form-group">
+            <label class="form-label" for="course-name">课程名称</label>
+            <input
+              type="text"
+              class="form-control"
+              id="course-name"
+              placeholder="例如：高等数学"
+              required
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label class="form-label" for="course-teacher">授课教师</label>
+              <input
+                type="text"
+                class="form-control"
+                id="course-teacher"
+                placeholder="例如：张教授"
+              />
+            </div>
+            <div class="form-group col-6">
+              <label class="form-label" for="course-location">上课地点</label>
+              <input
+                type="text"
+                class="form-control"
+                id="course-location"
+                placeholder="例如：理学楼101"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label class="form-label" for="course-day">星期几</label>
+              <select class="form-control" id="course-day" required>
+                <option value="">请选择</option>
+                <option value="1">星期一</option>
+                <option value="2">星期二</option>
+                <option value="3">星期三</option>
+                <option value="4">星期四</option>
+                <option value="5">星期五</option>
+                <option value="6">星期六</option>
+                <option value="7">星期日</option>
+              </select>
+            </div>
+            <div class="form-group col-6">
+              <label class="form-label" for="course-time">课程节数</label>
+              <select class="form-control" id="course-time" required>
+                <option value="">请选择</option>
+                <option value="1">第1节 (08:00-08:45)</option>
+                <option value="2">第2节 (08:55-09:40)</option>
+                <option value="3">第3节 (10:10-10:55)</option>
+                <option value="4">第4节 (11:05-11:50)</option>
+                <option value="5">第5节 (14:20-15:05)</option>
+                <option value="6">第6节 (15:15-16:00)</option>
+                <option value="7">第7节 (16:30-17:15)</option>
+                <option value="8">第8节 (17:25-18:10)</option>
+                <option value="9">第9节 (19:00-19:45)</option>
+                <option value="10">第10节 (19:55-20:40)</option>
+                <option value="11">第11节 (20:50-21:35)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">课程颜色</label>
+            <div class="color-options">
+              <div
+                class="color-option selected"
+                style="background-color: #e1f1ff"
+                data-class="course-math"
+              ></div>
+              <div
+                class="color-option"
+                style="background-color: #feedc9"
+                data-class="course-physics"
+              ></div>
+              <div
+                class="color-option"
+                style="background-color: #d7f8e8"
+                data-class="course-chemistry"
+              ></div>
+              <div
+                class="color-option"
+                style="background-color: #ffe2ec"
+                data-class="course-biology"
+              ></div>
+              <div
+                class="color-option"
+                style="background-color: #e6e6ff"
+                data-class="course-literature"
+              ></div>
+              <div
+                class="color-option"
+                style="background-color: #f2e8ff"
+                data-class="course-history"
+              ></div>
+              <div
+                class="color-option"
+                style="background-color: #e0f7fa"
+                data-class="course-english"
+              ></div>
+              <!-- 添加新的颜色选项 -->
+              <div
+                class="color-option"
+                style="background-color: #e6f7ff"
+                data-class="course-computer"
+              ></div>
+              <div
+                class="color-option"
+                style="background-color: #fff1f0"
+                data-class="course-art"
+              ></div>
+              <div
+                class="color-option"
+                style="background-color: #f9f0ff"
+                data-class="course-music"
+              ></div>
+              <div
+                class="color-option"
+                style="background-color: #f0f5ff"
+                data-class="course-sports"
+              ></div>
+              <div
+                class="color-option"
+                style="background-color: #fff0f6"
+                data-class="course-politics"
+              ></div>
+              <div
+                class="color-option"
+                style="background-color: #f4ffb8"
+                data-class="course-geography"
+              ></div>
+            </div>
+            <input type="hidden" id="course-color" value="course-math" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="course-notes">备注</label>
+            <textarea
+              class="form-control"
+              id="course-notes"
+              placeholder="添加其他信息（可选）"
+            ></textarea>
+          </div>
+
+          <div class="text-center mt-4">
+            <button type="submit" class="btn">保存课程</button>
+            <button type="button" class="btn btn-outline" id="cancel-course">
+              取消
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 新增删除确认弹窗 -->
+    <div class="modal" id="delete-confirm-modal">
+      <div class="modal-content">
+        <div class="modal-close" id="close-delete-modal">×</div>
+        <h2 class="mb-3">确认删除课程</h2>
+        <p>确定要删除此课程吗？此操作无法撤销。</p>
+        <div class="text-center mt-4">
+          <button type="button" class="btn btn-danger" id="confirm-delete">
+            确认删除
+          </button>
+          <button type="button" class="btn btn-outline" id="cancel-delete">
+            取消
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 页脚 - 简化为只保留容器 -->
+    <footer class="footer"></footer>
+    <script src="js/main.js"></script>
+    <script src="js/sidebar.js"></script>
+    <!-- 添加页脚脚本 -->
+    <script src="js/footer.js"></script>
+    <!-- 添加滚动动画脚本 -->
+    <script src="js/scrollAnimation.js"></script>
+    <!-- 添加主题管理脚本 -->
+    <script src="js/themes.js"></script>
+    <!-- 添加课表模块脚本 -->
+    <script type="module" src="js/pages/schedule.js"></script>
+  </body>
+</html>
