@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>按钮组件一览 - 课堂助手</title>
+    <!-- 引入基础样式 -->
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <!-- 引入 Font Awesome 图标库 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- 引入按钮组件样式 -->
+    <link rel="stylesheet" href="../buttons/buttons.css" />
+    <!-- 引入模态弹窗组件样式（用于确认按钮功能） -->
+    <link rel="stylesheet" href="../modals/modals.css" />
+    <style>
+      body {
+        padding: 1.5rem 0;
+      }
+
+      .test-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1.5rem;
+        background-color: var(--background-color);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+      }
+
+      h1 {
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+        text-align: center;
+      }
+
+      .test-section {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .test-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+
+      .test-section h2 {
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .test-section h2 .class-name {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        margin-left: 0.5rem;
+        font-weight: normal;
+        font-family: monospace;
+      }
+
+      .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+        margin: 0.7rem 0;
+        align-items: center;
+      }
+
+      .grid-display {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+
+      .button-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        background-color: var(--background-secondary);
+        border-radius: var(--border-radius-sm);
+      }
+
+      .button-card .btn-label {
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+      }
+      .theme-toggle {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.75rem;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        box-shadow: var(--shadow-md);
+        border: none;
+        cursor: pointer;
+        font-size: 1.2rem;
+        z-index: 99;
+      }
+
+      /* 涟漪效果样式（配合JS使用） */
+      .btn-ripple {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-ripple-effect {
+        position: absolute;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.3);
+        transform: scale(0);
+        animation: ripple 0.6s linear;
+        pointer-events: none;
+      }
+
+      @keyframes ripple {
+        to {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-container">
+      <h1>按钮组件一览</h1>
+
+      <div class="test-section">
+        <h2>基础按钮 <span class="class-name">.btn</span></h2>
+        <div class="button-group">
+          <button class="btn btn-primary">主要按钮</button>
+          <button class="btn btn-secondary">次要按钮</button>
+          <button class="btn btn-success">成功按钮</button>
+          <button class="btn btn-warning">警告按钮</button>
+          <button class="btn btn-danger">危险按钮</button>
+          <a href="#" class="btn btn-primary">链接按钮</a>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>轮廓按钮 <span class="class-name">.btn-outline-*</span></h2>
+        <div class="button-group">
+          <button class="btn btn-outline-primary">主要轮廓</button>
+          <button class="btn btn-outline-secondary">次要轮廓</button>
+          <button class="btn btn-outline-success">成功轮廓</button>
+          <button class="btn btn-outline-warning">警告轮廓</button>
+          <button class="btn btn-outline-danger">危险轮廓</button>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>按钮尺寸</h2>
+        <div class="grid-display">
+          <div class="button-card">
+            <button class="btn btn-primary btn-sm">小型按钮</button>
+            <div class="btn-label">.btn-sm</div>
+          </div>
+          <div class="button-card">
+            <button class="btn btn-primary">默认按钮</button>
+            <div class="btn-label">.btn</div>
+          </div>
+          <div class="button-card">
+            <button class="btn btn-primary btn-lg">大型按钮</button>
+            <div class="btn-label">.btn-lg</div>
+          </div>
+          <div class="button-card">
+            <button class="btn btn-primary btn-xl">超大按钮</button>
+            <div class="btn-label">.btn-xl</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>图标按钮</h2>
+        <div class="grid-display">
+          <div class="button-card">
+            <button class="btn btn-primary btn-icon">
+              <i class="fas fa-plus"></i>
+            </button>
+            <div class="btn-label">.btn-icon</div>
+          </div>
+          <div class="button-card">
+            <button class="btn btn-primary btn-with-icon">
+              <i class="fas fa-plus"></i> 新建
+            </button>
+            <div class="btn-label">.btn-with-icon</div>
+          </div>
+          <div class="button-card">
+            <button class="btn btn-primary btn-with-icon icon-right">
+              下一步 <i class="fas fa-arrow-right"></i>
+            </button>
+            <div class="btn-label">.btn-with-icon.icon-right</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>按钮状态</h2>
+        <div class="grid-display">
+          <div class="button-card">
+            <button class="btn btn-primary" disabled>禁用按钮</button>
+            <div class="btn-label">disabled</div>
+          </div>
+          <div class="button-card">
+            <button
+              class="btn btn-primary"
+              id="loading-demo-1"
+              data-loading-text="加载中..."
+              data-demo
+            >
+              点击加载
+            </button>
+            <div class="btn-label">data-loading-text</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>按钮组与布局</h2>
+        <div class="grid-display">
+          <div class="button-card" style="grid-column: span 2">
+            <div class="btn-group">
+              <button class="btn btn-primary">左侧按钮</button>
+              <button class="btn btn-primary">中间按钮</button>
+              <button class="btn btn-primary">右侧按钮</button>
+            </div>
+            <div class="btn-label">.btn-group</div>
+          </div>
+          <div class="button-card" style="grid-column: span 2">
+            <div class="btn-group-vertical" style="width: 120px">
+              <button class="btn btn-outline-primary">顶部按钮</button>
+              <button class="btn btn-outline-primary">中间按钮</button>
+              <button class="btn btn-outline-primary">底部按钮</button>
+            </div>
+            <div class="btn-label">.btn-group-vertical</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>特殊效果与功能按钮</h2>
+        <div class="grid-display">
+          <div class="button-card">
+            <button class="btn btn-primary btn-ripple">涟漪效果</button>
+            <div class="btn-label">.btn-ripple</div>
+          </div>
+          <div class="button-card">
+            <button
+              class="btn btn-danger"
+              id="confirm-button-1"
+              data-confirm="此操作会删除数据，确定要继续吗？"
+            >
+              删除数据
+            </button>
+            <div class="btn-label">data-confirm</div>
+          </div>
+          <div class="button-card">
+            <button class="btn btn-primary btn-block">块级按钮</button>
+            <div class="btn-label">.btn-block</div>
+          </div>
+          <div class="button-card">
+            <button class="btn btn-primary btn-badge" data-badge="5">
+              未读消息
+            </button>
+            <div class="btn-label">.btn-badge</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2>高级功能按钮</h2>
+        <div class="grid-display">
+          <div class="button-card">
+            <button
+              class="btn btn-toggle"
+              data-on-text="已开启"
+              data-off-text="已关闭"
+            ></button>
+            <div class="btn-label">.btn-toggle</div>
+          </div>
+          <div class="button-card">
+            <button
+              class="btn"
+              data-auto-color="true"
+              style="background-color: #3498db"
+            >
+              自适应文本颜色
+            </button>
+            <div class="btn-label">data-auto-color</div>
+          </div>
+          <div class="button-card">
+            <button class="btn btn-primary btn-with-icon">
+              <i class="fas fa-bell"></i> 通知
+              <span class="btn-counter">12</span>
+            </button>
+            <div class="btn-label">.btn-counter</div>
+          </div>
+          <div class="button-card">
+            <button class="btn btn-secondary btn-with-loader">
+              <span class="btn-loader"></span>异步处理
+            </button>
+            <div class="btn-label">.btn-with-loader</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主题切换按钮 -->
+    <button class="theme-toggle" id="theme-toggle">
+      <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- 引入模态弹窗组件脚本 -->
+    <script src="../modals/modals.js"></script>
+    <!-- 引入按钮组件脚本 -->
+    <script src="../buttons/buttons.js"></script>
+    <script>
+      // 文档加载完成后执行
+      document.addEventListener("DOMContentLoaded", function () {
+        // 主题切换功能
+        const themeToggle = document.getElementById("theme-toggle");
+        const themeIcon = themeToggle.querySelector("i");
+
+        themeToggle.addEventListener("click", function () {
+          const currentTheme =
+            document.body.getAttribute("data-theme") || "light";
+          const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+          document.body.setAttribute("data-theme", newTheme);
+          themeIcon.className =
+            newTheme === "dark" ? "fas fa-sun" : "fas fa-moon";
+
+          // 保存主题设置
+          localStorage.setItem("theme", newTheme);
+        });
+
+        // 初始应用保存的主题
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          document.body.setAttribute("data-theme", savedTheme);
+          themeIcon.className =
+            savedTheme === "dark" ? "fas fa-sun" : "fas fa-moon";
+        }
+
+        // 测试确认按钮功能
+        if (document.getElementById("confirm-button-1")) {
+          document
+            .getElementById("confirm-button-1")
+            .addEventListener("click", function () {
+              console.log("确认删除数据");
+            });
+        } // 自动更新文本颜色示例
+        const colorButtons = document.querySelectorAll(
+          '[data-auto-color="true"]'
+        );
+        if (
+          colorButtons.length &&
+          typeof ButtonUI !== "undefined" &&
+          ButtonUI.updateTextColor
+        ) {
+          colorButtons.forEach((button) => {
+            ButtonUI.updateTextColor(button);
+          });
+        }
+
+        // 为涟漪按钮添加效果
+        const rippleButtons = document.querySelectorAll(".btn-ripple");
+        rippleButtons.forEach((button) => {
+          button.addEventListener("click", function (e) {
+            const rect = button.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const ripple = document.createElement("span");
+            ripple.className = "btn-ripple-effect";
+            ripple.style.left = x + "px";
+            ripple.style.top = y + "px";
+
+            this.appendChild(ripple);
+
+            setTimeout(() => {
+              ripple.remove();
+            }, 600); // 动画持续时间
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

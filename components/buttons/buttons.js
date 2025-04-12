@@ -21,6 +21,12 @@ function initButtons() {
   
   // 初始化确认按钮
   initConfirmButtons();
+  
+  // 初始化开关切换按钮
+  initToggleButtons();
+  
+  // 初始化颜色自适应
+  initAutoColorButtons();
 }
 
 /**
@@ -65,24 +71,20 @@ function initLoadingButtons() {
   const loadingButtons = document.querySelectorAll('[data-loading-text]');
   
   loadingButtons.forEach(button => {
-    const originalText = button.innerHTML;
-    const loadingText = button.getAttribute('data-loading-text') || '加载中...';
+    // 保存原始内容，用于恢复
+    const originalContent = button.innerHTML;
     
     button.addEventListener('click', function() {
       if (button.classList.contains('btn-loading')) return;
       
       // 添加加载状态
-      button.classList.add('btn-loading');
-      if (!button.hasAttribute('data-no-text-change')) {
-        button.innerHTML = loadingText;
-      }
+      setButtonLoading(button, true);
       
       // 示例：模拟异步操作
       // 实际使用时应该在异步操作完成后移除加载状态
       if (button.hasAttribute('data-demo')) {
         setTimeout(() => {
-          button.classList.remove('btn-loading');
-          button.innerHTML = originalText;
+          setButtonLoading(button, false);
         }, 2000);
       }
     });
@@ -122,39 +124,126 @@ function initConfirmButtons() {
 }
 
 /**
- * 设置按钮为加载状态
- * @param {Element|string} button - 按钮元素或选择器
- * @param {boolean} isLoading - 是否为加载状态
- * @param {string} [loadingText] - 加载状态显示的文本
+ * 初始化开关切换按钮
  */
-function setButtonLoading(button, isLoading, loadingText) {
-  // 如果传入的是选择器字符串，获取对应的DOM元素
-  if (typeof button === 'string') {
-    button = document.querySelector(button);
-  }
+function initToggleButtons() {
+  const toggleButtons = document.querySelectorAll('.btn-toggle');
   
-  if (!button) return;
-  
-  const originalText = button.getAttribute('data-original-text') || button.innerHTML;
-  
-  if (isLoading) {
-    // 保存原始文本（如果尚未保存）
-    if (!button.hasAttribute('data-original-text')) {
-      button.setAttribute('data-original-text', originalText);
+  toggleButtons.forEach(button => {
+    const onText = button.getAttribute('data-on-text') || '开启';
+    const offText = button.getAttribute('data-off-text') || '关闭';
+    
+    // 检查按钮是否只包含文本节点或为空
+    const hasOnlyText = !button.children.length && button.textContent.trim();
+    const isEmpty = !button.children.length && !button.textContent.trim();
+
+    // 如果按钮为空或只包含文本，则清空内容，让 ::before 生效
+    if (isEmpty || hasOnlyText) {
+        button.textContent = ''; // 清空按钮文本
     }
     
-    // 添加加载状态
-    button.classList.add('btn-loading');
-    if (loadingText) {
-      button.innerHTML = loadingText;
+    // 添加点击事件
+    button.addEventListener('click', function() {
+      button.classList.toggle('active');
+      
+      // 触发自定义事件
+      const event = new CustomEvent('toggle', {
+        detail: {
+          isActive: button.classList.contains('active')
+        },
+        bubbles: true
+      });
+      button.dispatchEvent(event);
+      
+      // 不需要在这里更新 textContent，因为 ::before 会处理
+    });
+  });
+}
+
+/**
+ * 初始化颜色自适应按钮
+ * 根据按钮的背景颜色自动调整文本颜色
+ */
+function initAutoColorButtons() {
+  const autoColorButtons = document.querySelectorAll('.btn[data-auto-color="true"]');
+  
+  autoColorButtons.forEach(button => {
+    updateButtonTextColor(button);
+    
+    // 监听类名变化，更新文本颜色
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.attributeName === 'class') {
+          updateButtonTextColor(button);
+        }
+      });
+    });
+    
+    observer.observe(button, { attributes: true });
+  });
+}
+
+/**
+ * 根据背景颜色更新文本颜色
+ * @param {Element} button - 按钮元素
+ */
+function updateButtonTextColor(button) {
+  // 获取计算后的背景颜色
+  const bgColor = window.getComputedStyle(button).backgroundColor;
+  
+  // 将RGB颜色转换为亮度值
+  const rgb = bgColor.match(/\d+/g);
+  if (!rgb || rgb.length < 3) return;
+  
+  const brightness = Math.round(
+    ((parseInt(rgb[0]) * 299) +
+    (parseInt(rgb[1]) * 587) +
+    (parseInt(rgb[2]) * 114)) / 1000
+  );
+  
+  // 根据亮度设置文本颜色
+  // 亮度 > 125 视为浅色背景，使用深色文本
+  // 亮度 <= 125 视为深色背景，使用浅色文本
+  button.style.color = brightness > 125 ? '#212121' : '#ffffff';
+}
+
+/**
+ * 设置按钮的加载状态
+ * @param {string|Element} selectorOrElement 按钮的选择器或DOM元素
+ * @param {boolean} isLoading 是否设置为加载状态
+ * @param {string} [loadingText] 加载时显示的文本（不再使用，但保留参数以兼容旧代码）
+ */
+function setButtonLoading(selectorOrElement, isLoading) {
+  const button = typeof selectorOrElement === 'string' ? document.querySelector(selectorOrElement) : selectorOrElement;
+  if (!button) {
+    console.warn(`Button element not found for selector: ${selectorOrElement}`);
+    return;
+  }
+
+  if (isLoading) {
+    // 保存原始文本和禁用状态
+    if (!button.dataset.originalText) {
+      button.dataset.originalText = button.innerHTML;
     }
+    if (!button.hasAttribute('data-original-disabled')) {
+      button.dataset.originalDisabled = button.disabled ? 'true' : 'false';
+    }
+
+    button.classList.add('btn-loading');
     button.disabled = true;
   } else {
-    // 移除加载状态
+    // 恢复原始状态
+    if (button.dataset.originalText) {
+      button.innerHTML = button.dataset.originalText;
+      // 清理自定义属性
+      delete button.dataset.originalText;
+    }
     button.classList.remove('btn-loading');
-    // 恢复原始文本
-    button.innerHTML = originalText;
-    button.disabled = false;
+    // 恢复原始禁用状态
+    if (button.hasAttribute('data-original-disabled')) {
+      button.disabled = button.dataset.originalDisabled === 'true';
+      delete button.dataset.originalDisabled;
+    }
   }
 }
 
@@ -189,8 +278,85 @@ function createConfirmButton(selector, confirmMessage, callback) {
   });
 }
 
+/**
+ * 为按钮添加或更新计数器徽章
+ * @param {string|Element} selectorOrElement - 按钮的选择器或DOM元素
+ * @param {number} count - 显示的数字
+ */
+function setButtonBadge(selectorOrElement, count) {
+  const button = typeof selectorOrElement === 'string' ? document.querySelector(selectorOrElement) : selectorOrElement;
+  if (!button) {
+    console.warn(`Button element not found for selector: ${selectorOrElement}`);
+    return;
+  }
+  
+  // 添加徽章样式类
+  if (!button.classList.contains('btn-badge')) {
+    button.classList.add('btn-badge');
+  }
+  
+  // 查找现有徽章或创建新徽章
+  let badge = button.querySelector('.badge');
+  if (!badge) {
+    badge = document.createElement('span');
+    badge.classList.add('badge');
+    button.appendChild(badge);
+  }
+  
+  // 设置徽章内容
+  badge.textContent = count;
+  
+  // 如果计数为0，可以选择隐藏徽章
+  if (count === 0 && !button.hasAttribute('data-show-zero-badge')) {
+    badge.style.display = 'none';
+  } else {
+    badge.style.display = 'flex';
+  }
+  
+  return button;
+}
+
+/**
+ * 设置切换按钮的状态
+ * @param {string|Element} selectorOrElement - 按钮的选择器或DOM元素
+ * @param {boolean} isActive - 是否为激活状态
+ */
+function setToggleState(selectorOrElement, isActive) {
+  const button = typeof selectorOrElement === 'string' ? document.querySelector(selectorOrElement) : selectorOrElement;
+  if (!button) {
+    console.warn(`Button element not found for selector: ${selectorOrElement}`);
+    return;
+  }
+  
+  if (!button.classList.contains('btn-toggle')) {
+    console.warn(`Button is not a toggle button: ${selectorOrElement}`);
+    return;
+  }
+  
+  // 设置激活状态
+  if (isActive) {
+    button.classList.add('active');
+  } else {
+    button.classList.remove('active');
+  }
+  
+  // 检查按钮是否只包含文本节点或为空
+  const hasOnlyText = !button.children.length && button.textContent.trim();
+  const isEmpty = !button.children.length && !button.textContent.trim();
+
+  // 如果按钮为空或只包含文本，确保其内容为空
+  if (isEmpty || hasOnlyText) {
+      button.textContent = ''; // 确保按钮文本为空
+  }
+  
+  return button;
+}
+
 // 暴露公共API
 window.ButtonUI = {
   setLoading: setButtonLoading,
-  createConfirmButton: createConfirmButton
+  createConfirmButton: createConfirmButton,
+  setBadge: setButtonBadge,
+  setToggleState: setToggleState,
+  updateTextColor: updateButtonTextColor
 };

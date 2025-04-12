@@ -230,17 +230,29 @@
 
         <h3>仅图标按钮</h3>
         <div class="button-group">
-          <button class="btn btn-primary btn-icon">
+          <button class="btn btn-primary btn-icon" aria-label="添加">
             <i class="fas fa-plus"></i>
           </button>
-          <button class="btn btn-secondary btn-icon">
-            <i class="fas fa-pencil"></i>
+          <button class="btn btn-secondary btn-icon" aria-label="编辑">
+            <i class="fas fa-edit"></i>
           </button>
-          <button class="btn btn-danger btn-icon">
+          <button class="btn btn-danger btn-icon" aria-label="删除">
             <i class="fas fa-trash"></i>
           </button>
-          <button class="btn btn-outline-primary btn-icon">
-            <i class="fas fa-download"></i>
+          <button class="btn btn-success btn-icon" aria-label="确认">
+            <i class="fas fa-check"></i>
+          </button>
+          <button class="btn btn-warning btn-icon" aria-label="警告">
+            <i class="fas fa-exclamation-triangle"></i>
+          </button>
+          <button class="btn btn-info btn-icon" aria-label="信息">
+            <i class="fas fa-info-circle"></i>
+          </button>
+          <button class="btn btn-light btn-icon" aria-label="帮助">
+            <i class="fas fa-question-circle"></i>
+          </button>
+          <button class="btn btn-dark btn-icon" aria-label="设置">
+            <i class="fas fa-cog"></i>
           </button>
         </div>
 
@@ -468,6 +480,151 @@
           &lt;/form&gt;
         </div>
       </div>
+
+      <div class="test-section">
+        <h2>高级按钮功能</h2>
+        <p>这里展示了本次优化后的各种高级按钮功能。</p>
+
+        <h3>计数器按钮 (Badge Button)</h3>
+        <p>计数器按钮在右上角显示一个数字标记，常用于通知提醒或数量指示。</p>
+        <div class="button-group">
+          <button class="btn btn-primary btn-badge" data-badge="5">
+            未读消息
+          </button>
+          <button class="btn btn-danger btn-badge" data-badge="99+">
+            购物车
+          </button>
+          <button
+            class="btn btn-secondary btn-with-icon btn-badge"
+            data-badge="12"
+          >
+            <i class="fas fa-bell"></i> 通知
+          </button>
+          <button class="btn btn-outline-primary btn-badge" data-badge="7">
+            收件箱
+          </button>
+          <button
+            id="badge-update-demo"
+            class="btn btn-success btn-badge"
+            data-badge="1"
+          >
+            点击增加数量
+          </button>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;button class="btn btn-primary btn-badge"
+          data-badge="5"&gt;未读消息&lt;/button&gt; // JavaScript代码 //
+          动态设置/更新徽章数量 ButtonUI.setBadge('#my-button', 10);
+        </div>
+
+        <h3>开关切换按钮 (Toggle Button)</h3>
+        <p>开关切换按钮可以在两种状态之间切换，非常适合开启/关闭功能的场景。</p>
+        <div class="button-group">
+          <button
+            class="btn btn-toggle"
+            data-on-text="已开启"
+            data-off-text="已关闭"
+          ></button>
+          <button
+            class="btn btn-toggle btn-toggle-success"
+            data-on-text="开启"
+            data-off-text="关闭"
+          ></button>
+          <button
+            class="btn btn-toggle btn-toggle-danger active"
+            data-on-text="静音"
+            data-off-text="有声"
+          ></button>
+          <button
+            class="btn btn-toggle btn-toggle-warning"
+            data-on-text="自动"
+            data-off-text="手动"
+          ></button>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;button class="btn btn-toggle" data-on-text="已开启"
+          data-off-text="已关闭"&gt;&lt;/button&gt; // JavaScript代码 //
+          设置切换按钮状态 ButtonUI.setToggleState('#my-toggle', true); //
+          设置为激活状态 // 监听状态变化
+          document.querySelector('#my-toggle').addEventListener('toggle',
+          function(e) { console.log('当前状态:', e.detail.isActive ? '开启' :
+          '关闭'); });
+        </div>
+
+        <h3>自适应文本颜色</h3>
+        <p>根据按钮背景色自动调整文本颜色，确保在任何背景下文本都清晰可见。</p>
+        <div class="button-group">
+          <button
+            class="btn"
+            data-auto-color="true"
+            style="background-color: #3498db"
+          >
+            蓝色背景
+          </button>
+          <button
+            class="btn"
+            data-auto-color="true"
+            style="background-color: #f1c40f"
+          >
+            黄色背景
+          </button>
+          <button
+            class="btn"
+            data-auto-color="true"
+            style="background-color: #2ecc71"
+          >
+            绿色背景
+          </button>
+          <button
+            class="btn"
+            data-auto-color="true"
+            style="background-color: #e74c3c"
+          >
+            红色背景
+          </button>
+          <button
+            class="btn"
+            data-auto-color="true"
+            style="background-color: #ecf0f1"
+          >
+            浅灰背景
+          </button>
+          <button
+            class="btn"
+            data-auto-color="true"
+            style="background-color: #34495e"
+          >
+            深蓝背景
+          </button>
+        </div>
+
+        <div class="code-block">
+          // HTML代码 &lt;button class="btn" data-auto-color="true"
+          style="background-color: #3498db;"&gt;蓝色背景&lt;/button&gt; //
+          JavaScript代码 // 手动触发文本颜色更新
+          ButtonUI.updateTextColor(document.querySelector('#custom-btn'));
+        </div>
+
+        <h3>增强过渡动画</h3>
+        <p>优化后的按钮拥有更加平滑的过渡效果和悬停动画。</p>
+        <div class="button-group">
+          <button class="btn btn-primary">悬停上浮效果</button>
+          <button class="btn btn-success">查看平滑过渡</button>
+          <button class="btn btn-danger">点击反馈改进</button>
+          <button class="btn btn-warning btn-with-icon">
+            <i class="fas fa-paint-brush"></i> 动画优化
+          </button>
+        </div>
+
+        <div class="code-block">
+          // CSS代码 .btn { transition: transform 0.2s cubic-bezier(0.175,
+          0.885, 0.32, 1.275), background-color 0.25s ease; } .btn:hover {
+          transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          }
+        </div>
+      </div>
     </div>
 
     <!-- 主题切换按钮 -->
@@ -519,6 +676,26 @@
           .addEventListener("click", function () {
             console.log("确认重置设置");
           });
+
+        // 计数器按钮测试
+        const badgeUpdateDemo = document.getElementById("badge-update-demo");
+        if (badgeUpdateDemo) {
+          let count = parseInt(
+            badgeUpdateDemo.getAttribute("data-badge") || "1"
+          );
+          badgeUpdateDemo.addEventListener("click", function () {
+            count++;
+            ButtonUI.setBadge(badgeUpdateDemo, count);
+          });
+        }
+
+        // 自动更新文本颜色示例
+        const colorButtons = document.querySelectorAll(
+          '.btn[data-auto-color="true"]'
+        );
+        colorButtons.forEach((button) => {
+          ButtonUI.updateTextColor(button);
+        });
       });
     </script>
   </body>
