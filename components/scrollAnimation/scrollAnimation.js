@@ -4,6 +4,36 @@
  */
 
 /**
+ * 加载滚动动画样式
+ */
+function loadScrollAnimationStyles() {
+  // 检查是否已经加载了样式
+  if (!document.querySelector('link[href*="scrollAnimation.css"]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    
+    // 使用相对于网站根目录的路径
+    let rootPath = './components/scrollAnimation/scrollAnimation.css';
+    
+    // 如果在测试环境
+    if (window.location.pathname.includes('/components/tests/')) {
+      rootPath = '../../components/scrollAnimation/scrollAnimation.css';
+    } 
+    // 如果在pages子文件夹
+    else if (window.location.pathname.includes('/pages/')) {
+      rootPath = '../components/scrollAnimation/scrollAnimation.css';
+    }
+    
+    link.href = rootPath;
+    document.head.appendChild(link);
+    console.log('✅ 滚动动画CSS样式已自动加载');
+  }
+}
+
+// 页面加载完成后自动加载样式
+document.addEventListener('DOMContentLoaded', loadScrollAnimationStyles);
+
+/**
  * 初始化滚动动画功能
  * @param {string} selector - 选择要应用动画的元素的CSS选择器
  * @param {Object} options - 配置选项
