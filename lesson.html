@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>课评速记 - 课堂助手</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <!-- 不再引入侧边栏CSS，由组件自动加载 -->    <!-- 添加页脚样式 -->
+    <!-- 不再引入侧边栏CSS，由组件自动加载 -->
+    <!-- 添加页脚样式 -->
     <link rel="stylesheet" href="components/footer/footer.css" />
     <!-- 添加滚动动画样式 -->
-    <link rel="stylesheet" href="components/scrollAnimation/scrollAnimation.css" />
+    <link
+      rel="stylesheet"
+      href="components/scrollAnimation/scrollAnimation.css"
+    />
     <!-- 添加主题样式 -->
     <link rel="stylesheet" href="css/themes/themes.css" />
     <!-- 使用图标库 -->
@@ -253,7 +257,8 @@
       document.addEventListener("DOMContentLoaded", function () {
         const sidebar = new Sidebar("sidebar-container");
       });
-    </script>    <!-- 添加页脚脚本 -->
+    </script>
+    <!-- 添加页脚脚本 -->
     <script type="module" src="components/footer/footer.js"></script>
     <!-- 添加滚动动画脚本 -->
     <script src="components/scrollAnimation/scrollAnimation.js"></script>
@@ -262,6 +267,6 @@
     <!-- 移除这里的内联脚本 -->
     <!-- <script> ... </script> -->
     <!-- 添加对 lesson.js 的引用 -->
-    <script src="js/pages/lesson.js"></script>
+    <script type="module" src="js/pages/lesson.js"></script>
   </body>
 </html>
