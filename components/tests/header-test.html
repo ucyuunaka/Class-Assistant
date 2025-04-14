@@ -1,0 +1,152 @@
+<!-- filepath: d:\Users\linyu\Desktop\Class-Assistant\components\tests\header-test.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>顶栏组件测试 - 课堂助手</title>
+    <!-- 引入基础样式 -->
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <!-- 添加主题样式 -->
+    <link rel="stylesheet" href="../../css/themes/themes.css" />
+    <!-- 添加滚动动画样式 -->
+    <link rel="stylesheet" href="../scrollAnimation/scrollAnimation.css" />
+    <style>
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background-color);
+      }
+
+      .test-section {
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .test-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+      }
+
+      .example-container {
+        margin-top: 2rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+      }
+
+      .example-description {
+        background-color: rgba(0, 0, 0, 0.03);
+        padding: 1rem;
+        font-size: 0.9rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .code-block {
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #eaecef;
+        padding: 1rem;
+        margin: 1rem 0;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+          monospace;
+        font-size: 0.9rem;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="test-title">顶栏组件测试</h1>
+      <p>这个页面展示了顶栏组件的不同使用方式和样式选项。</p>
+
+      <!-- 首页风格顶栏示例 -->
+      <section class="test-section">
+        <h2 class="test-title">首页风格顶栏</h2>
+        <div class="example-description">
+          <p>
+            首页风格顶栏有更大的字体大小和额外的按钮区域，适合用作网站首页的吸引点。
+          </p>
+          <pre class="code-block">
+const homeHeader = new Header('home-header-container', {
+  isHomePage: true,
+  title: '让你的学习生活更高效有序',
+  subtitle: '课堂助手帮你管理课程安排、记录学习进度、提醒考试日期，让你专注于学习本身。',
+  buttons: [
+    { text: '查看我的课表', url: '#', isPrimary: true },
+    { text: '考试倒计时', url: '#', isPrimary: false }
+  ]
+});</pre
+          >
+        </div>
+        <div class="example-container">
+          <div id="home-header-container"></div>
+        </div>
+      </section>
+      <!-- 普通页面顶栏示例 -->
+      <section class="test-section">
+        <h2 class="test-title">普通页面顶栏</h2>
+        <div class="example-description">
+          <p>
+            普通页面顶栏适用于内容页面，字体较小，没有按钮区域。适用于成绩管理、课评速记等内容页面。
+          </p>
+          <pre class="code-block">
+const pageHeader = new Header('page-header-container', {
+  isHomePage: false,
+  title: '成绩管理',
+  subtitle: '记录、分析并追踪你的学习成果'
+});</pre
+          >
+        </div>
+        <div class="example-container">
+          <div id="page-header-container"></div>
+        </div>
+      </section>
+    </div>
+    <!-- 添加顶栏组件脚本 -->
+    <script src="../header/header.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 初始化首页顶栏
+        const homeHeader = new Header("home-header-container", {
+          isHomePage: true,
+          title: "让你的学习生活更高效有序",
+          subtitle:
+            "课堂助手帮你管理课程安排、记录学习进度、提醒考试日期，让你专注于学习本身。",
+          buttons: [
+            { text: "查看我的课表", url: "#", isPrimary: true },
+            { text: "考试倒计时", url: "#", isPrimary: false },
+          ],
+        });
+
+        // 初始化普通页面顶栏
+        const pageHeader = new Header("page-header-container", {
+          isHomePage: false,
+          title: "成绩管理",
+          subtitle: "记录、分析并追踪你的学习成果",
+        });
+
+        // 初始化课评速记顶栏
+        const lessonHeader = new Header("lesson-header-container", {
+          isHomePage: false,
+          title: "课评速记",
+          subtitle: "用简短的评价和表情记录你对课程的感受",
+        });
+
+        // 在所有组件初始化后，再初始化滚动动画
+        setTimeout(() => {
+          // 如果页面中有滚动动画脚本，则重新初始化它
+          if (typeof initScrollAnimation === "function") {
+            initScrollAnimation();
+          }
+        }, 100);
+      });
+    </script>
+
+    <!-- 添加滚动动画脚本 - 放在最后加载，确保DOM元素已经渲染 -->
+    <script src="../scrollAnimation/scrollAnimation.js"></script>
+  </body>
+</html>

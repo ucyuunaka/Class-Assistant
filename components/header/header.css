@@ -1,0 +1,84 @@
+/* 顶栏组件通用样式 */
+.header-component {
+  width: 100%;
+  color: white;
+  background: linear-gradient(135deg, var(--primary-color), #0368b2);
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+  overflow: hidden;
+}
+
+/* 首页顶栏样式 */
+.home-header {
+  padding: 4rem 0;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.home-header-content {
+  max-width: 600px;
+  position: relative;
+  z-index: 2;
+}
+
+.home-header-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.home-header-text {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.home-header-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.home-header-decoration {
+  position: absolute;
+  right: -150px;
+  top: -20px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* 页面顶栏样式 */
+.page-header {
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+}
+
+.page-header-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.page-header-subtitle {
+  opacity: 0.9;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .home-header {
+    padding: 3rem 0;
+  }
+  
+  .home-header-title {
+    font-size: 2rem;
+  }
+  
+  .page-header-title {
+    font-size: 1.75rem;
+  }
+}
