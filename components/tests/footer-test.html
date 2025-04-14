@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Footer组件测试</title>
+  <!-- 引入基础样式 -->
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/themes/themes.css">
+  <!-- 引入Footer组件样式 -->
+  <link rel="stylesheet" href="../footer/footer.css">
+  <!-- 字体图标库 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+    }
+    .test-content {
+      background: var(--background-primary);
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="container">
+      <h1>Footer组件测试页面</h1>
+      
+      <div class="test-content">
+        <h2>测试说明</h2>
+        <p>这个页面用于测试Footer组件的正常工作情况。</p>
+        <ul>
+          <li>页脚应正确显示三列内容（课堂助手介绍、快速链接、联系方式）</li>
+          <li>版权年份应显示当前年份</li>
+          <li>响应式布局应在窄屏设备上正常工作</li>
+          <li>链接应有悬停效果</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Footer组件 -->
+  <footer class="footer"></footer>
+
+  <!-- 引入主题切换脚本 -->
+  <script src="../../js/themes.js"></script>
+  <!-- 引入Footer组件脚本 -->
+  <script type="module" src="../footer/footer.js"></script>
+</body>
+</html>
