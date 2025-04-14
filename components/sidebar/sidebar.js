@@ -31,17 +31,23 @@ class Sidebar {
   }
   /**
    * 加载侧边栏样式
-   */
-  loadStyles() {
+   */  loadStyles() {
     // 检查是否已经加载了样式
     if (!document.querySelector('link[href*="sidebar.css"]')) {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       
       // 使用相对于网站根目录的路径
-      const rootPath = window.location.pathname.includes('/components/tests/') 
-          ? '../../components/sidebar/sidebar.css' 
-          : './components/sidebar/sidebar.css';
+      let rootPath = './components/sidebar/sidebar.css';
+      
+      // 如果在测试环境
+      if (window.location.pathname.includes('/components/tests/')) {
+        rootPath = '../../components/sidebar/sidebar.css';
+      } 
+      // 如果在pages子文件夹
+      else if (window.location.pathname.includes('/pages/')) {
+        rootPath = '../components/sidebar/sidebar.css';
+      }
       
       link.href = rootPath;
       document.head.appendChild(link);
@@ -49,8 +55,7 @@ class Sidebar {
   }
   /**
    * 加载侧边栏HTML内容
-   */
-  loadSidebarContent() {
+   */  loadSidebarContent() {
     // 添加sidebar类
     this.container.classList.add('sidebar');
     
@@ -58,9 +63,16 @@ class Sidebar {
     this.createOverlay();
       
     // 确定正确的HTML模板路径
-    const htmlPath = window.location.pathname.includes('/components/tests/') 
-      ? '../../components/sidebar/sidebar.html' 
-      : './components/sidebar/sidebar.html';
+    let htmlPath = './components/sidebar/sidebar.html';
+    
+    // 如果在测试环境
+    if (window.location.pathname.includes('/components/tests/')) {
+      htmlPath = '../../components/sidebar/sidebar.html';
+    } 
+    // 如果在pages子文件夹
+    else if (window.location.pathname.includes('/pages/')) {
+      htmlPath = '../components/sidebar/sidebar.html';
+    }
     
     // 加载侧边栏内容
     fetch(htmlPath)

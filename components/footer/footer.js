@@ -24,7 +24,17 @@ class Footer {
     
     if (footer) {
       // 构建绝对路径，确保在任何页面都能正确加载
-      const rootPath = window.location.pathname.includes('/components/') ? '../../' : './';
+      let rootPath = './';
+      
+      // 如果在组件目录下
+      if (window.location.pathname.includes('/components/')) {
+        rootPath = '../../';
+      } 
+      // 如果在pages子文件夹
+      else if (window.location.pathname.includes('/pages/')) {
+        rootPath = '../';
+      }
+      
       const footerPath = `${rootPath}components/footer/footer.html`;
       
       console.log('正在加载页脚，路径:', footerPath);
