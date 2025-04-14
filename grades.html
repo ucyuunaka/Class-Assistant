@@ -4,12 +4,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>成绩管理 - 课堂助手</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <!-- 不再引入侧边栏CSS，由组件自动加载 -->
-    <!-- 添加页脚样式 -->
+    <!-- 不再引入侧边栏CSS，由组件自动加载 -->    <!-- 添加页脚样式 -->
     <link rel="stylesheet" href="components/footer/footer.css" />
     <!-- 添加滚动动画样式 -->
-    <link rel="stylesheet" href="css/scrollAnimation.css" />
-    <!-- 添加主题样式 -->    <link rel="stylesheet" href="css/themes/themes.css" />
+    <link rel="stylesheet" href="components/scrollAnimation/scrollAnimation.css" />
+    <!-- 添加主题样式 --><link rel="stylesheet" href="css/themes/themes.css" />
     <!-- 使用图标库 -->
     <link
       rel="stylesheet"
@@ -537,11 +536,10 @@
       document.addEventListener('DOMContentLoaded', function() {
         const sidebar = new Sidebar('sidebar-container');
       });
-    </script>
-    <!-- 添加页脚脚本 -->
+    </script>    <!-- 添加页脚脚本 -->
     <script type="module" src="components/footer/footer.js"></script>
     <!-- 添加滚动动画脚本 -->
-    <script src="js/scrollAnimation.js"></script>
+    <script src="components/scrollAnimation/scrollAnimation.js"></script>
     <!-- 添加主题管理脚本 -->
     <script src="js/themes.js"></script>
     <!-- 添加成绩页面特定脚本 -->
