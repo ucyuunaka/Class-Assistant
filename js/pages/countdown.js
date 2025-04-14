@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // 初始化滚动动画
-  initScrollAnimation(".animate-on-scroll", {
-    threshold: 0.1,
-    once: true,
-  });
+  // 注意：滚动动画已经在scrollAnimation.js中初始化，不需要在这里再次初始化
+  // initScrollAnimation(".animate-on-scroll", {
+  //   threshold: 0.1,
+  //   once: true,
+  // });
 
   let exams = Storage.get("exams", [
     {
@@ -107,117 +107,97 @@ document.addEventListener("DOMContentLoaded", function () {
     emptyState.style.display = "none";
     countdownList.style.display = "block";
 
-    filteredExams.forEach((exam) => {
-      const examDate = new Date(exam.date);
-      const status = getExamStatus(exam.date);
-      const statusInfo = getStatusInfo(status);
+    // 添加延时渲染，确保元素先显示在页面上
+    setTimeout(() => {
+      filteredExams.forEach((exam, index) => {
+        const examDate = new Date(exam.date);
+        const status = getExamStatus(exam.date);
+        const statusInfo = getStatusInfo(status);
 
-      const item = document.createElement("div");
-      item.className = `countdown-item animate-on-scroll fade-up ${status}`;
-      item.style.borderLeft = `4px solid ${statusInfo.borderColor}`;
-      item.dataset.examId = exam.id;
+        const item = document.createElement("div");
+        
+        // 先创建元素不添加动画类，避免闪烁
+        item.className = `countdown-item ${status}`;
+        item.style.borderLeft = `4px solid ${statusInfo.borderColor}`;
+        item.dataset.examId = exam.id;
 
-      const countdownValues = calculateCountdown(examDate);
+        const countdownValues = calculateCountdown(examDate);
 
-      const totalSpan = 60 * 24 * 60 * 60 * 1000;
-      const timeRemaining = Math.max(0, examDate - new Date());
-      const progressPercent = Math.max(
-        0,
-        Math.min(100, (1 - timeRemaining / totalSpan) * 100)
-      );
+        const totalSpan = 60 * 24 * 60 * 60 * 1000;
+        const timeRemaining = Math.max(0, examDate - new Date());
+        const progressPercent = Math.max(
+          0,
+          Math.min(100, (1 - timeRemaining / totalSpan) * 100)
+        );
 
-      item.innerHTML = `
-        <div class="status-badge ${statusInfo.class}">${
-        statusInfo.text
-      }</div>
-        <div class="countdown-main">
-          <h3 class="countdown-title">${exam.name}</h3>
-          <div class="countdown-details">
-            <div><span class="countdown-detail-label">科目：</span>${
-              exam.subject || "N/A"
-            }</div>
-            <div><span class="countdown-detail-label">时间：</span>${formatDate(
-              examDate,
-              "YYYY年MM月DD日 HH:mm"
-            )}</div>
-            <div><span class="countdown-detail-label">地点：</span>${
-              exam.location || "N/A"
-            }</div>
-            <div><span class="countdown-detail-label">备注：</span>${
-              exam.notes || "无"
-            }</div>
-          </div>
-          <div class="countdown-actions">
-            <button class="btn btn-outline edit-btn"><i class="fas fa-edit"></i> 编辑</button>
-            <button class="btn btn-outline delete-btn" style="color: var(--danger-color)"><i class="fas fa-trash"></i> 删除</button>
-          </div>
-        </div>
-        <div class="countdown-display ${
-          status === "past" ? "past-exam" : ""
-        }">
-           ${
-             status !== "past"
-               ? `
-          <div class="countdown-label">距离考试还剩</div>
-          <div class="countdown-timer">
-            <div class="countdown-unit">
-              <div class="countdown-value days">${
-                countdownValues.days
-              }</div>
-              <div class="countdown-unit-label">天</div>
+        item.innerHTML = `
+          <div class="status-badge ${statusInfo.class}">${statusInfo.text}</div>
+          <div class="countdown-main">
+            <h3 class="countdown-title">${exam.name}</h3>
+            <div class="countdown-details">
+              <div><span class="countdown-detail-label">科目：</span>${exam.subject || "N/A"}</div>
+              <div><span class="countdown-detail-label">时间：</span>${formatDate(examDate, "YYYY年MM月DD日 HH:mm")}</div>
+              <div><span class="countdown-detail-label">地点：</span>${exam.location || "N/A"}</div>
+              <div><span class="countdown-detail-label">备注：</span>${exam.notes || "无"}</div>
             </div>
-            <div class="countdown-unit">
-              <div class="countdown-value hours">${String(
-                countdownValues.hours
-              ).padStart(2, "0")}</div>
-              <div class="countdown-unit-label">时</div>
-            </div>
-            <div class="countdown-unit">
-              <div class="countdown-value minutes">${String(
-                countdownValues.minutes
-              ).padStart(2, "0")}</div>
-              <div class="countdown-unit-label">分</div>
-            </div>
-            <div class="countdown-unit">
-              <div class="countdown-value seconds">${String(
-                countdownValues.seconds
-              ).padStart(2, "0")}</div>
-              <div class="countdown-unit-label">秒</div>
+            <div class="countdown-actions">
+              <button class="btn btn-outline edit-btn"><i class="fas fa-edit"></i> 编辑</button>
+              <button class="btn btn-outline delete-btn" style="color: var(--danger-color)"><i class="fas fa-trash"></i> 删除</button>
             </div>
           </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: ${progressPercent}%"></div>
+          <div class="countdown-display ${status === "past" ? "past-exam" : ""}">
+            ${status !== "past" ? `
+            <div class="countdown-label">距离考试还剩</div>
+            <div class="countdown-timer">
+              <div class="countdown-unit">
+                <div class="countdown-value days">${countdownValues.days}</div>
+                <div class="countdown-unit-label">天</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value hours">${String(countdownValues.hours).padStart(2, "0")}</div>
+                <div class="countdown-unit-label">时</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value minutes">${String(countdownValues.minutes).padStart(2, "0")}</div>
+                <div class="countdown-unit-label">分</div>
+              </div>
+              <div class="countdown-unit">
+                <div class="countdown-value seconds">${String(countdownValues.seconds).padStart(2, "0")}</div>
+                <div class="countdown-unit-label">秒</div>
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${progressPercent}%"></div>
+            </div>
+            ` : `
+            <div class="countdown-label">考试已结束</div>
+            <div style="font-size: 2rem; color: var(--text-secondary); margin-top: 1rem;"><i class="fas fa-check-circle"></i></div>
+            `}
           </div>
-          `
-               : `
-          <div class="countdown-label">考试已结束</div>
-           <div style="font-size: 2rem; color: var(--text-secondary); margin-top: 1rem;"><i class="fas fa-check-circle"></i></div>
-          `
-           }
-        </div>
-      `;
-      countdownList.appendChild(item);
-    });
+        `;
 
-    initScrollAnimation(".animate-on-scroll", {
-      threshold: 0.1,
-      once: true,
-    });
-
-    countdownList.querySelectorAll(".edit-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const itemId = e.target.closest(".countdown-item").dataset.examId;
-        openEditExamModal(parseInt(itemId));
+        countdownList.appendChild(item);
+        
+        // 添加到DOM后再添加动画类，确保顺序延迟出现
+        setTimeout(() => {
+          // 根据索引添加不同的延迟类
+          const delayClass = index === 0 ? '' : index === 1 ? ' delay-100' : index === 2 ? ' delay-200' : ' delay-300';
+          item.classList.add('animate-on-scroll', 'fade-up' + delayClass);
+          
+          // 立即触发活动状态，确保动画播放
+          setTimeout(() => {
+            item.classList.add('active');
+          }, 50);
+        }, 100 * index); // 根据索引设置不同的延迟时间
       });
-    });
-    countdownList.querySelectorAll(".delete-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const itemId = e.target.closest(".countdown-item").dataset.examId;
-        deleteExam(parseInt(itemId));
-      });
-    });
-
-    startCountdownTimer();
+      
+      // 更新滚动动画
+      if (window.scrollAnimationController && window.scrollAnimationController.refresh) {
+        setTimeout(() => {
+          window.scrollAnimationController.refresh();
+        }, 100);
+      }
+    }, 50); // 短暂延时，确保DOM已更新
   }
 
   function updateCountdowns() {

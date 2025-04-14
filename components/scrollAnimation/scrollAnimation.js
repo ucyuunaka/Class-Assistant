@@ -3,6 +3,9 @@
  * 提供页面元素在滚动时的淡入浮现效果
  */
 
+// 使用一个全局变量标记组件是否已初始化
+window.scrollAnimationInitialized = false;
+
 /**
  * 加载滚动动画样式
  */
@@ -43,6 +46,12 @@ document.addEventListener('DOMContentLoaded', loadScrollAnimationStyles);
  * @returns {Object} - 返回控制对象，包含refresh和disconnect方法
  */
 function initScrollAnimation(selector = '.animate-on-scroll', options = {}) {
+  // 如果已经初始化过，则不再重复初始化
+  if (window.scrollAnimationInitialized) {
+    console.log('滚动动画组件已经初始化，跳过重复初始化');
+    return window.scrollAnimationController;
+  }
+  
   console.log('正在初始化滚动动画组件...');
   
   const defaultOptions = {
@@ -94,7 +103,11 @@ function initScrollAnimation(selector = '.animate-on-scroll', options = {}) {
   
   console.log('✅ 滚动动画组件初始化成功！');
   
-  return {
+  // 设置标志为已初始化
+  window.scrollAnimationInitialized = true;
+  
+  // 创建并保存控制器对象
+  window.scrollAnimationController = {
     // 提供方法手动刷新（例如在动态添加元素后）
     refresh: function() {
       const newElements = document.querySelectorAll(selector);
@@ -110,13 +123,14 @@ function initScrollAnimation(selector = '.animate-on-scroll', options = {}) {
       observer.disconnect();
     }
   };
+  
+  return window.scrollAnimationController;
 }
 
-// 导出函数以便可以从其他模块使用
-if (typeof module !== 'undefined' && module.exports) {
-  // CommonJS模块系统
-  module.exports = { initScrollAnimation };
-} else {
-  // 浏览器环境
-  window.initScrollAnimation = initScrollAnimation;
-}
+// 在文档加载完成后自动初始化滚动动画
+document.addEventListener('DOMContentLoaded', function() {
+  initScrollAnimation();
+});
+
+// 将函数暴露给全局作用域
+window.initScrollAnimation = initScrollAnimation;
