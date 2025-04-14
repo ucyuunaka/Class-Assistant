@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>滚动动画组件测试 - 课堂助手</title>
+    <!-- 引入基础样式 -->
+    <link rel="stylesheet" href="../../css/styles.css" />
+    <!-- 引入 Font Awesome 图标库 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- 引入滚动动画组件样式 -->
+    <link rel="stylesheet" href="../scrollAnimation/scrollAnimation.css" />
+    <style>
+      .test-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      
+      header {
+        background-color: var(--primary-color);
+        color: white;
+        text-align: center;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: var(--border-radius);
+      }      
+      h1 {
+        margin: 0;
+        color: white;
+      }
+      
+      .section {
+        margin-bottom: 3rem;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        background-color: var(--background-secondary);
+        box-shadow: var(--shadow-sm);
+      }
+      
+      .box {
+        background-color: var(--background-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow-sm);
+      }
+      
+      .sub-heading {
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 5px;
+        margin-top: 0;
+      }
+            .button-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      
+      button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+      
+      button:hover {
+        background-color: var(--primary-color-dark);
+      }
+      
+      pre {
+        background-color: var(--code-background);
+        padding: 15px;
+        border-radius: var(--border-radius);
+        overflow-x: auto;
+      }
+      
+      code {
+        font-family: Consolas, Monaco, 'Andale Mono', monospace;
+        color: var(--code-color);
+      }
+            .spacer {
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--text-muted);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>滚动动画组件测试</h1>
+    </header>
+    
+    <div class="test-container">
+      <div class="section">
+        <h2 class="sub-heading">组件介绍</h2>
+        <p>滚动动画组件让元素在用户滚动页面到达该元素时触发动画效果，增强用户体验。</p>
+        <p>滚动页面可以看到下方不同的动画效果演示。每个效果在元素进入视口时自动触发。</p>
+      </div>
+            <div class="spacer">↓ 向下滚动查看动画效果 ↓</div>
+      
+      <div class="section">
+        <h2 class="sub-heading fade-up">基本动画效果</h2>
+        <div class="box animate-on-scroll">
+          <h3>基本动画</h3>
+          <p>这个元素使用了 <code>.animate-on-scroll</code> 类，会在滚动到视图中时显示默认的淡入和缩放效果。</p>
+        </div>
+      </div>
+      
+      <div class="spacer">↓ 继续滚动 ↓</div>
+      
+      <div class="section">
+        <h2 class="sub-heading fade-up">淡入方向</h2>
+        
+        <div class="box fade-up">
+          <h3>从下向上淡入</h3>
+          <p>使用 <code>.fade-up</code> 类创建一个从下向上淡入的动画效果。</p>
+          <pre><code>&lt;div class="fade-up"&gt;内容&lt;/div&gt;</code></pre>
+        </div>
+        
+        <div class="box fade-down">
+          <h3>从上向下淡入</h3>
+          <p>使用 <code>.fade-down</code> 类创建一个从上向下淡入的动画效果。</p>
+          <pre><code>&lt;div class="fade-down"&gt;内容&lt;/div&gt;</code></pre>
+        </div>
+          <div class="box fade-left">
+          <h3>从右向左淡入</h3>
+          <p>使用 <code>.fade-left</code> 类创建一个从右向左淡入的动画效果。</p>
+          <pre><code>&lt;div class="fade-left"&gt;内容&lt;/div&gt;</code></pre>
+        </div>
+        
+        <div class="box fade-right">
+          <h3>从左向右淡入</h3>
+          <p>使用 <code>.fade-right</code> 类创建一个从左向右淡入的动画效果。</p>
+          <pre><code>&lt;div class="fade-right"&gt;内容&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+      
+      <div class="spacer">↓ 继续滚动 ↓</div>
+      
+      <div class="section">
+        <h2 class="sub-heading fade-up">其他效果</h2>
+        
+        <div class="box zoom-in">
+          <h3>缩放淡入</h3>
+          <p>使用 <code>.zoom-in</code> 类创建一个缩放淡入的动画效果。</p>
+          <pre><code>&lt;div class="zoom-in"&gt;内容&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+            <div class="spacer">↓ 继续滚动 ↓</div>
+      
+      <div class="section">
+        <h2 class="sub-heading fade-up">延迟序列</h2>
+        <p>可以使用延迟类创建序列动画效果：</p>
+        
+        <div class="box fade-up">
+          <h3>无延迟</h3>
+          <p>默认情况下，动画会立即开始。</p>
+        </div>
+        
+        <div class="box fade-up delay-100">
+          <h3>延迟 0.1 秒</h3>
+          <p>使用 <code>.delay-100</code> 类延迟 0.1 秒开始动画。</p>
+          <pre><code>&lt;div class="fade-up delay-100"&gt;内容&lt;/div&gt;</code></pre>
+        </div>
+        
+        <div class="box fade-up delay-200">
+          <h3>延迟 0.2 秒</h3>
+          <p>使用 <code>.delay-200</code> 类延迟 0.2 秒开始动画。</p>
+          <pre><code>&lt;div class="fade-up delay-200"&gt;内容&lt;/div&gt;</code></pre>
+        </div>
+          <div class="box fade-up delay-300">
+          <h3>延迟 0.3 秒</h3>
+          <p>使用 <code>.delay-300</code> 类延迟 0.3 秒开始动画。</p>
+          <pre><code>&lt;div class="fade-up delay-300"&gt;内容&lt;/div&gt;</code></pre>
+        </div>
+        
+        <div class="box fade-up delay-400">
+          <h3>延迟 0.4 秒</h3>
+          <p>使用 <code>.delay-400</code> 类延迟 0.4 秒开始动画。</p>
+          <pre><code>&lt;div class="fade-up delay-400"&gt;内容&lt;/div&gt;</code></pre>
+        </div>
+        
+        <div class="box fade-up delay-500">
+          <h3>延迟 0.5 秒</h3>
+          <p>使用 <code>.delay-500</code> 类延迟 0.5 秒开始动画。</p>
+          <pre><code>&lt;div class="fade-up delay-500"&gt;内容&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+      
+      <div class="spacer">↓ 继续滚动 ↓</div>
+        
+        <div class="section">
+            <h2 class="sub-heading fade-up">动态元素</h2>
+            <p>您也可以对动态添加的元素应用动画效果：</p>
+            
+            <div class="button-row">
+                <button id="addElement">添加元素</button>
+                <button id="refreshAnimation">刷新动画</button>
+            </div>
+            
+            <div id="dynamicContainer"></div>
+        </div>
+        
+        <div class="section">
+            <h2 class="sub-heading fade-up">使用说明</h2>
+            <div class="box fade-left">
+                <h3>如何使用</h3>
+                <ol>
+                    <li>引入 CSS 文件: <code>&lt;link rel="stylesheet" href="../scrollAnimation/scrollAnimation.css"&gt;</code></li>
+                    <li>引入 JS 文件: <code>&lt;script src="../scrollAnimation/scrollAnimation.js"&gt;&lt;/script&gt;</code></li>
+                    <li>初始化动画: <code>initScrollAnimation();</code></li>
+                    <li>对需要动画的元素添加相应的类</li>
+                </ol>
+            </div>
+            
+            <div class="box fade-right">
+                <h3>配置选项</h3>
+                <pre><code>initScrollAnimation('.my-selector', {
+  threshold: 0.2,    // 元素可见20%时触发
+  activeClass: 'visible',  // 自定义激活类名
+  once: false        // 元素离开视口后重置动画
+});</code></pre>
+            </div>
+        </div>
+    </div>
+      <script src="../scrollAnimation/scrollAnimation.js"></script>
+    <script>
+        // 修改：立即执行初始化，而不是等待 DOMContentLoaded
+        // 初始化滚动动画，应用到所有预设的动画类
+        let scrollAnim = initScrollAnimation('.animate-on-scroll');
+        
+        // 初始化其他动画效果
+        let fadeUpAnim = initScrollAnimation('.fade-up:not(.animate-on-scroll)');
+        let fadeDownAnim = initScrollAnimation('.fade-down');
+        let fadeLeftAnim = initScrollAnimation('.fade-left');
+        let fadeRightAnim = initScrollAnimation('.fade-right');
+        let zoomInAnim = initScrollAnimation('.zoom-in');
+        
+        // 确保 DOM 加载完成再执行这部分代码
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM 加载完成，初始化动态元素功能');
+            
+            // 添加元素按钮
+            const addButton = document.getElementById('addElement');
+            const refreshButton = document.getElementById('refreshAnimation');
+            const container = document.getElementById('dynamicContainer');
+            let counter = 1;
+            
+            if (addButton && refreshButton && container) {
+                addButton.addEventListener('click', function() {
+                    const element = document.createElement('div');
+                    element.className = 'box fade-up';
+                    element.innerHTML = `
+                        <h3>动态添加的元素 #${counter}</h3>
+                        <p>这个元素是通过JavaScript动态添加的。需要使用刷新按钮来更新动画观察。</p>
+                    `;
+                    container.appendChild(element);
+                    counter++;
+                    console.log('已添加新元素');
+                });
+                
+                refreshButton.addEventListener('click', function() {
+                    // 刷新所有动画观察器
+                    if (scrollAnim && scrollAnim.refresh) scrollAnim.refresh();
+                    if (fadeUpAnim && fadeUpAnim.refresh) fadeUpAnim.refresh();
+                    if (fadeDownAnim && fadeDownAnim.refresh) fadeDownAnim.refresh();
+                    if (fadeLeftAnim && fadeLeftAnim.refresh) fadeLeftAnim.refresh();
+                    if (fadeRightAnim && fadeRightAnim.refresh) fadeRightAnim.refresh();
+                    if (zoomInAnim && zoomInAnim.refresh) zoomInAnim.refresh();
+                    
+                    console.log('已刷新动画观察器');
+                    alert('已刷新动画观察器！新添加的元素现在会显示动画效果。');
+                });
+                
+                console.log('初始化完成：动态元素功能已设置');
+            } else {
+                console.error('找不到必要的DOM元素');
+            }
+        });
+        
+        // 添加调试信息
+        console.log('滚动动画测试页面已加载');
+    </script>
+</body>
+</html>
