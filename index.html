@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>课堂助手 - 你的学习管理伙伴</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <!-- 不再引入侧边栏CSS，由组件自动加载 -->    <!-- 添加页脚样式 -->
+    <!-- 不再引入侧边栏CSS，由组件自动加载 -->
+    <!-- 添加页脚样式 -->
     <link rel="stylesheet" href="components/footer/footer.css" />
     <!-- 添加滚动动画样式 -->
-    <link rel="stylesheet" href="components/scrollAnimation/scrollAnimation.css" />
+    <link
+      rel="stylesheet"
+      href="components/scrollAnimation/scrollAnimation.css"
+    />
     <!-- 添加主题样式 -->
     <link rel="stylesheet" href="css/themes/themes.css" />
     <!-- 使用图标库 -->
@@ -49,9 +53,9 @@
               课堂助手帮你管理课程安排、记录学习进度、提醒考试日期，让你专注于学习本身。
             </p>
             <div class="hero-buttons animate-on-scroll fade-up delay-200">
-              <a href="schedule.html" class="btn">查看我的课表</a>
+              <a href="pages/schedule.html" class="btn">查看我的课表</a>
               <a
-                href="countdown.html"
+                href="pages/countdown.html"
                 class="btn btn-outline"
                 style="
                   background-color: rgba(255, 255, 255, 0.2);
@@ -80,7 +84,7 @@
               <p class="feature-text">
                 轻松创建和自定义你的课表，可视化地展示每周课程安排，并支持导出和分享功能。
               </p>
-              <a href="schedule.html" class="feature-link">
+              <a href="pages/schedule.html" class="feature-link">
                 管理我的课表 <i class="fas fa-arrow-right"></i>
               </a>
             </div>
@@ -94,7 +98,7 @@
               <p class="feature-text">
                 记录并分析你的考试和作业成绩，计算GPA和平均分，生成直观的成绩趋势图表。
               </p>
-              <a href="grades.html" class="feature-link">
+              <a href="pages/grades.html" class="feature-link">
                 管理我的成绩 <i class="fas fa-arrow-right"></i>
               </a>
             </div>
@@ -108,7 +112,7 @@
               <p class="feature-text">
                 设置重要的考试日期，系统会自动计算剩余时间并提醒你，确保你的备考计划有条不紊。
               </p>
-              <a href="countdown.html" class="feature-link">
+              <a href="pages/countdown.html" class="feature-link">
                 查看考试倒计时 <i class="fas fa-arrow-right"></i>
               </a>
             </div>
@@ -122,7 +126,7 @@
               <p class="feature-text">
                 定制你的个人学习资料，包括专业、课程喜好等信息，让系统为你提供更个性化的服务。
               </p>
-              <a href="profile.html" class="feature-link">
+              <a href="pages/profile.html" class="feature-link">
                 编辑个人资料 <i class="fas fa-arrow-right"></i>
               </a>
             </div>
@@ -135,7 +139,7 @@
               <p class="feature-text">
                 根据个人喜好调整界面主题、语言选择等，让使用体验更符合你的习惯。
               </p>
-              <a href="settings.html" class="feature-link">
+              <a href="pages/settings.html" class="feature-link">
                 调整设置 <i class="fas fa-arrow-right"></i>
               </a>
             </div>
@@ -149,7 +153,7 @@
               <p class="feature-text">
                 用简短评价和表情记录你对课程的感受，轻松分享你的课堂体验和反馈。
               </p>
-              <a href="lesson.html" class="feature-link">
+              <a href="pages/lesson.html" class="feature-link">
                 记录课程评价 <i class="fas fa-arrow-right"></i>
               </a>
             </div>
@@ -185,7 +189,7 @@
             无需注册，立即开始管理你的学习，只需选择你想使用的功能，即可体验课堂助手带来的便利。
           </p>
           <a
-            href="schedule.html"
+            href="pages/schedule.html"
             class="btn animate-on-scroll fade-up delay-200"
             >开始使用</a
           >
@@ -203,7 +207,8 @@
       document.addEventListener("DOMContentLoaded", function () {
         const sidebar = new Sidebar("sidebar-container");
       });
-    </script>    <!-- 添加页脚脚本 -->
+    </script>
+    <!-- 添加页脚脚本 -->
     <script type="module" src="components/footer/footer.js"></script>
     <!-- 添加滚动动画脚本 -->
     <script src="components/scrollAnimation/scrollAnimation.js"></script>
