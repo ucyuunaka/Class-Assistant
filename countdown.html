@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/sidebar.css" />
     <!-- 添加页脚样式 -->
-    <link rel="stylesheet" href="css/footer.css" />
+    <link rel="stylesheet" href="components/footer/footer.css" />
     <!-- 添加滚动动画样式 -->
     <link rel="stylesheet" href="css/scrollAnimation.css" />
     <!-- 添加主题样式 -->
@@ -231,6 +231,31 @@
                 <i class="fas fa-edit"></i> 编辑
               </button>
               <button
+                <div class="countdown-item distant animate-on-scroll fade-up delay-200">
+          <div class="status-badge status-distant">较远</div>
+          <div class="countdown-main">
+            <h3 class="countdown-title">操作系统期末考试</h3>
+            <div class="countdown-details">
+              <div>
+                <span class="countdown-detail-label">科目：</span>操作系统原理
+              </div>
+              <div>
+                <span class="countdown-detail-label">时间：</span>2025年5月15日
+                10:00
+              </div>
+              <div>
+                <span class="countdown-detail-label">地点：</span>教学楼A-501
+              </div>
+              <div>
+                <span class="countdown-detail-label">备注：</span
+                >考试范围全书，需重点复习进程管理和内存管理
+              </div>
+            </div>
+            <div class="countdown-actions">
+              <button class="btn btn-outline edit-btn">
+                <i class="fas fa-edit"></i> 编辑
+              </button>
+              <button
                 class="btn btn-outline delete-btn"
                 style="color: var(--danger-color)"
               >
@@ -354,7 +379,7 @@
     <script src="js/main.js"></script>
     <script src="js/sidebar.js"></script>
     <!-- 添加页脚脚本 -->
-    <script src="js/footer.js"></script>
+    <script type="module" src="components/footer/footer.js"></script>
     <!-- 添加滚动动画脚本 -->
     <script src="js/scrollAnimation.js"></script>
     <!-- 添加主题管理脚本 -->
