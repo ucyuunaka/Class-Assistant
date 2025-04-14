@@ -10,6 +10,8 @@ window.Modal = {
   
   // 创建并显示基本模态弹窗
   show: function(options) {
+    console.log('正在创建模态框...');
+    
     // 基本配置
     const config = Object.assign({
       title: '提示',
@@ -98,14 +100,13 @@ window.Modal = {
       id: modalId,
       element: modalEl
     };
-    
-    // 阻止背景滚动
+      // 阻止背景滚动
     document.body.style.overflow = 'hidden';
 
     // 延迟一帧添加active类，确保过渡动画正常
     requestAnimationFrame(() => {
-      console.log(`[Modal] Adding .active class to ${modalEl.id}`); // Debug log
       modalEl.classList.add('active');
+      console.log(`✅ 模态框（ID: ${modalId}）创建并显示成功！`);
     });
     
     // 调用打开回调
@@ -118,23 +119,25 @@ window.Modal = {
     
     return modalId;
   },
-  
-  // 关闭当前模态弹窗
+    // 关闭当前模态弹窗
   close: function() {
     if (!this.activeModal) return;
     
+    console.log('正在关闭模态框...');
     const modalEl = this.activeModal.element;
+    const modalId = this.activeModal.id;
     
     // 移除active类
     modalEl.classList.remove('active');
     
     // 解绑ESC关闭
     document.removeEventListener('keydown', this._handleEscKey);
-    
-    // 等待过渡动画完成后移除元素
+      // 等待过渡动画完成后移除元素
     setTimeout(() => {
       modalEl.remove();
       document.body.style.overflow = '';
+      
+      console.log(`✅ 模态框（ID: ${modalId}）已成功关闭`);
       
       // 调用关闭回调
       if (this._onClose) {

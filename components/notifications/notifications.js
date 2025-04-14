@@ -7,11 +7,16 @@
  * 初始化通知容器
  */
 function initNotificationContainer() {
+  console.log('正在初始化通知组件容器...');
+  
   // 检查是否已有通知容器
   if (!document.querySelector('.notification-container')) {
     const container = document.createElement('div');
     container.className = 'notification-container';
     document.body.appendChild(container);
+    console.log('✅ 通知组件容器初始化成功！');
+  } else {
+    console.log('✅ 通知组件容器已存在，无需重复初始化');
   }
 }
 

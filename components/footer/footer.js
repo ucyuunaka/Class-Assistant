@@ -46,10 +46,12 @@ class Footer {
             throw new Error('无法加载页脚模板');
           }
           return response.text();
-        })
-        .then(html => {
+        })        .then(html => {
           // 插入页脚内容
           footer.innerHTML = `<div class="container">${html}</div>`;
+          
+          // 添加成功加载的提示
+          console.log('✅ 页脚加载成功！');
           
           // 更新年份
           this.updateCurrentYear();

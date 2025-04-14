@@ -13,6 +13,8 @@
  * @returns {Object} - 返回控制对象，包含refresh和disconnect方法
  */
 function initScrollAnimation(selector = '.animate-on-scroll', options = {}) {
+  console.log('正在初始化滚动动画组件...');
+  
   const defaultOptions = {
     threshold: 0.1, // 默认当元素10%可见时触发
     activeClass: 'active',
@@ -30,6 +32,8 @@ function initScrollAnimation(selector = '.animate-on-scroll', options = {}) {
     console.warn(`没有找到与选择器 "${selector}" 匹配的元素`);
     return;
   }
+  
+  console.log(`找到 ${elements.length} 个滚动动画元素`);
   
   // 创建IntersectionObserver
   const observer = new IntersectionObserver(
@@ -53,11 +57,12 @@ function initScrollAnimation(selector = '.animate-on-scroll', options = {}) {
       threshold: settings.threshold,
     }
   );
-
   // 开始观察所有元素
   elements.forEach((element) => {
     observer.observe(element);
   });
+  
+  console.log('✅ 滚动动画组件初始化成功！');
   
   return {
     // 提供方法手动刷新（例如在动态添加元素后）

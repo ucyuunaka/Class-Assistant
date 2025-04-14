@@ -62,8 +62,7 @@ class Sidebar {
     
     // 创建侧边栏悬停遮罩层元素
     this.createOverlay();
-      
-    // 确定正确的HTML模板路径
+        // 确定正确的HTML模板路径
     let htmlPath = './components/sidebar/sidebar.html';
     
     // 如果在测试环境
@@ -75,6 +74,9 @@ class Sidebar {
       htmlPath = '../components/sidebar/sidebar.html';
     }
     
+    // 加载开始提示
+    console.log('正在加载侧边栏，路径:', htmlPath);
+    
     // 加载侧边栏内容
     fetch(htmlPath)
       .then(response => {
@@ -82,10 +84,12 @@ class Sidebar {
           throw new Error('无法加载侧边栏模板');
         }
         return response.text();
-      })
-      .then(html => {
+      })      .then(html => {
         // 插入侧边栏内容
         this.container.innerHTML = html;
+        
+        // 成功加载提示
+        console.log('✅ 侧边栏加载成功！');
         
         // 初始化侧边栏功能
         this.initSidebar();
