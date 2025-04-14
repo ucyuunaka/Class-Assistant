@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>设置 - 课堂助手</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/sidebar.css" />
+    <!-- 不再引入侧边栏CSS，由组件自动加载 -->
     <!-- 添加页脚样式 -->
     <link rel="stylesheet" href="components/footer/footer.css" />
     <!-- 添加滚动动画样式 -->
@@ -26,103 +26,8 @@
     <link rel="stylesheet" href="css/pages/settings.css" />
   </head>
   <body>
-    <!-- 侧边栏导航 -->
-    <aside class="sidebar">
-      <!-- 按钮组 -->
-      <div class="sidebar-btn">
-        <div class="sidebar-btn-item"></div>
-        <div class="sidebar-btn-item"></div>
-        <div class="sidebar-btn-item"></div>
-      </div>
-
-      <!-- 用户资料 -->
-      <div class="sidebar-profile">
-        <div class="sidebar-profile-img">
-          <img
-            src="https://randomuser.me/api/portraits/men/32.jpg"
-            alt="用户头像"
-          />
-        </div>
-        <div class="sidebar-profile-text">
-          <p>欢迎使用</p>
-          <h2>课堂助手</h2>
-        </div>
-      </div>
-
-      <div class="sidebar-line"></div>
-
-      <!-- 主菜单 -->
-      <div class="sidebar-title">
-        <p>主菜单</p>
-      </div>
-
-      <div class="sidebar-menu">
-        <div class="sidebar-item" data-href="index.html">
-          <div class="sidebar-light"></div>
-          <div class="sidebar-icon-left"><i class="ri-home-line"></i></div>
-          <div class="sidebar-text">首页</div>
-          <div class="sidebar-icon-right">
-            <i class="ri-dashboard-line"></i>
-          </div>
-        </div>
-
-        <div class="sidebar-item" data-href="schedule.html">
-          <div class="sidebar-light"></div>
-          <div class="sidebar-icon-left"><i class="ri-calendar-line"></i></div>
-          <div class="sidebar-text">课表</div>
-          <div class="sidebar-icon-right">
-            <i class="ri-arrow-right-s-line"></i>
-          </div>
-        </div>
-
-        <div class="sidebar-item" data-href="grades.html">
-          <div class="sidebar-light"></div>
-          <div class="sidebar-icon-left"><i class="ri-bar-chart-line"></i></div>
-          <div class="sidebar-text">成绩管理</div>
-          <div class="sidebar-icon-right">
-            <i class="ri-arrow-right-s-line"></i>
-          </div>
-        </div>
-
-        <div class="sidebar-item" data-href="countdown.html">
-          <div class="sidebar-light"></div>
-          <div class="sidebar-icon-left"><i class="ri-time-line"></i></div>
-          <div class="sidebar-text">考试倒计时</div>
-          <div class="sidebar-icon-right">
-            <i class="ri-arrow-right-s-line"></i>
-          </div>
-        </div>
-      </div>
-
-      <div class="sidebar-line"></div>
-
-      <!-- 个人中心 -->
-      <div class="sidebar-title">
-        <p>个人中心</p>
-      </div>
-
-      <div class="sidebar-menu">
-        <div class="sidebar-item" data-href="profile.html">
-          <div class="sidebar-light"></div>
-          <div class="sidebar-icon-left"><i class="ri-user-line"></i></div>
-          <div class="sidebar-text">个人资料</div>
-          <div class="sidebar-icon-right">
-            <i class="ri-arrow-right-s-line"></i>
-          </div>
-        </div>
-
-        <div class="sidebar-item active" data-href="settings.html">
-          <div class="sidebar-light"></div>
-          <div class="sidebar-icon-left">
-            <i class="ri-settings-3-line"></i>
-          </div>
-          <div class="sidebar-text">设置</div>
-          <div class="sidebar-icon-right">
-            <i class="ri-settings-3-line"></i>
-          </div>
-        </div>
-      </div>
-    </aside>
+    <!-- 侧边栏导航 - 使用ID以便组件初始化 -->
+    <div id="sidebar-container"></div>
 
     <!-- 移动端菜单切换按钮 -->
     <div class="sidebar-toggle">
@@ -445,7 +350,14 @@
     <!-- 页脚 - 简化为只保留容器 -->
     <footer class="footer"></footer>
     <script src="js/main.js"></script>
-    <script src="js/sidebar.js"></script>
+    <!-- 引入新的侧边栏组件 -->
+    <script src="components/sidebar/sidebar.js"></script>
+    <!-- 初始化侧边栏组件 -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = new Sidebar("sidebar-container");
+      });
+    </script>
     <!-- 添加页脚脚本 -->
     <script type="module" src="components/footer/footer.js"></script>
     <!-- 添加滚动动画脚本 -->
