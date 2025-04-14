@@ -317,7 +317,16 @@
     <div id="password-modal" class="modal">
       <div class="modal-content animate-on-scroll zoom-in">
         <span class="close-btn" id="close-password-modal">&times;</span>
-        <h2>修改密码</h2>        <form id="password-form">
+        <h2>修改密码</h2>
+        <form id="password-form">
+          <!-- 添加隐藏的用户名字段用于提高可访问性 -->
+          <input
+            type="hidden"
+            id="username"
+            name="username"
+            autocomplete="username"
+            value="current-user"
+          />
           <div class="form-group">
             <label for="current-password" class="form-label">当前密码</label>
             <input
