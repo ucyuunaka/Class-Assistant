@@ -12,13 +12,43 @@ class Footer {
    */
   init() {
     document.addEventListener('DOMContentLoaded', () => {
+      // 添加页脚样式
+      this.loadStyles();
+      // 加载页脚内容
       this.loadFooter();
     });
+  }
+  
+  /**
+   * 加载页脚样式
+   */
+  loadStyles() {
+    // 检查是否已经加载了样式
+    if (!document.querySelector('link[href*="footer.css"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      
+      // 使用相对于网站根目录的路径
+      let rootPath = './components/footer/footer.css';
+      
+      // 如果在测试环境
+      if (window.location.pathname.includes('/components/tests/')) {
+        rootPath = '../../components/footer/footer.css';
+      } 
+      // 如果在pages子文件夹
+      else if (window.location.pathname.includes('/pages/')) {
+        rootPath = '../components/footer/footer.css';
+      }
+        link.href = rootPath;
+      document.head.appendChild(link);
+      console.log('✅ 页脚CSS样式已自动加载');
+    }
   }
 
   /**
    * 加载页脚内容
-   */  loadFooter() {
+   */  
+  loadFooter() {
     // 查找页脚元素
     const footer = document.querySelector('.footer');
     
