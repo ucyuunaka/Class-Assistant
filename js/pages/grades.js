@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const credit = creditInput.value;
         const examDate = examDateInput.value;
 
-
         // 创建新行
         const newRow = document.createElement("tr");
 
@@ -101,7 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
             addGradeForm.style.display = "none";
             addGradeBtn.style.display = "inline-block";
         }
-
 
         // 重新计算统计信息和更新图表
         updateStatistics();
@@ -171,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
           fill: false,
           tension: 0.2,
           borderDash: [5, 5],
-          yAxisID: 'y1', // Ensure a secondary axis is configured if needed
+          yAxisID: 'y1',
         },
       ],
     };
@@ -185,15 +183,13 @@ document.addEventListener("DOMContentLoaded", function () {
         scales: {
           y: {
             beginAtZero: false,
-            // Example for secondary axis if needed
-            // position: 'left',
           },
-          y1: { // Configuration for the secondary axis
+          y1: {
               type: 'linear',
               display: true,
               position: 'right',
               grid: {
-                  drawOnChartArea: false, // only want the grid lines for the primary axis
+                  drawOnChartArea: false,
               },
               beginAtZero: true,
           }
@@ -261,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         plugins: {
             legend: {
-                display: false // Radar charts often look better without a legend for single datasets
+                display: false
             }
         }
       },
@@ -302,16 +298,16 @@ document.addEventListener("DOMContentLoaded", function () {
           label: "历史最高分",
           data: [98, 100, 95, 97, 99, 96, 94, 97, 100, 98, 93, 96],
           backgroundColor: "rgba(15, 157, 88, 0.7)",
-          borderColor: "rgba(15, 157, 88, 1)", // Added border color for line type
+          borderColor: "rgba(15, 157, 88, 1)",
           borderWidth: 1,
-          type: 'line', // Specify type for this dataset
-          fill: false // Line charts usually don't fill
+          type: 'line',
+          fill: false
         }
       ],
     };
 
     new Chart(ctx, {
-      type: "bar", // Default type for the chart
+      type: "bar",
       data: data,
       options: {
         responsive: true,

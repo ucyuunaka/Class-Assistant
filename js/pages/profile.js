@@ -13,9 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const editBasicInfoBtn = document.getElementById("edit-basic-info");
   const saveBasicInfoBtn = document.getElementById("save-basic-info");
   const cancelBasicInfoBtn = document.getElementById("cancel-basic-info");
-  const saveBasicInfoBtnGroup = document.getElementById(
-    "save-basic-info-btn-group"
-  );
+  const saveBasicInfoBtnGroup = document.getElementById("save-basic-info-btn-group");
   const basicInfoInputs = document.querySelectorAll("#basic-info-form input");
 
   // 保存原始值，用于取消时恢复
@@ -40,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cancelBasicInfoBtn.addEventListener("click", function () {
       // 恢复原始值并禁用输入框
       basicInfoInputs.forEach((input) => {
-        input.value = originalBasicInfoValues[input.id] || ""; // Use fallback if original value wasn't saved
+        input.value = originalBasicInfoValues[input.id] || "";
         input.disabled = true;
       });
 
@@ -74,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
       // 显示成功消息
-      displaySaveMessage("基本信息已更新"); // Use notification
+      displaySaveMessage("基本信息已更新");
     });
   }
 
@@ -109,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cancelEducationBtn.addEventListener("click", function () {
       // 恢复原始值并禁用输入框
       educationInputs.forEach((input) => {
-        input.value = originalEducationValues[input.id] || ""; // Use fallback
+        input.value = originalEducationValues[input.id] || "";
         input.disabled = true;
       });
 
@@ -135,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (editEducationBtn) editEducationBtn.style.display = "block";
 
       // 显示成功消息
-      displaySaveMessage("教育经历已更新"); // Use notification
+      displaySaveMessage("教育经历已更新");
     });
   }
 
@@ -158,63 +156,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 修改密码
   const changePasswordBtn = document.getElementById("change-password-btn");
-  // const passwordModal = document.getElementById("password-modal"); // Removed: Element doesn't exist
-  // const closePasswordModal = document.getElementById( // Removed: Element doesn't exist
-  //   "close-password-modal"
-  // );
-  // const cancelPasswordBtn = document.getElementById("cancel-password"); // Removed: Element doesn't exist
-  // const passwordForm = document.getElementById("password-form"); // Removed: Element doesn't exist
 
-  // 打开密码模态框 (Replaced with notification)
+  // 打开密码模态框
   if (changePasswordBtn) {
     changePasswordBtn.addEventListener("click", function () {
-      // passwordModal.style.display = "flex"; // Removed
-      showNotification("“修改密码”功能暂未实现", "info"); // Added notification
+      showNotification("“修改密码”功能暂未实现", "info");
     });
   }
-
-  // // 关闭密码模态框 (Removed: No modal)
-  // function closePasswordModal() {
-  //   passwordModal.style.display = "none";
-  //   passwordForm.reset();
-  // }
-
-  // closePasswordModal.addEventListener("click", closePasswordModal); // Removed
-  // cancelPasswordBtn.addEventListener("click", closePasswordModal); // Removed
-
-  // // 点击外部关闭模态框 (Removed: No modal/form)
-  // window.addEventListener("click", function (event) {
-  //   if (event.target === passwordModal) {
-  //     closePasswordModal();
-  //   }
-  // });
-
-  // // 密码表单提交 (Removed: No modal/form)
-  // passwordForm.addEventListener("submit", function (e) {
-  //   e.preventDefault();
-
-  //   const currentPassword =
-  //     document.getElementById("current-password").value;
-  //   const newPassword = document.getElementById("new-password").value;
-  //   const confirmPassword = document.getElementById("confirm-password").value;
-
-  //   // 基本验证
-  //   if (newPassword !== confirmPassword) {
-  //     showNotification("新密码和确认密码不匹配", "error");
-  //     return;
-  //   }
-  //   if (newPassword.length < 6) {
-  //     showNotification("新密码长度至少为6位", "warning");
-  //     return;
-  //   }
-
-  //   // 在实际应用中，这里会发送请求到服务器验证当前密码并更新
-  //   console.log("Current:", currentPassword, "New:", newPassword);
-
-  //   // 模拟成功
-  //   showNotification("密码修改成功", "success");
-  //   closePasswordModal(); // 关闭模态框
-  // });
 
   // 更换手机号
   const changePhoneBtn = document.getElementById("change-phone-btn");
@@ -224,16 +172,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Helper function to use showNotification if available
   function displaySaveMessage(message, type = "success") {
     if (typeof showNotification === "function") {
       showNotification(message, type);
     } else {
-      alert(message); // Fallback if showNotification is not loaded
+      alert(message);
     }
   }
-
-  // Ensure showNotification is defined globally or imported if needed
-  // Example: Assuming showNotification is defined in main.js or similar
-  // Make sure main.js is loaded before profile.js
 });

@@ -5,16 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
     once: true,
   });
 
-  // --- Start Refactored Code ---
-
-  // Exam data (can be loaded from localStorage or API later)
   let exams = Storage.get("exams", [
-    // Initial example data if localStorage is empty
     {
       id: 1,
       name: "数据结构期末考试",
       subject: "数据结构与算法",
-      date: "2025-04-17T09:00:00", // Adjusted date for demo
+      date: "2025-04-17T09:00:00",
       location: "教学楼B-303",
       notes: "考试范围为教材第1-10章，开卷考试",
     },
@@ -51,9 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const sortSelect = document.getElementById("sort-select");
   const filterSelect = document.getElementById("filter-select");
 
-  let countdownInterval; // To store the interval ID
-
-  // --- Utility Functions ---
+  let countdownInterval;
 
   function saveExams() {
     Storage.save("exams", exams);
@@ -64,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const diffDays = Math.ceil(
       (new Date(examDate) - now) / (1000 * 60 * 60 * 24)
     );
-    if (diffDays <= 0) return "past"; // Added past status
+    if (diffDays <= 0) return "past";
     if (diffDays <= 7) return "urgent";
     if (diffDays <= 30) return "upcoming";
     return "distant";
@@ -101,10 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // --- Rendering Function ---
-
   function renderExamList(filteredExams) {
-    countdownList.innerHTML = ""; // Clear existing list
+    countdownList.innerHTML = "";
 
     if (!filteredExams || filteredExams.length === 0) {
       emptyState.style.display = "block";
@@ -121,15 +113,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const statusInfo = getStatusInfo(status);
 
       const item = document.createElement("div");
-      item.className = `countdown-item animate-on-scroll fade-up ${status}`; // Add status class for potential styling
+      item.className = `countdown-item animate-on-scroll fade-up ${status}`;
       item.style.borderLeft = `4px solid ${statusInfo.borderColor}`;
-      item.dataset.examId = exam.id; // Use data attribute
+      item.dataset.examId = exam.id;
 
       const countdownValues = calculateCountdown(examDate);
 
-      // Calculate progress (e.g., based on total time from now to exam vs total time span like 60 days)
-      // This is a simplified progress example, adjust as needed
-      const totalSpan = 60 * 24 * 60 * 60 * 1000; // Example: 60 days
+      const totalSpan = 60 * 24 * 60 * 60 * 1000;
       const timeRemaining = Math.max(0, examDate - new Date());
       const progressPercent = Math.max(
         0,
@@ -209,13 +199,11 @@ document.addEventListener("DOMContentLoaded", function () {
       countdownList.appendChild(item);
     });
 
-    // Re-initialize scroll animations for newly added elements
     initScrollAnimation(".animate-on-scroll", {
       threshold: 0.1,
       once: true,
     });
 
-    // Add event listeners for edit/delete buttons
     countdownList.querySelectorAll(".edit-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         const itemId = e.target.closest(".countdown-item").dataset.examId;
@@ -229,11 +217,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-    // Start or restart the countdown interval
     startCountdownTimer();
   }
-
-  // --- Countdown Timer Update ---
 
   function updateCountdowns() {
     const items = countdownList.querySelectorAll(".countdown-item");
@@ -267,10 +252,9 @@ document.addEventListener("DOMContentLoaded", function () {
           "0"
         );
 
-      // Update progress bar (optional, can be intensive)
       const progressBar = item.querySelector(".progress-fill");
       if (progressBar) {
-        const totalSpan = 60 * 24 * 60 * 60 * 1000; // Example: 60 days
+        const totalSpan = 60 * 24 * 60 * 60 * 1000;
         const timeRemaining = Math.max(0, examDate - new Date());
         const progressPercent = Math.max(
           0,
@@ -282,12 +266,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function startCountdownTimer() {
-    clearInterval(countdownInterval); // Clear existing interval if any
-    updateCountdowns(); // Update immediately
-    countdownInterval = setInterval(updateCountdowns, 1000); // Update every second
+    clearInterval(countdownInterval);
+    updateCountdowns();
+    countdownInterval = setInterval(updateCountdowns, 1000);
   }
-
-  // --- Modal Handling ---
 
   function openAddExamModal() {
     modalTitle.textContent = "添加考试";
@@ -332,8 +314,6 @@ document.addEventListener("DOMContentLoaded", function () {
     examModal.style.display = "none";
   }
 
-  // --- Event Listeners ---
-
   addExamBtn.addEventListener("click", openAddExamModal);
   addExamEmptyBtn.addEventListener("click", openAddExamModal);
   closeExamModalBtn.addEventListener("click", closeExamModal);
@@ -342,7 +322,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (event.target === examModal) closeExamModal();
   });
 
-  // Form Submission
   examForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -360,14 +339,12 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     if (examId) {
-      // Update
       const index = exams.findIndex((e) => e.id === parseInt(examId));
       if (index !== -1) {
         exams[index] = { ...exams[index], ...examData };
         showNotification("考试信息已更新", "success");
       }
     } else {
-      // Add
       examData.id =
         exams.length > 0 ? Math.max(...exams.map((e) => e.id)) + 1 : 1;
       exams.push(examData);
@@ -375,14 +352,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     saveExams();
-    applyFiltersAndSort(); // Re-render the list
+    applyFiltersAndSort();
     closeExamModal();
   });
 
-  // Delete Exam
-  // Make deleteExam globally accessible IF NEEDED, otherwise handle via event listeners added in renderExamList
   window.deleteExam = function (examId) {
-    // Keep if onclick="" is used, otherwise remove
     if (confirm("确定要删除这个考试吗？")) {
       exams = exams.filter((e) => e.id !== examId);
       saveExams();
@@ -391,14 +365,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  // Filtering and Sorting
   function applyFiltersAndSort() {
     let processedExams = [...exams];
     const searchTerm = searchInput.value.toLowerCase();
     const filterValue = filterSelect.value;
     const sortValue = sortSelect.value;
 
-    // Filter by Search Term
     if (searchTerm) {
       processedExams = processedExams.filter(
         (exam) =>
@@ -410,7 +382,6 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     }
 
-    // Filter by Status
     if (filterValue !== "all") {
       if (filterValue === "past") {
         // Handle 'past' filter
@@ -424,7 +395,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Sort
     processedExams.sort((a, b) => {
       const dateA = new Date(a.date);
       const dateB = new Date(b.date);
@@ -452,18 +422,14 @@ document.addEventListener("DOMContentLoaded", function () {
   sortSelect.addEventListener("change", applyFiltersAndSort);
   filterSelect.addEventListener("change", applyFiltersAndSort);
 
-  // --- Initial Load ---
   initScrollAnimation(".animate-on-scroll", {
     threshold: 0.1,
     once: true,
-  }); // Initialize scroll animation first
-  applyFiltersAndSort(); // Initial render of the list
+  });
+  applyFiltersAndSort();
 
-  // Add 'past' option to filter dropdown
   const pastOption = document.createElement("option");
   pastOption.value = "past";
   pastOption.textContent = "已结束";
   filterSelect.appendChild(pastOption);
-
-  // --- End Refactored Code ---
 });
