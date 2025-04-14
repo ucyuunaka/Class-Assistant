@@ -56,6 +56,9 @@ class Footer {
           
           // 高亮当前页面链接
           this.highlightCurrentPage();
+          
+          // 添加链接点击事件处理
+          this.setupLinkNavigation();
         })
         .catch(error => {
           console.error('页脚加载失败:', error);
@@ -87,6 +90,39 @@ class Footer {
         link.style.fontWeight = '600';
         link.style.color = 'var(--primary-color)';
       }
+    });
+  }
+  
+  /**
+   * 设置页脚链接的导航功能
+   */
+  setupLinkNavigation() {
+    const footerLinks = document.querySelectorAll('.footer-links a');
+    
+    footerLinks.forEach(link => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        
+        // 获取原始链接
+        const href = link.getAttribute('href');
+        
+        // 构建最终的目标URL
+        let targetUrl = href;
+        
+        // 如果当前页面在pages目录中且链接以"pages/"开头
+        if (window.location.pathname.includes('/pages/') && href.startsWith('pages/')) {
+          // 将路径修改为相对于pages目录的路径
+          targetUrl = href.replace('pages/', './');
+        } 
+        // 如果当前在pages目录且链接是index.html
+        else if (window.location.pathname.includes('/pages/') && href === 'index.html') {
+          // 返回上一级目录的index.html
+          targetUrl = '../index.html';
+        }
+        
+        // 页面跳转
+        window.location.href = targetUrl;
+      });
     });
   }
 }

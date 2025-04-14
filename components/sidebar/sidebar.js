@@ -29,6 +29,7 @@ class Sidebar {
     // 加载侧边栏HTML内容
     this.loadSidebarContent();
   }
+  
   /**
    * 加载侧边栏样式
    */  loadStyles() {
