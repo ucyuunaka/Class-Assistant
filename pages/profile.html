@@ -317,14 +317,14 @@
     <div id="password-modal" class="modal">
       <div class="modal-content animate-on-scroll zoom-in">
         <span class="close-btn" id="close-password-modal">&times;</span>
-        <h2>修改密码</h2>
-        <form id="password-form">
+        <h2>修改密码</h2>        <form id="password-form">
           <div class="form-group">
             <label for="current-password" class="form-label">当前密码</label>
             <input
               type="password"
               id="current-password"
               class="form-control"
+              autocomplete="current-password"
               required
             />
           </div>
@@ -334,6 +334,7 @@
               type="password"
               id="new-password"
               class="form-control"
+              autocomplete="new-password"
               required
             />
           </div>
@@ -343,6 +344,7 @@
               type="password"
               id="confirm-password"
               class="form-control"
+              autocomplete="new-password"
               required
             />
           </div>

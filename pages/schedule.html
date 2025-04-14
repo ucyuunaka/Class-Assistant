@@ -296,6 +296,12 @@
     <!-- 页脚 - 简化为只保留容器 -->
     <footer class="footer"></footer>
     <script src="../js/main.js"></script>
+    <!-- 引入课表数据 -->
+    <script type="module">
+      import { scheduleData } from "../js/data/schedule_data.js";
+      // 将模块中的数据设置为全局变量，以便main.js可以访问
+      window.scheduleData = scheduleData;
+    </script>
     <!-- 引入新的侧边栏组件 -->
     <script src="../components/sidebar/sidebar.js"></script>
     <!-- 初始化侧边栏组件 -->
