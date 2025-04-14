@@ -134,8 +134,17 @@ class Sidebar {
         // 获取链接地址
         const link = item.getAttribute('data-href');
         if (link) {
+          // 根据当前页面位置确定正确的链接路径
+          let targetUrl = link;
+          
+          // 如果当前页面在pages目录中且链接以"pages/"开头
+          if (window.location.pathname.includes('/pages/') && link.startsWith('pages/')) {
+            // 将路径修改为相对于pages目录的路径
+            targetUrl = link.replace('pages/', './');
+          }
+          
           // 页面跳转
-          window.location.href = link;
+          window.location.href = targetUrl;
         }
       });
     });
