@@ -30,7 +30,8 @@
     <!-- 移动端菜单切换按钮 -->
     <div class="sidebar-toggle">
       <i class="ri-menu-line"></i>
-    </div>    <!-- 移动端遮罩层 -->
+    </div>
+    <!-- 移动端遮罩层 -->
     <div class="sidebar-overlay"></div>
 
     <!-- 主内容区 -->
@@ -346,23 +347,30 @@
 
     <!-- 页脚 - 简化为只保留容器 -->
     <footer class="footer"></footer>
-    <script src="../js/main.js"></script>    <!-- 引入新的侧边栏组件 -->
+    <script src="../js/main.js"></script>
+    <!-- 引入新的侧边栏组件 -->
     <script src="../components/sidebar/sidebar.js"></script>
     <!-- 引入顶栏组件 -->
     <script src="../components/header/header.js"></script>
     <!-- 初始化侧边栏组件 -->
-    <script>      document.addEventListener("DOMContentLoaded", function () {
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
         const sidebar = new Sidebar("sidebar-container");
-        
+
         // 初始化顶栏组件
         const header = new Header("header-container", {
           isHomePage: false,
           title: "设置",
           subtitle: "自定义你的应用体验和偏好",
           buttons: [
-            { text: "重置设置", url: "#", isPrimary: false, className: "reset-settings-btn" }
+            {
+              text: "重置设置",
+              url: "#",
+              isPrimary: false,
+              className: "reset-settings-btn",
+            },
           ],
-          buttonPosition: 'right'
+          buttonPosition: "right",
         });
       });
     </script>

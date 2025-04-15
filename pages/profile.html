@@ -364,23 +364,30 @@
     </div>
     <!-- 页脚 - 简化为只保留容器 -->
     <footer class="footer"></footer>
-    <script src="../js/main.js"></script>    <!-- 引入新的侧边栏组件 -->
+    <script src="../js/main.js"></script>
+    <!-- 引入新的侧边栏组件 -->
     <script src="../components/sidebar/sidebar.js"></script>
     <!-- 引入顶栏组件 -->
     <script src="../components/header/header.js"></script>
     <!-- 初始化侧边栏组件 -->
-    <script>      document.addEventListener("DOMContentLoaded", function () {
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
         const sidebar = new Sidebar("sidebar-container");
-        
+
         // 初始化顶栏组件
         const header = new Header("header-container", {
           isHomePage: false,
           title: "个人资料",
           subtitle: "管理你的个人信息和偏好设置",
           buttons: [
-            { text: "保存修改", url: "#", isPrimary: true, className: "save-profile-btn" }
+            {
+              text: "保存修改",
+              url: "#",
+              isPrimary: true,
+              className: "save-profile-btn",
+            },
           ],
-          buttonPosition: 'right'
+          buttonPosition: "right",
         });
       });
     </script>
