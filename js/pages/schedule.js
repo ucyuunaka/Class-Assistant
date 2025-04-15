@@ -45,33 +45,17 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   const closeDeleteModal = document.getElementById("close-delete-modal");
   const cancelDelete = document.getElementById("cancel-delete");
-  const confirmDelete = document.getElementById("confirm-delete");
-  let currentCourseToDelete = null;  // 显示删除确认对话框
+  const confirmDelete = document.getElementById("confirm-delete");  let currentCourseToDelete = null;  // 显示删除确认对话框
   function showDeleteConfirm(courseId) {
     currentCourseToDelete = courseId;
     // 使用 Modal.showExisting 显示已存在的模态窗口
-    if (window.Modal && window.Modal.showExisting) {
-      window.Modal.showExisting(deleteConfirmModal);
-    } else {
-      // 兼容旧模式，以防 Modal 组件未加载
-      deleteConfirmModal.style.display = "flex";
-      // 确保模态窗口内容可见
-      document.querySelector("#delete-confirm-modal .modal-content").style.opacity = "1";
-      document.querySelector("#delete-confirm-modal .modal-content").style.transform = "scale(1)";
-      // 增加 z-index 确保显示在最上层
-      document.querySelector("#delete-confirm-modal .modal-content").style.zIndex = "10000";
-    }
+    window.Modal.showExisting(deleteConfirmModal);
   }
 
   // 隐藏删除确认对话框
   function hideDeleteConfirm() {
     // 使用 Modal.hideExisting 隐藏已存在的模态窗口
-    if (window.Modal && window.Modal.hideExisting) {
-      window.Modal.hideExisting(deleteConfirmModal);
-    } else {
-      // 兼容旧模式，以防 Modal 组件未加载
-      deleteConfirmModal.style.display = "none";
-    }
+    window.Modal.hideExisting(deleteConfirmModal);
     currentCourseToDelete = null;
   }
 
@@ -767,16 +751,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // 清除编辑状态
       delete this.dataset.editingCourseId;
     }
-  });
-  // 关闭添加/编辑课程模态框
+  });  // 关闭添加/编辑课程模态框
   function closeAddCourseModal() {
-    // 使用 Modal.hideExisting 隐藏已存在的模态窗口
-    if (window.Modal && window.Modal.hideExisting) {
-      window.Modal.hideExisting(addCourseModal);
-    } else {
-      // 兼容旧模式，以防 Modal 组件未加载
-      addCourseModal.style.display = "none";
-    }
+    // 使用 Modal.hideExisting 隐藏模态窗口
+    window.Modal.hideExisting(addCourseModal);
     
     // 重置表单状态
     addCourseForm.reset();
@@ -832,18 +810,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // 清除编辑状态
     delete addCourseForm.dataset.editingCourseId;
 
-    // 使用 Modal.showExisting 显示已存在的模态窗口
-    if (window.Modal && window.Modal.showExisting) {
-      window.Modal.showExisting(addCourseModal);
-    } else {
-      // 兼容旧模式，以防 Modal 组件未加载
-      addCourseModal.style.display = "flex";
-      // 确保模态窗口内容可见
-      document.querySelector("#add-course-modal .modal-content").style.opacity = "1";
-      document.querySelector("#add-course-modal .modal-content").style.transform = "scale(1)";
-      // 增加 z-index 确保显示在最上层
-      document.querySelector("#add-course-modal .modal-content").style.zIndex = "10000";
-    }
+    // 使用 Modal.showExisting 显示模态窗口
+    window.Modal.showExisting(addCourseModal);
   }
 
   // 新增：拖放功能设置
