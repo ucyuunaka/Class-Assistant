@@ -277,6 +277,58 @@
           name, email }); } } ], { size: "lg" } );
         </div>
       </div>
+
+      <div class="test-section">
+        <h2>现有模态窗口管理</h2>
+        <p>
+          测试管理已存在于DOM中的静态模态窗口的新功能：showExisting 和
+          hideExisting。
+        </p>
+
+        <div class="test-buttons">
+          <button id="btn-show-existing">显示静态模态窗口</button>
+          <button id="btn-show-existing-options" class="btn-primary">
+            带选项显示静态模态窗口
+          </button>
+        </div>
+
+        <div class="code-block">
+          // 显示已存在于DOM中的静态模态窗口
+          Modal.showExisting(document.getElementById('static-modal')); //
+          带选项显示已存在于DOM中的静态模态窗口
+          Modal.showExisting(document.getElementById('static-modal'), {
+          closeOnBackdrop: true, onOpen: function() {
+          console.log('静态模态窗口已打开'); }, onClose: function() {
+          console.log('静态模态窗口已关闭'); } }); //
+          隐藏已存在于DOM中的静态模态窗口
+          Modal.hideExisting(document.getElementById('static-modal'));
+        </div>
+      </div>
+
+      <!-- 静态模态窗口 - 用于测试 showExisting 和 hideExisting 方法 -->
+      <div class="modal" id="static-modal">
+        <div class="modal-content">
+          <div class="modal-close" id="close-static-modal">×</div>
+          <h2 class="mb-3">静态模态窗口</h2>
+          <p>
+            这是一个静态定义在HTML中的模态窗口，用于测试 Modal.showExisting 和
+            Modal.hideExisting 方法。
+          </p>
+          <p>该功能允许您管理已存在于DOM中的模态窗口，而不需要动态创建它们。</p>
+          <div class="text-center mt-4">
+            <button type="button" class="btn" id="confirm-static-modal">
+              确认
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline"
+              id="cancel-static-modal"
+            >
+              取消
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 主题切换按钮 -->
@@ -502,10 +554,51 @@
             );
           });
 
-        // 主题切换
-        const themeToggle = document.getElementById("theme-toggle");
-        const themeIcon = themeToggle.querySelector("i");
+        // 现有模态窗口管理
+        document
+          .getElementById("btn-show-existing")
+          .addEventListener("click", function () {
+            // 使用 Modal.showExisting 显示静态模态窗口
+            Modal.showExisting(document.getElementById("static-modal"));
+          });
 
+        document
+          .getElementById("btn-show-existing-options")
+          .addEventListener("click", function () {
+            // 带选项显示静态模态窗口
+            Modal.showExisting(document.getElementById("static-modal"), {
+              closeOnBackdrop: true,
+              onOpen: function () {
+                console.log("静态模态窗口已打开");
+              },
+              onClose: function () {
+                console.log("静态模态窗口已关闭");
+              },
+            });
+          });
+
+        // 绑定静态模态窗口的确认和取消按钮
+        document
+          .getElementById("confirm-static-modal")
+          .addEventListener("click", function () {
+            Modal.hideExisting(document.getElementById("static-modal"));
+            showSuccessModal("操作成功", "您已确认静态模态窗口的操作！");
+          });
+
+        document
+          .getElementById("cancel-static-modal")
+          .addEventListener("click", function () {
+            Modal.hideExisting(document.getElementById("static-modal"));
+          });
+
+        // 直接关闭按钮点击事件
+        document
+          .getElementById("close-static-modal")
+          .addEventListener("click", function () {
+            Modal.hideExisting(document.getElementById("static-modal"));
+          });
+
+        // 主题切换
         themeToggle.addEventListener("click", function () {
           const currentTheme =
             document.body.getAttribute("data-theme") || "light";

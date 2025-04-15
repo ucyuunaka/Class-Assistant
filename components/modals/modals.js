@@ -119,7 +119,8 @@ window.Modal = {
     
     return modalId;
   },
-    // 关闭当前模态弹窗
+  
+  // 关闭当前模态弹窗
   close: function() {
     if (!this.activeModal) return;
     
@@ -154,6 +155,131 @@ window.Modal = {
     if (e.key === 'Escape' && window.Modal.activeModal) {
       window.Modal.close();
     }
+  },
+  
+  // 显示已存在于DOM中的模态窗口
+  showExisting: function(modalElement, options = {}) {
+    console.log('正在显示已存在的模态框...');
+    
+    if (!modalElement) {
+      console.error('错误: 未提供有效的模态窗口元素');
+      return;
+    }
+    
+    // 基本配置
+    const config = Object.assign({
+      onOpen: null,
+      onClose: null,
+      closeOnBackdrop: true
+    }, options);
+    
+    // 存储当前模态弹窗引用
+    const modalId = modalElement.id || 'existing-modal-' + Date.now();
+    
+    // 如果已经有激活的模态窗口，先关闭它
+    if (this.activeModal) {
+      this.close();
+    }
+    
+    this.activeModal = {
+      id: modalId,
+      element: modalElement,
+      isExisting: true
+    };
+    
+    // 显示模态窗口
+    modalElement.style.display = 'flex';
+    
+    // 确保模态窗口内容可见
+    const contentElement = modalElement.querySelector('.modal-content');
+    if (contentElement) {
+      contentElement.style.opacity = '1';
+      contentElement.style.transform = 'scale(1)';
+      contentElement.style.zIndex = '10000';
+    }
+    
+    // 阻止背景滚动
+    document.body.style.overflow = 'hidden';
+    
+    // 绑定关闭事件
+    const closeBtn = modalElement.querySelector('.modal-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => this.hideExisting(modalElement));
+    }
+    
+    // 绑定背景点击关闭事件
+    if (config.closeOnBackdrop) {
+      const handleBackdropClick = (e) => {
+        if (e.target === modalElement) {
+          this.hideExisting(modalElement);
+        }
+      };
+      modalElement.addEventListener('click', handleBackdropClick);
+      // 存储事件处理函数以便后续移除
+      this._backdropClickHandler = handleBackdropClick;
+    }
+    
+    // 绑定ESC关闭
+    document.addEventListener('keydown', this._handleEscKey);
+    
+    // 调用打开回调
+    if (config.onOpen) {
+      config.onOpen();
+    }
+    
+    // 存储关闭回调
+    this._onExistingClose = config.onClose;
+    
+    console.log(`✅ 已存在的模态框（ID: ${modalId}）显示成功！`);
+    
+    return modalId;
+  },
+  
+  // 隐藏已存在于DOM中的模态窗口
+  hideExisting: function(modalElement) {
+    console.log('正在隐藏已存在的模态框...');
+    
+    if (!modalElement) {
+      console.error('错误: 未提供有效的模态窗口元素');
+      return;
+    }
+    
+    // 隐藏模态窗口
+    modalElement.style.display = 'none';
+    
+    // 重置模态窗口内容样式
+    const contentElement = modalElement.querySelector('.modal-content');
+    if (contentElement) {
+      // 重置内容元素样式，准备下次显示
+      contentElement.style.opacity = '';
+      contentElement.style.transform = '';
+      contentElement.style.zIndex = '';
+    }
+    
+    // 恢复背景滚动
+    document.body.style.overflow = '';
+    
+    // 解绑ESC关闭
+    document.removeEventListener('keydown', this._handleEscKey);
+    
+    // 如果存在背景点击事件，移除它
+    if (this._backdropClickHandler) {
+      modalElement.removeEventListener('click', this._backdropClickHandler);
+      this._backdropClickHandler = null;
+    }
+    
+    // 调用关闭回调
+    if (this._onExistingClose) {
+      this._onExistingClose();
+      this._onExistingClose = null;
+    }
+    
+    // 重置当前模态窗口引用
+    if (this.activeModal && this.activeModal.isExisting) {
+      this.activeModal = null;
+    }
+    
+    console.log(`✅ 已存在的模态框隐藏成功！`);
   }
 };
 

@@ -46,21 +46,32 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeDeleteModal = document.getElementById("close-delete-modal");
   const cancelDelete = document.getElementById("cancel-delete");
   const confirmDelete = document.getElementById("confirm-delete");
-  let currentCourseToDelete = null;
-  // 显示删除确认对话框
+  let currentCourseToDelete = null;  // 显示删除确认对话框
   function showDeleteConfirm(courseId) {
     currentCourseToDelete = courseId;
-    deleteConfirmModal.style.display = "flex";
-    // 确保模态窗口内容可见
-    document.querySelector("#delete-confirm-modal .modal-content").style.opacity = "1";
-    document.querySelector("#delete-confirm-modal .modal-content").style.transform = "scale(1)";
-    // 增加 z-index 确保显示在最上层
-    document.querySelector("#delete-confirm-modal .modal-content").style.zIndex = "10000";
+    // 使用 Modal.showExisting 显示已存在的模态窗口
+    if (window.Modal && window.Modal.showExisting) {
+      window.Modal.showExisting(deleteConfirmModal);
+    } else {
+      // 兼容旧模式，以防 Modal 组件未加载
+      deleteConfirmModal.style.display = "flex";
+      // 确保模态窗口内容可见
+      document.querySelector("#delete-confirm-modal .modal-content").style.opacity = "1";
+      document.querySelector("#delete-confirm-modal .modal-content").style.transform = "scale(1)";
+      // 增加 z-index 确保显示在最上层
+      document.querySelector("#delete-confirm-modal .modal-content").style.zIndex = "10000";
+    }
   }
 
   // 隐藏删除确认对话框
   function hideDeleteConfirm() {
-    deleteConfirmModal.style.display = "none";
+    // 使用 Modal.hideExisting 隐藏已存在的模态窗口
+    if (window.Modal && window.Modal.hideExisting) {
+      window.Modal.hideExisting(deleteConfirmModal);
+    } else {
+      // 兼容旧模式，以防 Modal 组件未加载
+      deleteConfirmModal.style.display = "none";
+    }
     currentCourseToDelete = null;
   }
 
@@ -757,17 +768,27 @@ document.addEventListener("DOMContentLoaded", function () {
       delete this.dataset.editingCourseId;
     }
   });
-
   // 关闭添加/编辑课程模态框
   function closeAddCourseModal() {
-    addCourseModal.style.display = "none";
-    addCourseForm.reset(); // 重置表单
+    // 使用 Modal.hideExisting 隐藏已存在的模态窗口
+    if (window.Modal && window.Modal.hideExisting) {
+      window.Modal.hideExisting(addCourseModal);
+    } else {
+      // 兼容旧模式，以防 Modal 组件未加载
+      addCourseModal.style.display = "none";
+    }
+    
+    // 重置表单状态
+    addCourseForm.reset();
+    
     // 重置颜色选择
     document.querySelector(".color-option.selected")?.classList.remove("selected");
     document.querySelector('.color-option[data-class="course-math"]').classList.add("selected");
     courseColorInput.value = "course-math";
+    
     // 重置模态框标题
     document.querySelector("#add-course-modal h2").textContent = "添加新课程";
+    
     // 清除编辑状态
     delete addCourseForm.dataset.editingCourseId;
   }
@@ -796,8 +817,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // 更新隐藏输入框的值
       courseColorInput.value = this.getAttribute("data-class");
     });
-  });
-  // 新增：创建新课程函数
+  });  // 新增：创建新课程函数
   function createNewCourse(day, time) {
     // 重置表单并设置默认值
     addCourseForm.reset();
@@ -812,13 +832,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // 清除编辑状态
     delete addCourseForm.dataset.editingCourseId;
 
-    // 显示模态框 - 修改显示方式
-    addCourseModal.style.display = "flex";
-    // 确保模态窗口内容可见
-    document.querySelector("#add-course-modal .modal-content").style.opacity = "1";
-    document.querySelector("#add-course-modal .modal-content").style.transform = "scale(1)";
-    // 增加 z-index 确保显示在最上层
-    document.querySelector("#add-course-modal .modal-content").style.zIndex = "10000";
+    // 使用 Modal.showExisting 显示已存在的模态窗口
+    if (window.Modal && window.Modal.showExisting) {
+      window.Modal.showExisting(addCourseModal);
+    } else {
+      // 兼容旧模式，以防 Modal 组件未加载
+      addCourseModal.style.display = "flex";
+      // 确保模态窗口内容可见
+      document.querySelector("#add-course-modal .modal-content").style.opacity = "1";
+      document.querySelector("#add-course-modal .modal-content").style.transform = "scale(1)";
+      // 增加 z-index 确保显示在最上层
+      document.querySelector("#add-course-modal .modal-content").style.zIndex = "10000";
+    }
   }
 
   // 新增：拖放功能设置
