@@ -174,15 +174,21 @@ document.addEventListener("DOMContentLoaded", function () {
             <div style="font-size: 2rem; color: var(--text-secondary); margin-top: 1rem;"><i class="fas fa-check-circle"></i></div>
             `}
           </div>
-        `;
-
-        countdownList.appendChild(item);
+        `;        countdownList.appendChild(item);
         
         // 添加到DOM后再添加动画类，确保顺序延迟出现
         setTimeout(() => {
           // 根据索引添加不同的延迟类
-          const delayClass = index === 0 ? '' : index === 1 ? ' delay-100' : index === 2 ? ' delay-200' : ' delay-300';
-          item.classList.add('animate-on-scroll', 'fade-up' + delayClass);
+          item.classList.add('animate-on-scroll', 'fade-up');
+          
+          // 单独添加延迟类，避免空格问题
+          if (index === 1) {
+            item.classList.add('delay-100');
+          } else if (index === 2) {
+            item.classList.add('delay-200');
+          } else if (index > 2) {
+            item.classList.add('delay-300');
+          }
           
           // 立即触发活动状态，确保动画播放
           setTimeout(() => {
@@ -294,15 +300,24 @@ document.addEventListener("DOMContentLoaded", function () {
     examModal.style.display = "none";
   }
 
-  addExamBtn.addEventListener("click", openAddExamModal);
-  addExamEmptyBtn.addEventListener("click", openAddExamModal);
-  closeExamModalBtn.addEventListener("click", closeExamModal);
-  cancelExamBtn.addEventListener("click", closeExamModal);
+  // 简洁的事件监听器添加函数
+  const addListener = (element, event, handler) => {
+    if (element) {
+      element.addEventListener(event, handler);
+    }
+  };
+
+  // 添加事件监听器
+  addListener(addExamBtn, "click", openAddExamModal);
+  addListener(addExamEmptyBtn, "click", openAddExamModal);
+  addListener(closeExamModalBtn, "click", closeExamModal);
+  addListener(cancelExamBtn, "click", closeExamModal);
+
   window.addEventListener("click", (event) => {
     if (event.target === examModal) closeExamModal();
   });
 
-  examForm.addEventListener("submit", function (e) {
+  addListener(examForm, "submit", function (e) {
     e.preventDefault();
 
     const examId = examIdInput.value;
@@ -347,9 +362,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function applyFiltersAndSort() {
     let processedExams = [...exams];
-    const searchTerm = searchInput.value.toLowerCase();
-    const filterValue = filterSelect.value;
-    const sortValue = sortSelect.value;
+    const searchTerm = searchInput ? searchInput.value.toLowerCase() : "";
+    const filterValue = filterSelect ? filterSelect.value : "all";
+    const sortValue = sortSelect ? sortSelect.value : "date-desc";
 
     if (searchTerm) {
       processedExams = processedExams.filter(
@@ -393,23 +408,33 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     renderExamList(processedExams);
+    startCountdownTimer();
   }
 
-  searchInput.addEventListener(
-    "input",
-    debounce(applyFiltersAndSort, 300)
-  );
-  sortSelect.addEventListener("change", applyFiltersAndSort);
-  filterSelect.addEventListener("change", applyFiltersAndSort);
+  // 添加事件监听器（使用前检查元素是否存在）
+  addListener(searchInput, "input", applyFiltersAndSort);
+  addListener(sortSelect, "change", applyFiltersAndSort);
+  addListener(filterSelect, "change", applyFiltersAndSort);
 
+  // 清除定时器（页面卸载时）
+  window.addEventListener("beforeunload", function () {
+    clearInterval(countdownInterval);
+  });
+
+  // 初始化滚动动画
   initScrollAnimation(".animate-on-scroll", {
     threshold: 0.1,
     once: true,
   });
+
+  // 初始渲染
   applyFiltersAndSort();
 
-  const pastOption = document.createElement("option");
-  pastOption.value = "past";
-  pastOption.textContent = "已结束";
-  filterSelect.appendChild(pastOption);
+  // 添加"已结束"选项到筛选下拉框
+  if (filterSelect) {
+    const pastOption = document.createElement("option");
+    pastOption.value = "past";
+    pastOption.textContent = "已结束";
+    filterSelect.appendChild(pastOption);
+  }
 });
