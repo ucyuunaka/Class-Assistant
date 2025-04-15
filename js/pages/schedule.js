@@ -924,16 +924,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       // 调用移动课程的函数
-      const success = moveCourse(courseId, targetDay, targetTime);
-
-      if (success) {
+      const success = moveCourse(courseId, targetDay, targetTime);      if (success) {
         // 移动成功后重新渲染课表
         renderTimetable();
         renderListView(); // 同时更新列表视图
         setupDragAndDrop(); // 重新设置拖放，因为元素已重新渲染
-        showNotification("课程已移动", "success");
+        window.showNotification("课程已移动", "success");
       } else {
-        showNotification("移动课程失败", "error");
+        window.showNotification("移动课程失败", "error");
         // 恢复拖动项的不透明度，因为移动失败
         if (draggedItem) {
           draggedItem.style.opacity = "1";
