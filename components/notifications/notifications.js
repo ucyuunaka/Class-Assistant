@@ -34,6 +34,9 @@ function showNotification(message, type = 'info', duration = 3000) {
   const notification = document.createElement('div');
   notification.className = `notification notification-${type} fade-in`;
   
+  // 兼容主题系统中使用的类名格式
+  notification.classList.add(type);
+  
   // 根据类型设置图标
   let icon = '';
   switch (type) {
@@ -95,8 +98,32 @@ function showDevelopingNotification(featureName = '', duration = 3000) {
 // 在文档加载完成后初始化通知容器
 document.addEventListener('DOMContentLoaded', function() {
   initNotificationContainer();
+  
+  // 监听主题变化事件
+  window.addEventListener('themeChanged', function(e) {
+    console.log('通知组件: 检测到主题变化为 ' + e.detail.theme);
+    // 主题变化时，通知组件本身不需要特殊处理
+    // 因为它使用CSS变量，会自动适应主题变化
+  });
 });
+
+/**
+ * 通知系统与主题系统的兼容适配
+ * 确保在各种情况下都能正常工作
+ */
+function ensureNotificationSystem() {
+  if (!window.showNotification) {
+    console.log('警告: 未检测到全局通知函数，正在恢复...');
+    window.showNotification = showNotification;
+  }
+}
 
 // 导出函数，使其在全局可用
 window.showNotification = showNotification;
 window.showDevelopingNotification = showDevelopingNotification;
+
+// 确保通知系统在各种情况下都能正常工作
+ensureNotificationSystem();
+
+// 添加恢复机制，如果其他脚本覆盖了通知函数，会在5秒后尝试恢复
+setTimeout(ensureNotificationSystem, 5000);
