@@ -47,11 +47,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const cancelDelete = document.getElementById("cancel-delete");
   const confirmDelete = document.getElementById("confirm-delete");
   let currentCourseToDelete = null;
-
   // 显示删除确认对话框
   function showDeleteConfirm(courseId) {
     currentCourseToDelete = courseId;
     deleteConfirmModal.style.display = "flex";
+    // 确保模态窗口内容可见
+    document.querySelector("#delete-confirm-modal .modal-content").style.opacity = "1";
+    document.querySelector("#delete-confirm-modal .modal-content").style.transform = "scale(1)";
+    // 增加 z-index 确保显示在最上层
+    document.querySelector("#delete-confirm-modal .modal-content").style.zIndex = "10000";
   }
 
   // 隐藏删除确认对话框
@@ -793,7 +797,6 @@ document.addEventListener("DOMContentLoaded", function () {
       courseColorInput.value = this.getAttribute("data-class");
     });
   });
-
   // 新增：创建新课程函数
   function createNewCourse(day, time) {
     // 重置表单并设置默认值
@@ -809,8 +812,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // 清除编辑状态
     delete addCourseForm.dataset.editingCourseId;
 
-    // 显示模态框
+    // 显示模态框 - 修改显示方式
     addCourseModal.style.display = "flex";
+    // 确保模态窗口内容可见
+    document.querySelector("#add-course-modal .modal-content").style.opacity = "1";
+    document.querySelector("#add-course-modal .modal-content").style.transform = "scale(1)";
+    // 增加 z-index 确保显示在最上层
+    document.querySelector("#add-course-modal .modal-content").style.zIndex = "10000";
   }
 
   // 新增：拖放功能设置
