@@ -31,39 +31,13 @@
     <div class="sidebar-toggle">
       <i class="ri-menu-line"></i>
     </div>
-
     <!-- 移动端遮罩层 -->
     <div class="sidebar-overlay"></div>
 
     <!-- 主要内容 -->
     <main class="sidebar-active">
-      <!-- 英雄区域 -->
-      <section class="hero-section">
-        <div class="container">
-          <div class="hero-content">
-            <h1 class="hero-title animate-on-scroll fade-up">
-              让你的学习生活更高效有序
-            </h1>
-            <p class="hero-text animate-on-scroll fade-up delay-100">
-              课堂助手帮你管理课程安排、记录学习进度、提醒考试日期，让你专注于学习本身。
-            </p>
-            <div class="hero-buttons animate-on-scroll fade-up delay-200">
-              <a href="pages/schedule.html" class="btn">查看我的课表</a>
-              <a
-                href="pages/countdown.html"
-                class="btn btn-outline"
-                style="
-                  background-color: rgba(255, 255, 255, 0.2);
-                  border-color: white;
-                  color: white;
-                "
-                >考试倒计时</a
-              >
-            </div>
-          </div>
-          <div class="hero-decoration"></div>
-        </div>
-      </section>
+      <!-- 顶栏容器 - 首页样式 -->
+      <div id="header-container"></div>
 
       <!-- 特色功能区域 -->
       <section class="features-section">
@@ -197,10 +171,33 @@
     <script src="js/main.js"></script>
     <!-- 引入新的侧边栏组件 -->
     <script src="components/sidebar/sidebar.js"></script>
+    <!-- 引入顶栏组件 -->
+    <script src="components/header/header.js"></script>
     <!-- 初始化侧边栏组件 -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // 初始化侧边栏组件
         const sidebar = new Sidebar("sidebar-container");
+
+        // 初始化顶栏组件 - 首页风格
+        const header = new Header("header-container", {
+          isHomePage: true,          title: "让你的学习生活更高效有序",
+          subtitle:
+            "课堂助手<br>让你专注于学习本身。",
+          buttons: [
+            {
+              text: "查看我的课表",
+              url: "pages/schedule.html",
+              isPrimary: true,
+            },
+            {
+              text: "考试倒计时",
+              url: "pages/countdown.html",
+              isPrimary: false,
+              className: "home-outline-btn", // 自定义样式类
+            },
+          ],
+        });
       });
     </script>
     <!-- 添加页脚脚本 -->

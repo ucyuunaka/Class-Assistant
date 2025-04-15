@@ -27,27 +27,18 @@
     <!-- 移动端菜单切换按钮 -->
     <div class="sidebar-toggle">
       <i class="ri-menu-line"></i>
-    </div>
-
-    <!-- 移动端遮罩层 -->
+    </div>    <!-- 移动端遮罩层 -->
     <div class="sidebar-overlay"></div>
 
     <!-- 主要内容 -->
     <main class="sidebar-active">
-      <!-- 成绩页面标题区域 -->
-      <section class="grades-header">
-        <div class="container">
-          <h1 class="grades-title animate-on-scroll fade-up">成绩管理</h1>
-          <p class="grades-subtitle animate-on-scroll fade-up delay-100">
-            记录、分析并追踪你的学习成果
-          </p>
-        </div>
-      </section>
+      <!-- 顶栏容器 - 添加ID用于组件初始化 -->
+      <div id="header-container"></div>
 
       <div class="container">
         <!-- 成绩总览 -->
         <section class="grades-section">
-          <h2 class="section-title animate-on-scroll fade-up">成绩概览</h2>          <div class="grades-summary">
+          <h2 class="section-title animate-on-scroll fade-up">成绩概览</h2><div class="grades-summary">
             <div class="summary-item animate-on-scroll fade-up">
               <div class="summary-value" id="gpa-value">3.6</div>
               <div class="summary-label">总GPA</div>
@@ -524,14 +515,26 @@
           </div>
         </section>
       </div>
-    </main>    <!-- 页脚 - 简化为只保留容器 -->    <footer class="footer"></footer>
-    <script src="../js/main.js"></script>
+    </main>    <!-- 页脚 - 简化为只保留容器 -->    <footer class="footer"></footer>    <script src="../js/main.js"></script>
     <!-- 引入新的侧边栏组件 -->
     <script src="../components/sidebar/sidebar.js"></script>
-    <!-- 初始化侧边栏组件 -->
+    <!-- 引入顶栏组件 -->
+    <script src="../components/header/header.js"></script><!-- 初始化侧边栏组件 -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const sidebar = new Sidebar('sidebar-container');
+        
+        // 初始化顶栏组件
+        const header = new Header('header-container', {
+          isHomePage: false,
+          title: '成绩管理',
+          subtitle: '记录、分析并追踪你的学习成果',
+          buttons: [
+            { text: '添加成绩', url: '#', isPrimary: true, className: 'add-grade-btn' },
+            { text: '导出数据', url: '#', isPrimary: false }
+          ],
+          buttonPosition: 'right' // 将按钮显示在右侧
+        });
       });
     </script>    <!-- 添加页脚脚本 -->
     <script type="module" src="../components/footer/footer.js"></script>

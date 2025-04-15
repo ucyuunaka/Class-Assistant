@@ -5,6 +5,7 @@
   background: linear-gradient(135deg, var(--primary-color), #0368b2);
   border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
   overflow: hidden;
+  margin-bottom: 2rem; /* 确保与内容有一定间距 */
 }
 
 /* 首页顶栏样式 */
@@ -38,6 +39,13 @@
   flex-wrap: wrap;
 }
 
+/* 首页轮廓按钮样式 - 用于"考试倒计时"按钮 */
+.home-outline-btn {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border-color: white !important;
+  color: white !important;
+}
+
 .home-header-decoration {
   position: absolute;
   right: -150px;
@@ -66,6 +74,26 @@
 
 .page-header-subtitle {
   opacity: 0.9;
+  margin-bottom: 1.5rem;
+}
+
+/* 页面顶栏按钮组样式 */
+.page-header-buttons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+/* 页面顶栏按钮位置变体 */
+.page-header-right {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-header-right .page-header-buttons {
+  margin-top: 0;
 }
 
 /* 响应式调整 */
