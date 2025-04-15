@@ -31,24 +31,13 @@
     <div class="sidebar-toggle">
       <i class="ri-menu-line"></i>
     </div>
-
     <!-- 移动端遮罩层 -->
     <div class="sidebar-overlay"></div>
 
     <!-- 主内容区 -->
     <div class="container py-4 sidebar-active">
-      <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        "
-      >
-        <h1 class="mb-3 animate-on-scroll fade-up">考试倒计时</h1>
-        <button class="btn animate-on-scroll fade-up" id="add-exam-btn">
-          <i class="fas fa-plus"></i> 添加考试
-        </button>
-      </div>
+      <!-- 顶栏容器 - 添加ID用于组件初始化 -->
+      <div id="header-container"></div>
 
       <!-- 筛选和排序 -->
       <div class="filters animate-on-scroll fade-up">
@@ -351,10 +340,28 @@
     <script src="../js/main.js"></script>
     <!-- 引入新的侧边栏组件 -->
     <script src="../components/sidebar/sidebar.js"></script>
+    <!-- 引入顶栏组件 -->
+    <script src="../components/header/header.js"></script>
     <!-- 初始化侧边栏组件 -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const sidebar = new Sidebar("sidebar-container");
+
+        // 初始化顶栏组件
+        const header = new Header("header-container", {
+          isHomePage: false,
+          title: "考试倒计时",
+          subtitle: "管理你的考试安排，不错过任何重要的考试",
+          buttons: [
+            {
+              text: "添加考试",
+              url: "#",
+              isPrimary: true,
+              className: "add-exam-btn", // 保持与原来相同的类名，以便原有的事件处理能够正常工作
+            },
+          ],
+          buttonPosition: "right",
+        });
       });
     </script>
     <!-- 添加页脚脚本 -->

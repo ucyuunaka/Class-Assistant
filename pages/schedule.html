@@ -31,20 +31,12 @@
     <div class="sidebar-toggle">
       <i class="ri-menu-line"></i>
     </div>
-
     <!-- 移动端遮罩层 -->
     <div class="sidebar-overlay"></div>
     <!-- 主要内容 -->
     <div class="container py-4 sidebar-active">
-      <!-- 页面标题和描述 -->
-      <div class="page-header">
-        <div class="container">
-          <h1 class="mb-2 animate-on-scroll fade-up">我的课程表</h1>
-          <p class="text-secondary animate-on-scroll fade-up delay-100">
-            管理和安排你的课程，清晰掌握每周学习时间
-          </p>
-        </div>
-      </div>
+      <!-- 顶栏容器 - 添加ID用于组件初始化 -->
+      <div id="header-container"></div>
 
       <div class="schedule-container">
         <!-- 课表控制区域 -->
@@ -299,10 +291,28 @@
     </script>
     <!-- 引入新的侧边栏组件 -->
     <script src="../components/sidebar/sidebar.js"></script>
+    <!-- 引入顶栏组件 -->
+    <script src="../components/header/header.js"></script>
     <!-- 初始化侧边栏组件 -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const sidebar = new Sidebar("sidebar-container");
+
+        // 初始化顶栏组件
+        const header = new Header("header-container", {
+          isHomePage: false,
+          title: "我的课程表",
+          subtitle: "管理和安排你的课程，清晰掌握每周学习时间",
+          buttons: [
+            {
+              text: "添加课程",
+              url: "#",
+              isPrimary: true,
+              className: "add-course-btn",
+            },
+          ],
+          buttonPosition: "right",
+        });
       });
     </script>
     <!-- 添加页脚脚本 -->

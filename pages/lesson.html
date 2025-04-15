@@ -40,21 +40,13 @@
     <div class="sidebar-toggle">
       <i class="ri-menu-line"></i>
     </div>
-
     <!-- 移动端遮罩层 -->
     <div class="sidebar-overlay"></div>
 
     <!-- 主要内容 -->
     <main class="sidebar-active">
-      <!-- 课评速记标题区域 -->
-      <section class="lesson-header">
-        <div class="container">
-          <h1 class="lesson-title animate-on-scroll fade-up">课评速记</h1>
-          <p class="lesson-subtitle animate-on-scroll fade-up delay-100">
-            用简短的评价和表情记录你对课程的感受
-          </p>
-        </div>
-      </section>
+      <!-- 顶栏容器 - 添加ID用于组件初始化 -->
+      <div id="header-container"></div>
 
       <div class="container">
         <!-- 过滤器 -->
@@ -250,10 +242,28 @@
     <script src="../js/main.js"></script>
     <!-- 引入新的侧边栏组件 -->
     <script src="../components/sidebar/sidebar.js"></script>
+    <!-- 引入顶栏组件 -->
+    <script src="../components/header/header.js"></script>
     <!-- 初始化侧边栏组件 -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const sidebar = new Sidebar("sidebar-container");
+
+        // 初始化顶栏组件
+        const header = new Header("header-container", {
+          isHomePage: false,
+          title: "课评速记",
+          subtitle: "用简短的评价和表情记录你对课程的感受",
+          buttons: [
+            {
+              text: "添加评价",
+              url: "#",
+              isPrimary: true,
+              className: "add-review-btn",
+            },
+          ],
+          buttonPosition: "right",
+        });
       });
     </script>
     <!-- 添加页脚脚本 -->
