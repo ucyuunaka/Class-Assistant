@@ -99,6 +99,50 @@
   color: var(--primary-color);
 }
 
+/* 通知操作按钮 */
+.notification-action-btn {
+  display: inline-block;
+  margin-left: 8px;
+  margin-top: 5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background-color: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary-color);
+  font-size: 0.8rem;
+  border: 1px solid var(--primary-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.notification-action-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* 警告通知中的按钮 */
+.notification-warning .notification-action-btn {
+  background-color: rgba(var(--warning-rgb), 0.1);
+  color: var(--warning-color);
+  border-color: var(--warning-color);
+}
+
+.notification-warning .notification-action-btn:hover {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+/* 成功通知中的按钮 */
+.notification-success .notification-action-btn {
+  background-color: rgba(var(--success-rgb), 0.1);
+  color: var(--success-color);
+  border-color: var(--success-color);
+}
+
+.notification-success .notification-action-btn:hover {
+  background-color: var(--success-color);
+  color: white;
+}
+
 /* 通知动画 */
 @keyframes slideIn {
   0% {

@@ -333,31 +333,78 @@ document.addEventListener("DOMContentLoaded", function () {
       notes: document.getElementById("exam-notes").value,
     };
 
-    if (examId) {
-      const index = exams.findIndex((e) => e.id === parseInt(examId));
+    if (examId) {      const index = exams.findIndex((e) => e.id === parseInt(examId));
       if (index !== -1) {
         exams[index] = { ...exams[index], ...examData };
-        showNotification("考试信息已更新", "success");
-      }
-    } else {
+        window.showNotification("考试信息已更新", "success");
+      }    } else {
       examData.id =
         exams.length > 0 ? Math.max(...exams.map((e) => e.id)) + 1 : 1;
       exams.push(examData);
-      showNotification("考试已成功添加", "success");
+      window.showNotification("考试已成功添加", "success");
     }
 
     saveExams();
     applyFiltersAndSort();
     closeExamModal();
   });
-
+    // 存储将要删除的考试ID和数据，以支持撤销功能
+  let deletingExamId = null;
+  let deletedExamData = null;
+  
   window.deleteExam = function (examId) {
-    if (confirm("确定要删除这个考试吗？")) {
-      exams = exams.filter((e) => e.id !== examId);
-      saveExams();
-      showNotification("考试已成功删除", "info");
-      applyFiltersAndSort(); // Re-render the list
-    }
+    // 存储要删除的考试ID
+    deletingExamId = examId;
+    
+    // 找到并存储考试数据，以便可能的撤销操作
+    deletedExamData = exams.find(e => e.id === examId);
+    
+    // 显示带有撤销选项的通知
+    window.showNotification(
+      "确定要删除这个考试吗？<button id='confirm-delete-btn' class='notification-action-btn'>确认</button><button id='cancel-delete-btn' class='notification-action-btn'>取消</button>", 
+      "warning", 
+      10000 // 延长显示时间，给用户足够时间决定
+    );
+    
+    // 添加确认删除按钮的事件监听器
+    setTimeout(() => {
+      const confirmBtn = document.getElementById('confirm-delete-btn');
+      const cancelBtn = document.getElementById('cancel-delete-btn');
+      
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', function() {
+          // 执行删除操作
+          exams = exams.filter((e) => e.id !== deletingExamId);
+          saveExams();
+          window.showNotification("考试已成功删除<button id='undo-delete-btn' class='notification-action-btn'>撤销</button>", "info", 5000);
+          applyFiltersAndSort(); // 重新渲染列表
+          
+          // 添加撤销按钮的事件监听器
+          setTimeout(() => {
+            const undoBtn = document.getElementById('undo-delete-btn');
+            if (undoBtn) {
+              undoBtn.addEventListener('click', function() {
+                // 恢复被删除的考试
+                if (deletedExamData) {
+                  exams.push(deletedExamData);
+                  saveExams();
+                  window.showNotification("已恢复删除的考试", "success");
+                  applyFiltersAndSort(); // 重新渲染列表
+                }
+              });
+            }
+          }, 100);
+        });
+      }
+      
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+          // 取消删除操作
+          deletingExamId = null;
+          deletedExamData = null;
+        });
+      }
+    }, 100);
   };
 
   function applyFiltersAndSort() {
