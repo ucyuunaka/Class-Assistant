@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `.course-card[data-course-id="${courseId}"]`
       );
       if (!courseCard) {
-        showNotification("找不到要删除的课程", "error");
+        window.showNotification("找不到要删除的课程", "error");
         return;
       }
 
@@ -84,24 +84,24 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!courseStillExists) {
               renderTimetable();
               renderListView();
-              showNotification("课程已删除", "success");
+              window.showNotification("课程已删除", "success");
             } else {
               courseCard.classList.remove("deleting");
-              showNotification("删除课程失败: 课程仍存在", "error");
+              window.showNotification("删除课程失败: 课程仍存在", "error");
             }
           } else {
             courseCard.classList.remove("deleting");
-            showNotification("删除课程失败", "error");
+            window.showNotification("删除课程失败", "error");
           }
         } catch (error) {
           courseCard.classList.remove("deleting");
           console.error("删除课程时出错:", error);
-          showNotification("删除课程时出错: " + error.message, "error");
+          window.showNotification("删除课程时出错: " + error.message, "error");
         }
       }, 300);
     } catch (error) {
       console.error("删除课程初始化时出错:", error);
-      showNotification("删除课程初始化失败", "error");
+      window.showNotification("删除课程初始化失败", "error");
     }
   }
 
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
   editScheduleBtn.addEventListener("click", function () {
     // 检查当前是否是列表视图
     if (listViewContainer.style.display === "block") {
-      showNotification("请在周视图下编辑课表", "info");
+      window.showNotification("请在周视图下编辑课表", "info");
       return;
     }
 
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <p>请检查控制台获取详细信息</p>
       </div>
     `;
-      showNotification("初始化课表数据失败，请刷新页面重试", "error");
+      window.showNotification("初始化课表数据失败，请刷新页面重试", "error");
     }
   }
 
@@ -361,7 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // 渲染列表视图（增强稳定性）
+  // 渲染列表视图（增强稳定性）  
   function renderListView() {
     const listContainer = document.getElementById("list-view-container");
     if (!listContainer) return;
@@ -567,15 +567,9 @@ document.addEventListener("DOMContentLoaded", function () {
         renderTimetable();
         renderListView();
 
-        showNotification("课表已清空", "success");
+        window.showNotification("课表已清空", "success");
       }
     });
-
-  // 显示通知
-  function showNotification(message, type = "info") {
-    // 简单的通知实现，可以替换为更复杂的通知系统
-    alert(message);
-  }
 
   // 删除确认对话框事件
   closeDeleteModal.addEventListener("click", hideDeleteConfirm);
@@ -625,7 +619,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } catch (error) {
         console.error("处理单元格点击时出错:", error);
-        showNotification("操作失败: " + error.message, "error");
+        window.showNotification("操作失败: " + error.message, "error");
       }
     });
   }
@@ -684,7 +678,7 @@ document.addEventListener("DOMContentLoaded", function () {
         course.id;
     } catch (error) {
       console.error("编辑课程时出错:", error);
-      showNotification("编辑课程失败: " + error.message, "error");
+      window.showNotification("编辑课程失败: " + error.message, "error");
     }
   }
 
@@ -703,7 +697,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 验证数据
     if (!courseName || !courseDay || !courseTime) {
-      showNotification("请填写所有必填项", "error");
+      window.showNotification("请填写所有必填项", "error");
       return;
     }
 
@@ -725,33 +719,35 @@ document.addEventListener("DOMContentLoaded", function () {
         // 更新现有课程
         const success = updateCourse(parseInt(editingCourseId), courseData);
         if (success) {
-          showNotification("课程已更新", "success");
+          window.showNotification("课程已更新", "success");
           renderTimetable(); // 重新渲染周视图
           renderListView(); // 重新渲染列表视图
           closeAddCourseModal(); // 关闭模态框
         } else {
-          showNotification("更新课程失败", "error");
+          window.showNotification("更新课程失败", "error");
         }
       } else {
         // 添加新课程
         const newCourse = addCourse(courseData);
         if (newCourse) {
-          showNotification("课程已添加", "success");
+          window.showNotification("课程已添加", "success");
           renderTimetable(); // 重新渲染周视图
           renderListView(); // 重新渲染列表视图
           closeAddCourseModal(); // 关闭模态框
         } else {
-          showNotification("添加课程失败", "error");
+          window.showNotification("添加课程失败", "error");
         }
       }
     } catch (error) {
       console.error("保存课程时出错:", error);
-      showNotification("保存课程失败: " + error.message, "error");
+      window.showNotification("保存课程失败: " + error.message, "error");
     } finally {
       // 清除编辑状态
       delete this.dataset.editingCourseId;
     }
-  });  // 关闭添加/编辑课程模态框
+  });  
+
+  // 关闭添加/编辑课程模态框
   function closeAddCourseModal() {
     // 使用 Modal.hideExisting 隐藏模态窗口
     window.Modal.hideExisting(addCourseModal);
@@ -913,7 +909,7 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     if (isOccupied) {
-      showNotification("目标时间段已被占用", "error");
+      window.showNotification("目标时间段已被占用", "error");
       // 恢复拖动项的不透明度，因为拖放失败
       if (draggedItem) {
         draggedItem.style.opacity = "1";
@@ -924,7 +920,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       // 调用移动课程的函数
-      const success = moveCourse(courseId, targetDay, targetTime);      if (success) {
+      const success = moveCourse(courseId, targetDay, targetTime);      
+      if (success) {
         // 移动成功后重新渲染课表
         renderTimetable();
         renderListView(); // 同时更新列表视图
@@ -939,7 +936,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     } catch (error) {
       console.error("移动课程时出错:", error);
-      showNotification("移动课程时出错: " + error.message, "error");
+      window.showNotification("移动课程时出错: " + error.message, "error");
       // 恢复拖动项的不透明度，因为发生错误
       if (draggedItem) {
         draggedItem.style.opacity = "1";

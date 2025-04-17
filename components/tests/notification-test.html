@@ -157,7 +157,8 @@
           // 默认开发中通知 showDevelopingNotification(); //
           自定义功能开发中通知 showDevelopingNotification("课程导出");
         </div>
-      </div>      <div class="test-section">
+      </div>
+      <div class="test-section">
         <h2>多个通知测试</h2>
         <p>测试同时显示多个通知的堆叠和排列效果。</p>
 
@@ -172,10 +173,12 @@
           showNotification("第四条通知", "error"), 900);
         </div>
       </div>
-      
+
       <div class="test-section">
         <h2>主题响应测试</h2>
-        <p>测试通知组件对主题变化的响应能力。切换主题后显示通知，查看其是否正确适应新主题。</p>
+        <p>
+          测试通知组件对主题变化的响应能力。切换主题后显示通知，查看其是否正确适应新主题。
+        </p>
 
         <div class="test-buttons">
           <button id="btn-toggle-theme">切换主题</button>
@@ -183,10 +186,13 @@
         </div>
 
         <div class="code-block">
-          // 切换主题 document.body.setAttribute('data-theme', document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-          window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: document.body.getAttribute('data-theme') } }));
-          
-          // 显示主题通知 showNotification(`已切换到${document.body.getAttribute('data-theme') === 'dark' ? '暗色' : '亮色'}主题`, 'success');
+          // 切换主题 document.body.setAttribute('data-theme',
+          document.body.getAttribute('data-theme') === 'dark' ? 'light' :
+          'dark'); window.dispatchEvent(new CustomEvent('themeChanged', {
+          detail: { theme: document.body.getAttribute('data-theme') } })); //
+          显示主题通知
+          showNotification(`已切换到${document.body.getAttribute('data-theme')
+          === 'dark' ? '暗色' : '亮色'}主题`, 'success');
         </div>
       </div>
     </div>
@@ -254,48 +260,60 @@
       // 多个通知测试
       document
         .getElementById("btn-multiple")
-        .addEventListener("click", function () {          showNotification("第一条通知", "info");
+        .addEventListener("click", function () {
+          showNotification("第一条通知", "info");
           setTimeout(() => showNotification("第二条通知", "success"), 300);
           setTimeout(() => showNotification("第三条通知", "warning"), 600);
           setTimeout(() => showNotification("第四条通知", "error"), 900);
         });
-        
+
       // 主题切换测试
       document
         .getElementById("btn-toggle-theme")
         .addEventListener("click", function () {
           // 获取当前主题
-          const currentTheme = document.body.getAttribute('data-theme') || 'light';
+          const currentTheme =
+            document.body.getAttribute("data-theme") || "light";
           // 计算新主题
-          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          const newTheme = currentTheme === "dark" ? "light" : "dark";
           // 设置新主题
-          document.body.setAttribute('data-theme', newTheme);
+          document.body.setAttribute("data-theme", newTheme);
           // 触发主题变化事件
           window.dispatchEvent(
-            new CustomEvent('themeChanged', { detail: { theme: newTheme } })
+            new CustomEvent("themeChanged", { detail: { theme: newTheme } })
           );
           // 显示通知
-          showNotification(`已切换到${newTheme === 'dark' ? '暗色' : '亮色'}主题`, 'info');
+          showNotification(
+            `已切换到${newTheme === "dark" ? "暗色" : "亮色"}主题`,
+            "info"
+          );
         });
-        
+
       document
         .getElementById("btn-theme-notification")
         .addEventListener("click", function () {
           // 获取当前主题
-          const currentTheme = document.body.getAttribute('data-theme') || 'light';
+          const currentTheme =
+            document.body.getAttribute("data-theme") || "light";
           // 显示各种类型的通知，测试在当前主题下的显示效果
-          showNotification(`当前为${currentTheme === 'dark' ? '暗色' : '亮色'}主题`, 'success');
+          showNotification(
+            `当前为${currentTheme === "dark" ? "暗色" : "亮色"}主题`,
+            "success"
+          );
           setTimeout(() => showNotification("这是一条错误通知", "error"), 300);
-          setTimeout(() => showNotification("这是一条警告通知", "warning"), 600);
+          setTimeout(
+            () => showNotification("这是一条警告通知", "warning"),
+            600
+          );
           setTimeout(() => showNotification("这是一条信息通知", "info"), 900);
         });
     </script>
-    
+
     <!-- 添加初始主题设置 -->
     <script>
       // 从本地存储获取已保存的主题设置，如果没有则使用亮色主题
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      document.body.setAttribute('data-theme', savedTheme);
+      const savedTheme = localStorage.getItem("theme") || "light";
+      document.body.setAttribute("data-theme", savedTheme);
     </script>
   </body>
 </html>
