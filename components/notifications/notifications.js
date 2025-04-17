@@ -3,6 +3,42 @@
  * 提供页面中显示各类通知的功能
  */
 
+// 自动加载组件样式
+function loadNotificationStyles() {
+  // 避免重复加载
+  if (document.querySelector('link[href*="notifications.css"]')) {
+    return;
+  }
+  
+  // 动态创建 link 元素加载 CSS
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = getComponentPath();
+  document.head.appendChild(link);
+  console.log('✅ 通知组件样式加载成功！');
+}
+
+// 获取组件路径
+function getComponentPath() {
+  // 获取当前脚本的路径
+  const scripts = document.getElementsByTagName('script');
+  for (let i = 0; i < scripts.length; i++) {
+    const src = scripts[i].src;
+    if (src.includes('notifications.js')) {
+      // 将 .js 替换为 .css
+      return src.replace('.js', '.css');
+    }
+  }
+  
+  // 如果找不到脚本路径，返回一个相对路径
+  console.warn('⚠️ 无法确定通知组件样式的准确路径，使用相对路径');
+  if (document.querySelector('script[src*="components/notifications/notifications.js"]')) {
+    return 'components/notifications/notifications.css';
+  } else {
+    return '../components/notifications/notifications.css';
+  }
+}
+
 /**
  * 初始化通知容器
  */
@@ -97,6 +133,10 @@ function showDevelopingNotification(featureName = '', duration = 3000) {
 
 // 在文档加载完成后初始化通知容器
 document.addEventListener('DOMContentLoaded', function() {
+  // 加载组件样式
+  loadNotificationStyles();
+  
+  // 初始化通知容器
   initNotificationContainer();
   
   // 监听主题变化事件
