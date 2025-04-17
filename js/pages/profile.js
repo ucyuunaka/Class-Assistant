@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 打开密码模态框
   if (changePasswordBtn) {
     changePasswordBtn.addEventListener("click", function () {
-      showNotification("“修改密码”功能暂未实现", "info");
+      window.showNotification(""修改密码"功能暂未实现", "info");
     });
   }
 
@@ -168,15 +168,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const changePhoneBtn = document.getElementById("change-phone-btn");
   if (changePhoneBtn) {
     changePhoneBtn.addEventListener("click", function () {
-      showNotification("“更换手机”功能暂未实现", "info");
+      window.showNotification(""更换手机"功能暂未实现", "info");
     });
   }
 
   function displaySaveMessage(message, type = "success") {
-    if (typeof showNotification === "function") {
-      showNotification(message, type);
-    } else {
-      alert(message);
-    }
+    window.showNotification(message, type);
   }
 });

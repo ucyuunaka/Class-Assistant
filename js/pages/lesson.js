@@ -69,15 +69,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // 发送评价
-  sendButton.addEventListener("click", function () {
-    const course = courseSelect.value;
+  sendButton.addEventListener("click", function () {    const course = courseSelect.value;
     if (!course) {
-      alert("请选择一个课程");
+      window.showNotification("请选择一个课程", "warning");
       return;
-    }
-
-    if (selectedEmojis.length === 0) {
-      alert("请至少选择一个表情评价");
+    }    if (selectedEmojis.length === 0) {
+      window.showNotification("请至少选择一个表情评价", "warning");
       return;
     }
 

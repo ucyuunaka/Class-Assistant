@@ -54,11 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // 添加活动类到当前选择
       this.classList.add("active");
 
-      // 存储语言偏好
-      localStorage.setItem("language", language);
+      // 存储语言偏好      localStorage.setItem("language", language);
 
       // 显示切换提示
-      showNotification(
+      window.showNotification(
         `界面语言已切换为${language === "zh" ? "中文" : "English"}`,
         "success"
       );
@@ -103,13 +102,13 @@ document.addEventListener("DOMContentLoaded", function () {
         function () {
           // 清除课表数据
           localStorage.removeItem("courses");
-          showNotification("课表数据已清除", "success");
+          window.showNotification("课表数据已清除", "success");
         }
       );
     });
 
   document
-    .getElementById("clear-exams-data")
+    .getElementById("clear-exam-data")
     .addEventListener("click", function () {
       showConfirmModal(
         "清除考试数据",
@@ -117,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
         function () {
           // 清除考试数据
           localStorage.removeItem("exams");
-          showNotification("考试数据已清除", "success");
+          window.showNotification("考试数据已清除", "success");
         }
       );
     });
@@ -126,10 +125,10 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("clear-all-data")
     .addEventListener("click", function () {
       showConfirmModal(
-        "清除全部数据",
-        "您确定要清除所有应用数据吗？这将删除所有课表、考试和个人设置数据。此操作无法撤销。",
+        "清除所有数据",
+        "您确定要清除所有数据吗？此操作将清除课表、考试、个人资料等所有数据，且无法撤销。",
         function () {
-          // 保留主题和语言设置
+          // 保存当前主题和语言设置
           const theme = localStorage.getItem("theme");
           const language = localStorage.getItem("language");
 
@@ -140,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (theme) localStorage.setItem("theme", theme);
           if (language) localStorage.setItem("language", language);
 
-          showNotification("所有数据已清除", "success");
+          window.showNotification("所有数据已清除", "success");
         }
       );
     });
@@ -185,22 +184,22 @@ document.addEventListener("DOMContentLoaded", function () {
         backupDate: new Date().toISOString(),
       };
 
-      const dataStr = JSON.stringify(backupData);
-      const dataUri =
-        "data:application/json;charset=utf-8," +
-        encodeURIComponent(dataStr);
+      // 创建并下载备份文件
+      const blob = new Blob([JSON.stringify(backupData)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `class-assistant-backup-${new Date()
+        .toISOString()
+        .slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
 
-      const exportFileName =
-        "classhelper-backup-" +
-        new Date().toISOString().slice(0, 10) +
-        ".json";
-
-      const linkElement = document.createElement("a");
-      linkElement.setAttribute("href", dataUri);
-      linkElement.setAttribute("download", exportFileName);
-      linkElement.click();
-
-      showNotification("数据备份已下载", "success");
+      window.showNotification("数据备份已下载", "success");
     });
 
   // 恢复数据
@@ -210,79 +209,76 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = function (e) {
+    reader.onload = function (event) {
       try {
-        const backupData = JSON.parse(e.target.result);
+        const backupData = JSON.parse(event.target.result);
 
-        // 确认恢复
-        showConfirmModal(
-          "恢复数据",
-          `您确定要从备份中恢复数据吗？这将覆盖当前的数据。
-备份日期: ${new Date(
-            backupData.backupDate
-          ).toLocaleString()}`,
-          function () {
-            // 恢复数据
-            if (backupData.courses)
-              localStorage.setItem("courses", backupData.courses);
-            if (backupData.exams)
-              localStorage.setItem("exams", backupData.exams);
-            if (backupData.profile)
-              localStorage.setItem("profile", backupData.profile);
+        // 验证备份文件格式
+        if (backupData && backupData.backupDate) {
+          // 恢复数据
+          if (backupData.courses) {
+            localStorage.setItem("courses", backupData.courses);
+          }
+          if (backupData.exams) {
+            localStorage.setItem("exams", backupData.exams);
+          }
+          if (backupData.profile) {
+            localStorage.setItem("profile", backupData.profile);
+          }
 
-            // 恢复设置
-            if (backupData.settings) {
-              if (backupData.settings.theme) {
-                localStorage.setItem("theme", backupData.settings.theme);
-                document.body.setAttribute(
-                  "data-theme",
-                  backupData.settings.theme
-                );
-                // Assuming themeToggle exists and is handled elsewhere (e.g., themes.js)
-                // themeToggle.checked = backupData.settings.theme === "dark";
-              }
-
-              if (backupData.settings.language) {
-                localStorage.setItem(
-                  "language",
-                  backupData.settings.language
-                );
-                languageOptions.forEach((opt) => {
-                  opt.classList.toggle(
-                    "active",
-                    opt.getAttribute("data-lang") ===
-                      backupData.settings.language
-                  );
-                });
-              }
-
-              if (backupData.settings.fontScale) {
-                fontScale = parseFloat(backupData.settings.fontScale);
-                applyFontSize(fontScale);
-              }
-
-              if (backupData.settings.notifications) {
-                document.getElementById("course-notification").checked =
-                  backupData.settings.notifications.course !== false;
-                document.getElementById("exam-notification").checked =
-                  backupData.settings.notifications.exam !== false;
-
-                if (backupData.settings.notifications.reminderTime) {
-                  document.getElementById("reminder-time").value =
-                    backupData.settings.notifications.reminderTime;
-                }
-              }
+          // 恢复设置
+          if (backupData.settings) {
+            if (backupData.settings.theme) {
+              localStorage.setItem("theme", backupData.settings.theme);
+              document.body.setAttribute(
+                "data-theme",
+                backupData.settings.theme
+              );
+              // Assuming themeToggle exists and is handled elsewhere (e.g., themes.js)
+              // themeToggle.checked = backupData.settings.theme === "dark";
             }
 
-            showNotification("数据已成功恢复", "success");
+            if (backupData.settings.language) {
+              localStorage.setItem(
+                "language",
+                backupData.settings.language
+              );
+              languageOptions.forEach((opt) => {
+                opt.classList.toggle(
+                  "active",
+                  opt.getAttribute("data-lang") ===
+                    backupData.settings.language
+                );
+              });
+            }
 
-            // 重置文件输入
-            restoreInput.value = "";
+            if (backupData.settings.fontScale) {
+              fontScale = parseFloat(backupData.settings.fontScale);
+              applyFontSize(fontScale);
+            }
+
+            if (backupData.settings.notifications) {
+              document.getElementById("course-notification").checked =
+                backupData.settings.notifications.course !== false;
+              document.getElementById("exam-notification").checked =
+                backupData.settings.notifications.exam !== false;
+
+              if (backupData.settings.notifications.reminderTime) {
+                document.getElementById("reminder-time").value =
+                  backupData.settings.notifications.reminderTime;
+              }
+            }
           }
-        );
-      } catch (error) {
-        showNotification("无效的备份文件", "error");
-        restoreInput.value = "";
+
+          window.showNotification("数据已成功恢复", "success");
+
+          // 重置文件输入
+          restoreInput.value = "";
+        } else {
+          throw new Error("Invalid backup format");
+        }
+      } catch (e) {
+        window.showNotification("无效的备份文件", "error");
       }
     };
     reader.readAsText(file);
@@ -292,12 +288,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("check-updates")
     .addEventListener("click", function () {
-      showNotification("您已经在使用最新版本 (1.0.0)", "success");
+      window.showNotification("您已经在使用最新版本 (1.0.0)", "success");
     });
 
-  // Helper function for notifications (assuming it's defined globally or in main.js)
-  // function showNotification(message, type) {
-  //   console.log(`Notification (${type}): ${message}`);
-  //   // Implement actual notification display logic here
-  // }
+  // 移除备注中的showNotification函数注释
+  // 这是不再需要的，因为我们现在使用全局通知组件
 });

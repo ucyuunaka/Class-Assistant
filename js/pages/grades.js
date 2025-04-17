@@ -108,19 +108,19 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  // “导出成绩单”按钮功能提示
+  // "导出成绩单"按钮功能提示
   const exportGradesBtn = document.querySelector('.btn i.fa-file-export')
   if (exportGradesBtn) {
     exportGradesBtn.closest('button').addEventListener('click', function() {
-      alert('导出成绩单功能正在开发中...');
+      window.showNotification('导出成绩单功能正在开发中...', 'info');
     });
   }
 
-  // “筛选”按钮功能提示
+  // "筛选"按钮功能提示
   const filterBtn = document.querySelector('.btn i.fa-filter')
   if (filterBtn) {
     filterBtn.closest('button').addEventListener('click', function() {
-      alert('筛选功能正在开发中...');
+      window.showNotification('筛选功能正在开发中...', 'info');
     });
   }
 
@@ -344,11 +344,11 @@ document.addEventListener("DOMContentLoaded", function () {
   if (gpaSystemSelect) {
       gpaSystemSelect.addEventListener("change", function () {
         // 在实际应用中，这里应该根据所选系统重新计算并显示GPA
-        // 这里只是示例
-        alert(
+        window.showNotification(
           "已切换到" +
             this.options[this.selectedIndex].text +
-            "计算方式，将重新计算GPA"
+            "计算方式，将重新计算GPA",
+          "info"
         );
         // Example: Recalculate and update GPA display
         // calculateAndDisplayGPA(this.value);

@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavbar();
   }
   
-  // 初始化通知容器
-  initNotificationContainer();
-  
   // 渲染课表 (如果存在)
   if (document.getElementById('timetable-grid')) {
     renderSchedule();

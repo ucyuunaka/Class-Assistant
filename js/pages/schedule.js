@@ -518,9 +518,7 @@ document.addEventListener("DOMContentLoaded", function () {
     isEditMode = false;
     editScheduleBtn.innerHTML = '<i class="fas fa-edit"></i> 编辑课表';
     editScheduleBtn.classList.remove("btn-success");
-    weekViewContainer.classList.remove("edit-mode");
-
-    listViewBtn.classList.add("active");
+    weekViewContainer.classList.remove("edit-mode");    listViewBtn.classList.add("active");
     weekViewBtn.classList.remove("active");
     listViewContainer.style.display = "block";
     weekViewContainer.style.display = "none";
@@ -531,21 +529,19 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("export-ical")
     .addEventListener("click", function (e) {
       e.preventDefault();
-      alert("导出为iCal功能正在开发中...");
+      window.showNotification("导出为iCal功能正在开发中...", "info");
     });
-
   document
     .getElementById("export-csv")
     .addEventListener("click", function (e) {
       e.preventDefault();
-      alert("导出为CSV功能正在开发中...");
+      window.showNotification("导出为CSV功能正在开发中...", "info");
     });
-
   document
     .getElementById("import-courses")
     .addEventListener("click", function (e) {
       e.preventDefault();
-      alert("导入课程功能正在开发中...");
+      window.showNotification("导入课程功能正在开发中...", "info");
     });
 
   document
