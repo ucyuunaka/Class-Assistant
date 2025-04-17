@@ -94,10 +94,9 @@ const ThemeManager = {
     
     // 应用主题
     this.applyTheme(themeId);
-    
-    // 显示通知
+      // 显示通知
     if (window.showNotification) {
-      showNotification(`已切换到${this.getThemeName(themeId)}主题`, 'success');
+      window.showNotification(`已切换到${this.getThemeName(themeId)}主题`, 'success');
     }
     
     // 触发主题改变事件
@@ -244,47 +243,6 @@ const ThemeManager = {
     return theme ? theme.name : '默认';
   }
 };
-
-// 添加通知函数（如果尚不存在）
-if (!window.showNotification) {
-  window.showNotification = function(message, type = 'info') {
-    // 创建通知元素
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.innerHTML = `<div>${message}</div>`;
-    
-    // 创建通知容器（如果不存在）
-    let container = document.querySelector('.notification-container');
-    if (!container) {
-      container = document.createElement('div');
-      container.className = 'notification-container';
-      container.style.position = 'fixed';
-      container.style.top = '20px';
-      container.style.right = '20px';
-      container.style.zIndex = '9999';
-      document.body.appendChild(container);
-    }
-    
-    // 添加通知到容器
-    container.appendChild(notification);
-    
-    // 淡入动画
-    setTimeout(() => {
-      notification.style.opacity = '1';
-    }, 10);
-    
-    // 自动移除
-    setTimeout(() => {
-      notification.style.opacity = '0';
-      setTimeout(() => {
-        notification.remove();
-        if (container.children.length === 0) {
-          container.remove();
-        }
-      }, 300);
-    }, 3000);
-  };
-}
 
 // 暴露全局接口
 window.ThemeManager = ThemeManager;

@@ -104,87 +104,14 @@ function toggleTheme() {
   
   // 存储设置
   localStorage.setItem('theme', newTheme);
-  
-  // 触发主题改变事件，便于其他组件响应
+    // 触发主题改变事件，便于其他组件响应
   window.dispatchEvent(
     new CustomEvent('themeChanged', { detail: { theme: newTheme } })
   );
   
   // 显示通知
-  showNotification(`已切换到${newTheme === 'dark' ? '暗色' : '亮色'}主题`, 'info');
-  
-  return newTheme;
-}
-
-/**
- * 初始化通知容器
- */
-function initNotificationContainer() {
-  // 检查是否已有通知容器
-  if (!document.querySelector('.notification-container')) {
-    const container = document.createElement('div');
-    container.className = 'notification-container';
-    document.body.appendChild(container);
-  }
-}
-
-/**
- * 显示通知消息
- * @param {string} message - 要显示的消息
- * @param {string} type - 消息类型：'success', 'error', 'warning', 'info'
- * @param {number} duration - 显示时长（毫秒）
- */
-function showNotification(message, type = 'info', duration = 3000) {
-  // 确保有通知容器
-  initNotificationContainer();
-  
-  // 创建通知元素
-  const notification = document.createElement('div');
-  notification.className = `notification notification-${type} fade-in`;
-  
-  // 根据类型设置图标
-  let icon = '';
-  switch (type) {
-    case 'success':
-      icon = '<i class="fas fa-check-circle"></i>';
-      break;
-    case 'error':
-      icon = '<i class="fas fa-exclamation-circle"></i>';
-      break;
-    case 'warning':
-      icon = '<i class="fas fa-exclamation-triangle"></i>';
-      break;
-    default:
-      icon = '<i class="fas fa-info-circle"></i>';
-  }
-  
-  // 设置内容
-  notification.innerHTML = `
-    <div class="notification-content">
-      ${icon}
-      <span>${message}</span>
-    </div>
-    <button class="notification-close">&times;</button>
-  `;
-  
-  // 添加到页面
-  const notificationContainer = document.querySelector('.notification-container');
-  notificationContainer.appendChild(notification);
-  
-  // 点击关闭按钮移除通知
-  const closeBtn = notification.querySelector('.notification-close');
-  closeBtn.addEventListener('click', function() {
-    notification.classList.add('fade-out');
-    setTimeout(() => notification.remove(), 300);
-  });
-  
-  // 设置自动移除
-  setTimeout(() => {
-    if (notification.parentElement) {
-      notification.classList.add('fade-out');
-      setTimeout(() => notification.remove(), 300);
-    }
-  }, duration);
+  window.showNotification(`已切换到${newTheme === 'dark' ? '暗色' : '亮色'}主题`, 'info');
+    return newTheme;
 }
 
 /**
