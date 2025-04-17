@@ -156,19 +156,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 修改密码
   const changePasswordBtn = document.getElementById("change-password-btn");
-
   // 打开密码模态框
   if (changePasswordBtn) {
     changePasswordBtn.addEventListener("click", function () {
-      window.showNotification(""修改密码"功能暂未实现", "info");
+      window.showNotification("\"修改密码\"功能暂未实现", "info");
     });
   }
-
   // 更换手机号
   const changePhoneBtn = document.getElementById("change-phone-btn");
   if (changePhoneBtn) {
     changePhoneBtn.addEventListener("click", function () {
-      window.showNotification(""更换手机"功能暂未实现", "info");
+      window.showNotification("\"更换手机\"功能暂未实现", "info");
     });
   }
 

@@ -104,11 +104,10 @@ document.addEventListener("DOMContentLoaded", function () {
           localStorage.removeItem("courses");
           window.showNotification("课表数据已清除", "success");
         }
-      );
-    });
+      );    });
 
   document
-    .getElementById("clear-exam-data")
+    .getElementById("clear-exams-data")
     .addEventListener("click", function () {
       showConfirmModal(
         "清除考试数据",
