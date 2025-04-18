@@ -290,9 +290,6 @@
   animation: checkmark-pulse 1.5s infinite;
 }
 
-.timetable-cell.drag-over-invalid {
-  /* 移除所有无效区域的视觉效果 */
-}
 
 .timetable-cell.drag-preview-valid {
   background-color: rgba(var(--primary-color-rgb, 0, 150, 136), 0.05);
@@ -311,10 +308,6 @@
   color: var(--primary-color, #009688);
   opacity: 0.5;
   animation: checkmark-fade 2s infinite;
-}
-
-.timetable-cell.drag-preview-invalid {
-  /* 移除所有预览无效区域的视觉效果 */
 }
 
 @keyframes theme-pulse {
