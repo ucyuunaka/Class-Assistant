@@ -697,17 +697,18 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("course-color").value = "course-computer";
       }
 
-      // 更新模态框标题
-      document.querySelector(
-        "#add-course-modal h2"
-      ).textContent = `编辑课程 - ${course.title || "未命名课程"}`;
-
-      // 显示模态框
-      document.getElementById("add-course-modal").style.display = "flex";
+      // 把弹窗标题改为“编辑课程”
+      document.querySelector("#add-course-modal h2").textContent = "编辑课程";
+      // 显示 添加/编辑 课程弹窗
+      // 如果项目已集成 Modal 组件，推荐用下面这行：
+      window.Modal.showExisting(addCourseModal);
+      // 如果没有 Modal 组件，也可直接：
+      // addCourseModal.style.display = "flex";
 
       // 保存当前编辑的课程ID
-      document.getElementById("add-course-form").dataset.editingCourseId =
-        course.id;
+      document.getElementById("add-course-form").dataset.editingCourseId = course.id;
+      // 填充表单字段等
+      // ...existing code...
     } catch (error) {
       console.error("编辑课程时出错:", error);
       window.showNotification("编辑课程失败: " + error.message, "error");
