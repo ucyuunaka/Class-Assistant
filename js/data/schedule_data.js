@@ -415,60 +415,93 @@ export function updateCourse(courseId, updatedData) {
 
 // 提供移动课程的方法
 export function moveCourse(courseId, newDay, newStartTime) {
-  // 确保传入的参数为数字类型
+  /**
+   * 基于格子的课程移动判断逻辑
+   * 1. 验证基本参数
+   * 2. 确定移动后课程将占用哪些格子
+   * 3. 检查这些格子是否已被其他课程占用
+   * 4. 更新课程位置
+   */
+  
+  // 1. 验证基本参数
   courseId = parseInt(courseId);
   newDay = parseInt(newDay);
   newStartTime = parseInt(newStartTime);
   
-  // 验证参数有效性
-  if (isNaN(courseId)) {
-    console.error('移动课程失败: 无效的课程ID', courseId);
+  // 检查参数是否为有效数字
+  if (isNaN(courseId) || isNaN(newDay) || isNaN(newStartTime)) {
+    console.error('移动课程失败: 无效的参数', { courseId, newDay, newStartTime });
     return false;
   }
   
-  const courseIndex = scheduleData.courses.findIndex(course => course.id === courseId);
+  // 检查日期范围 (1-7)
+  if (newDay < 1 || newDay > 7) {
+    console.error('移动课程失败: 日期超出范围', newDay);
+    return false;
+  }
   
+  // 检查时间范围
+  if (newStartTime < 1 || newStartTime > scheduleData.timePeriods.length) {
+    console.error('移动课程失败: 开始时间超出范围', newStartTime);
+    return false;
+  }
+  
+  // 2. 查找课程
+  const courseIndex = scheduleData.courses.findIndex(course => course.id === courseId);
   if (courseIndex === -1) {
-    console.error('移动课程失败: 找不到课程ID', courseId);
+    console.error('移动课程失败: 找不到课程', courseId);
     return false;
   }
   
   // 获取当前课程信息
   const currentCourse = scheduleData.courses[courseIndex];
-  const duration = currentCourse.endTime - currentCourse.startTime + 1;
-  const newEndTime = newStartTime + duration - 1;
   
-  // 检查时间是否有效
+  // 如果位置没有变化，直接返回成功
+  if (currentCourse.day === newDay && currentCourse.startTime === newStartTime) {
+    console.log('课程位置未变化，无需移动');
+    return true;
+  }
+  
+  // 计算课程持续时长和新的结束时间
+  const duration = currentCourse.endTime - currentCourse.startTime;
+  const newEndTime = newStartTime + duration;
+  
+  // 检查新的结束时间是否有效
   if (newEndTime > scheduleData.timePeriods.length) {
-    console.error('移动课程失败: 超出时间范围');
+    console.error('移动课程失败: 课程结束时间超出范围', { newStartTime, newEndTime, maxTime: scheduleData.timePeriods.length });
     return false;
   }
-
-  // 优化后的冲突检测逻辑 - 只检查同一天
-  const hasConflict = scheduleData.courses.some(course => {
-    // 跳过当前课程自身
-    if (course.id === courseId) return false;
-    
-    // 检查是否在同一天
-    if (course.day !== newDay) return false;
-    
-    // 检查时间段是否有重叠
-    return (
-      (newStartTime <= course.endTime && newEndTime >= course.startTime)
-    );
-  });
   
-  if (hasConflict) {
-    console.log('移动课程冲突: 当前位置已有其他课程', {
-      courseId,
-      newDay,
-      newStartTime,
-      newEndTime
+  // 3. 简化的冲突检测 - 基于格子的判断
+  // 检查目标位置的所有格子是否已被占用
+  for (let timeSlot = newStartTime; timeSlot <= newEndTime; timeSlot++) {
+    // 检查此格子是否已被其他课程占用
+    const occupyingCourse = scheduleData.courses.find(course => {
+      // 排除当前课程自身
+      if (course.id === courseId) return false;
+      
+      // 检查是否在同一天
+      if (course.day !== newDay) return false;
+      
+      // 检查是否占用同一格子
+      return (timeSlot >= course.startTime && timeSlot <= course.endTime);
     });
-    return false;
+    
+    if (occupyingCourse) {
+      console.log('移动课程失败: 目标位置已被占用', {
+        day: newDay,
+        timeSlot: timeSlot,
+        occupiedBy: {
+          id: occupyingCourse.id,
+          name: occupyingCourse.title,
+          time: `${occupyingCourse.startTime}-${occupyingCourse.endTime}`
+        }
+      });
+      return false;
+    }
   }
   
-  // 更新课程位置
+  // 4. 更新课程位置
   scheduleData.courses[courseIndex] = {
     ...currentCourse,
     day: newDay,
@@ -479,9 +512,9 @@ export function moveCourse(courseId, newDay, newStartTime) {
   // 保存到本地存储
   saveScheduleToStorage();
   console.log('课程移动成功', {
-    courseId,
-    from: { day: currentCourse.day, start: currentCourse.startTime, end: currentCourse.endTime },
-    to: { day: newDay, start: newStartTime, end: newEndTime }
+    course: { id: courseId, name: currentCourse.title },
+    from: { day: currentCourse.day, time: `${currentCourse.startTime}-${currentCourse.endTime}` },
+    to: { day: newDay, time: `${newStartTime}-${newEndTime}` }
   });
   
   return true;
