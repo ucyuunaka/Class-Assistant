@@ -550,21 +550,47 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       window.print();
     });
+  // 清空课表相关元素
+  const clearScheduleModal = document.getElementById("clear-schedule-modal");
+  const closeClearModal = document.getElementById("close-clear-modal");
+  const cancelClear = document.getElementById("cancel-clear");
+  const confirmClear = document.getElementById("confirm-clear");
+
+  // 显示清空课表确认对话框
+  function showClearConfirm() {
+    // 使用 Modal.showExisting 显示已存在的模态窗口
+    window.Modal.showExisting(clearScheduleModal);
+  }
+
+  // 隐藏清空课表确认对话框
+  function hideClearConfirm() {
+    // 使用 Modal.hideExisting 隐藏已存在的模态窗口
+    window.Modal.hideExisting(clearScheduleModal);
+  }
+
+  // 清空课表确认对话框事件
+  closeClearModal.addEventListener("click", hideClearConfirm);
+  cancelClear.addEventListener("click", hideClearConfirm);
+  confirmClear.addEventListener("click", function() {
+    // 使用clearCourses函数清空课程数据
+    clearCourses();
+
+    // 更新视图
+    renderTimetable();
+    renderListView();
+
+    // 隐藏确认对话框
+    hideClearConfirm();
+
+    // 显示成功通知
+    window.showNotification("课表已清空", "success");
+  });
 
   document
     .getElementById("clear-schedule")
     .addEventListener("click", function (e) {
       e.preventDefault();
-      if (confirm("确定要清空所有课程吗？此操作无法撤销。")) {
-        // 使用clearCourses函数清空课程数据
-        clearCourses();
-
-        // 更新视图
-        renderTimetable();
-        renderListView();
-
-        window.showNotification("课表已清空", "success");
-      }
+      showClearConfirm();
     });
 
   // 删除确认对话框事件
