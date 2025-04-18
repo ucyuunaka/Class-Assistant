@@ -840,9 +840,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 使用 Modal.showExisting 显示模态窗口
     window.Modal.showExisting(addCourseModal);
-  }
-
-  // 新增：拖放功能设置
+  }  // 新增：拖放功能设置
   function setupDragAndDrop() {
     const timetableGrid = document.getElementById("timetable-grid");
     if (!timetableGrid) return;
@@ -850,12 +848,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const courseCards = timetableGrid.querySelectorAll(".course-card");
     const cells = timetableGrid.querySelectorAll(".timetable-cell");
 
+    // 先清除所有单元格的拖放相关样式和提示
+    cells.forEach((cell) => {
+      cell.classList.remove("drag-over", "drag-over-invalid", "drag-preview-valid", "drag-preview-invalid");
+      const tooltip = cell.querySelector(".drag-tooltip");
+      if (tooltip) tooltip.remove();
+    });
+
     if (isEditMode) {
       // 使课程卡片可拖动
       courseCards.forEach((card) => {
         card.setAttribute("draggable", "true");
         card.addEventListener("dragstart", handleDragStart);
         card.addEventListener("dragend", handleDragEnd);
+        
+        // 添加拖动动画类
+        card.classList.add("draggable");
       });
 
       // 为单元格添加拖放事件监听器
@@ -864,13 +872,20 @@ document.addEventListener("DOMContentLoaded", function () {
         cell.addEventListener("dragenter", handleDragEnter);
         cell.addEventListener("dragleave", handleDragLeave);
         cell.addEventListener("drop", handleDrop);
+        // 添加鼠标移动监听器，用于在拖动过程中显示预览效果
+        cell.addEventListener("mouseover", handleCellHover);
+        cell.addEventListener("mouseout", handleCellOut);
       });
+      
+      // 监听主题变化事件
+      window.addEventListener('themeChanged', updateDragDropTheme);
     } else {
       // 移除拖动属性和事件监听器
       courseCards.forEach((card) => {
         card.removeAttribute("draggable");
         card.removeEventListener("dragstart", handleDragStart);
         card.removeEventListener("dragend", handleDragEnd);
+        card.classList.remove("draggable");
       });
 
       cells.forEach((cell) => {
@@ -878,32 +893,84 @@ document.addEventListener("DOMContentLoaded", function () {
         cell.removeEventListener("dragenter", handleDragEnter);
         cell.removeEventListener("dragleave", handleDragLeave);
         cell.removeEventListener("drop", handleDrop);
-        cell.classList.remove("drag-over"); // 清除可能残留的样式
+        cell.removeEventListener("mouseover", handleCellHover);
+        cell.removeEventListener("mouseout", handleCellOut);
+        // 清除所有拖放相关样式
+        cell.classList.remove("drag-over", "drag-over-invalid", "drag-preview-valid", "drag-preview-invalid");
+        // 移除提示元素
+        const tooltip = cell.querySelector(".drag-tooltip");
+        if (tooltip) tooltip.remove();
       });
+      
+      // 移除主题变化监听
+      window.removeEventListener('themeChanged', updateDragDropTheme);
     }
   }
-
+  
+  // 新增：更新拖放样式以适应当前主题
+  function updateDragDropTheme(event) {
+    // 获取当前样式
+    const currentTheme = event ? event.detail.theme : (ThemeManager ? ThemeManager.currentTheme : null);
+    const cells = document.querySelectorAll(".timetable-cell");
+    
+    if (currentTheme) {
+      // 如果是深色主题，调整拖放提示样式
+      if (currentTheme === 'dark') {
+        cells.forEach(cell => {
+          if (cell.classList.contains("drag-preview-valid")) {
+            cell.style.backgroundColor = "rgba(0, 150, 136, 0.15)";
+          } else if (cell.classList.contains("drag-preview-invalid")) {
+            cell.style.backgroundColor = "rgba(244, 67, 54, 0.15)";
+          }
+        });
+      } else {
+        // 非深色主题，恢复默认样式
+        cells.forEach(cell => {
+          cell.style.backgroundColor = "";
+        });
+      }
+    }
+  }
   let draggedItem = null;
+  let draggedCourseId = null;
 
   function handleDragStart(e) {
     draggedItem = this;
+    draggedCourseId = this.getAttribute("data-course-id");
+    
+    // 添加拖动中的样式类
     setTimeout(() => {
+      this.classList.add("dragging");
       this.style.opacity = "0.5"; // 使拖动项半透明
     }, 0);
+    
     e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", this.dataset.courseId); // 传递课程ID
+    e.dataTransfer.setData("text/plain", draggedCourseId); // 传递课程ID
+    
+    // 预先为所有单元格添加预览效果
+    updateAllCellsPreview(draggedCourseId);
+    
+    // 获取课程名称用于拖动提示
+    const courseName = this.querySelector(".course-title").textContent;
+    if (courseName) {
+      // 添加拖动提示效果
+      document.body.setAttribute('data-dragging-course', courseName);
+    }
   }
-
   function handleDragEnd() {
     setTimeout(() => {
       if (draggedItem) {
         draggedItem.style.opacity = "1"; // 恢复不透明度
       }
       draggedItem = null;
+      draggedCourseId = null;
     }, 0);
-    // 清除所有单元格的高亮状态
-    document.querySelectorAll(".timetable-cell.drag-over").forEach(cell => {
-      cell.classList.remove("drag-over");
+    
+    // 清除所有单元格的高亮状态和提示
+    document.querySelectorAll(".timetable-cell").forEach(cell => {
+      cell.classList.remove("drag-over", "drag-over-invalid", "drag-preview-valid", "drag-preview-invalid");
+      const tooltip = cell.querySelector(".drag-tooltip");
+      if (tooltip) tooltip.remove();
     });
   }
 
@@ -911,19 +978,64 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault(); // 必须阻止默认行为以允许drop
     e.dataTransfer.dropEffect = "move";
   }
-
   function handleDragEnter(e) {
     e.preventDefault();
-    this.classList.add("drag-over"); // 添加高亮效果
+    
+    const cell = this;
+    const day = parseInt(cell.dataset.day);
+    const time = parseInt(cell.dataset.time);
+    
+    // 检查该位置是否可以放置课程
+    const canPlace = checkCanPlaceCourse(draggedCourseId, day, time);
+    
+    // 清除之前的样式
+    cell.classList.remove("drag-over", "drag-over-invalid");
+    
+    // 只有可放置时才添加样式
+    if (canPlace) {
+      cell.classList.add("drag-over");
+      showTooltip(cell, "可以放置课程");
+    }
+    // 不可放置区域不添加任何样式或提示
   }
 
   function handleDragLeave() {
-    this.classList.remove("drag-over"); // 移除高亮效果
+    // 移除高亮效果和提示
+    this.classList.remove("drag-over", "drag-over-invalid");
+    const tooltip = this.querySelector(".drag-tooltip");
+    if (tooltip) tooltip.remove();
   }
-
+    // 处理单元格悬停事件，用于提供视觉预览
+  function handleCellHover() {
+    if (!draggedCourseId) return;
+    
+    const cell = this;
+    const day = parseInt(cell.dataset.day);
+    const time = parseInt(cell.dataset.time);
+    
+    // 检查该位置是否可以放置课程
+    const canPlace = checkCanPlaceCourse(draggedCourseId, day, time);
+    
+    // 清除之前的预览样式
+    cell.classList.remove("drag-preview-valid", "drag-preview-invalid");
+    
+    // 只有可放置区域才添加预览样式
+    if (canPlace) {
+      cell.classList.add("drag-preview-valid");
+    }
+    // 不可放置区域不添加任何样式
+  }
+  
+  function handleCellOut() {
+    // 移除预览效果
+    this.classList.remove("drag-preview-valid", "drag-preview-invalid");
+  }
   function handleDrop(e) {
     e.preventDefault();
-    this.classList.remove("drag-over");
+    // 移除所有高亮和提示
+    this.classList.remove("drag-over", "drag-over-invalid", "drag-preview-valid", "drag-preview-invalid");
+    const tooltip = this.querySelector(".drag-tooltip");
+    if (tooltip) tooltip.remove();
 
     if (!draggedItem) return;
 
@@ -931,22 +1043,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const targetDay = parseInt(this.dataset.day);
     const targetTime = parseInt(this.dataset.time);
 
-    // 检查目标单元格是否已被占用（检查时间范围）
-    const isOccupied = scheduleData.courses.some(
-      (course) =>
-        course.id !== courseId && // 排除正在拖动的课程
-        course.day === targetDay &&
-        targetTime >= course.startTime && // 目标时间在课程开始之后
-        targetTime <= course.endTime    // 目标时间在课程结束之前
-    );
+    // 再次检查目标单元格是否可以放置课程
+    const canPlace = checkCanPlaceCourse(courseId, targetDay, targetTime);
 
-    if (isOccupied) {
+    if (!canPlace) {
       window.showNotification("目标时间段已被占用", "error");
       // 恢复拖动项的不透明度，因为拖放失败
       if (draggedItem) {
         draggedItem.style.opacity = "1";
       }
-      draggedItem = null; // 清除拖动项引用
+      draggedItem = null;
+      draggedCourseId = null;
       return; // 不允许放置
     }
 
@@ -960,7 +1067,9 @@ document.addEventListener("DOMContentLoaded", function () {
         setupDragAndDrop(); // 重新设置拖放，因为元素已重新渲染
         window.showNotification("课程已移动", "success");
       } else {
-        window.showNotification("移动课程失败", "error");
+        // 如果移动失败，尝试获取具体原因
+        const reason = getMoveCourseFailReason(courseId, targetDay, targetTime);
+        window.showNotification("移动课程失败: " + reason, "error");
         // 恢复拖动项的不透明度，因为移动失败
         if (draggedItem) {
           draggedItem.style.opacity = "1";
@@ -976,7 +1085,131 @@ document.addEventListener("DOMContentLoaded", function () {
     } finally {
        // 确保在拖放操作结束后清除拖动项引用
        draggedItem = null;
+       draggedCourseId = null;
     }
+  }
+  
+  // 新增：显示拖放提示工具函数
+  function showTooltip(cell, message) {
+    // 先移除可能已存在的提示
+    const existingTooltip = cell.querySelector(".drag-tooltip");
+    if (existingTooltip) existingTooltip.remove();
+    
+    // 创建新的提示元素
+    const tooltip = document.createElement("div");
+    tooltip.className = "drag-tooltip";
+    tooltip.textContent = message;
+    
+    // 添加到单元格
+    cell.appendChild(tooltip);
+  }
+  
+  // 新增：检查课程是否可以放置在指定位置
+  function checkCanPlaceCourse(courseId, targetDay, targetTime) {
+    if (!courseId || !targetDay || !targetTime) return false;
+    
+    courseId = parseInt(courseId);
+    
+    // 获取当前课程信息
+    const course = scheduleData.courses.find(c => c.id === courseId);
+    if (!course) return false;
+    
+    // 计算课程时长和新的结束时间
+    const duration = course.endTime - course.startTime + 1;
+    const newEndTime = targetTime + duration - 1;
+    
+    // 检查时间是否超出范围
+    if (newEndTime > scheduleData.timePeriods.length) {
+      return false;
+    }
+    
+    // 检查是否与其他课程冲突
+    const hasConflict = scheduleData.courses.some(c => {
+      // 跳过当前课程自身
+      if (c.id === courseId) return false;
+      
+      // 检查是否在同一天
+      if (c.day !== targetDay) return false;
+      
+      // 检查时间段是否有重叠
+      return (
+        (targetTime <= c.endTime && newEndTime >= c.startTime)
+      );
+    });
+    
+    return !hasConflict;
+  }
+  
+  // 新增：获取移动课程失败的具体原因
+  function getMoveCourseFailReason(courseId, targetDay, targetTime) {
+    if (!courseId || !targetDay || !targetTime) {
+      return "参数无效";
+    }
+    
+    courseId = parseInt(courseId);
+    
+    // 获取当前课程信息
+    const course = scheduleData.courses.find(c => c.id === courseId);
+    if (!course) {
+      return "找不到课程";
+    }
+    
+    // 计算课程时长和新的结束时间
+    const duration = course.endTime - course.startTime + 1;
+    const newEndTime = targetTime + duration - 1;
+    
+    // 检查时间是否超出范围
+    if (newEndTime > scheduleData.timePeriods.length) {
+      return "课程结束时间超出课表范围";
+    }
+    
+    // 寻找冲突的课程
+    const conflictCourses = scheduleData.courses.filter(c => {
+      // 跳过当前课程自身
+      if (c.id === courseId) return false;
+      
+      // 检查是否在同一天
+      if (c.day !== targetDay) return false;
+      
+      // 检查时间段是否有重叠
+      return (
+        (targetTime <= c.endTime && newEndTime >= c.startTime)
+      );
+    });
+    
+    if (conflictCourses.length > 0) {
+      return `与课程「${conflictCourses[0].title}」时间冲突`;
+    }
+    
+    return "未知原因";
+  }
+  
+  // 新增：更新所有单元格的预览效果
+  function updateAllCellsPreview(courseId) {
+    if (!courseId) return;
+    
+    const cells = document.querySelectorAll(".timetable-cell");
+    
+    cells.forEach(cell => {
+      const day = parseInt(cell.dataset.day);
+      const time = parseInt(cell.dataset.time);
+      
+      // 不显示在空白单元格上
+      if (!day || !time) return;
+      
+      // 检查该位置是否可以放置课程
+      const canPlace = checkCanPlaceCourse(courseId, day, time);
+      
+      // 清除之前的预览样式
+      cell.classList.remove("drag-preview-valid", "drag-preview-invalid");
+      
+      // 根据是否可放置添加相应预览样式
+      if (canPlace) {
+        cell.classList.add("drag-preview-valid");
+      } else {
+        cell.classList.add("drag-preview-invalid");
+      }
+    });
   }
 
 
