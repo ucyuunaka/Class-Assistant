@@ -413,40 +413,22 @@ export function updateCourse(courseId, updatedData) {
   return true;
 }
 
-// 提供移动课程的方法
+// 提供移动课程的方法 - 增加详细调试信息
 export function moveCourse(courseId, newDay, newStartTime) {
-  /**
-   * 基于格子的课程移动判断逻辑
-   * 1. 验证基本参数
-   * 2. 确定移动后课程将占用哪些格子
-   * 3. 检查这些格子是否已被其他课程占用
-   * 4. 更新课程位置
-   */
+  console.log('==== 课程移动请求 ====', { courseId, newDay, newStartTime });
   
-  // 1. 验证基本参数
+  // 1. 基本参数验证
   courseId = parseInt(courseId);
   newDay = parseInt(newDay);
   newStartTime = parseInt(newStartTime);
   
-  // 检查参数是否为有效数字
+  // 检查参数有效性
   if (isNaN(courseId) || isNaN(newDay) || isNaN(newStartTime)) {
     console.error('移动课程失败: 无效的参数', { courseId, newDay, newStartTime });
     return false;
   }
   
-  // 检查日期范围 (1-7)
-  if (newDay < 1 || newDay > 7) {
-    console.error('移动课程失败: 日期超出范围', newDay);
-    return false;
-  }
-  
-  // 检查时间范围
-  if (newStartTime < 1 || newStartTime > scheduleData.timePeriods.length) {
-    console.error('移动课程失败: 开始时间超出范围', newStartTime);
-    return false;
-  }
-  
-  // 2. 查找课程
+  // 查找课程
   const courseIndex = scheduleData.courses.findIndex(course => course.id === courseId);
   if (courseIndex === -1) {
     console.error('移动课程失败: 找不到课程', courseId);
@@ -455,53 +437,119 @@ export function moveCourse(courseId, newDay, newStartTime) {
   
   // 获取当前课程信息
   const currentCourse = scheduleData.courses[courseIndex];
+  console.log('当前课程信息:', {
+    id: currentCourse.id,
+    title: currentCourse.title,
+    day: currentCourse.day,
+    startTime: currentCourse.startTime,
+    endTime: currentCourse.endTime,
+    duration: currentCourse.endTime - currentCourse.startTime
+  });
   
-  // 如果位置没有变化，直接返回成功
+  // 计算课程占用的格子数量
+  const courseDuration = currentCourse.endTime - currentCourse.startTime;
+  
+  // 2. 边界检查
+  // 检查日期范围 (1-7)
+  if (newDay < 1 || newDay > 7) {
+    console.error('移动课程失败: 日期超出范围', newDay);
+    return false;
+  }
+  
+  // 检查时间范围
+  console.log('时间范围检查:', { 
+    newStartTime, 
+    timePeriods: scheduleData.timePeriods.length,
+    isValid: newStartTime >= 1 && newStartTime <= scheduleData.timePeriods.length 
+  });
+  
+  if (newStartTime < 1 || newStartTime > scheduleData.timePeriods.length) {
+    console.error('移动课程失败: 开始时间超出范围', newStartTime);
+    return false;
+  }
+  
+  // 计算新的结束时间
+  const newEndTime = newStartTime + courseDuration;
+  console.log('新位置信息:', { 
+    newDay, 
+    newStartTime, 
+    courseDuration,
+    newEndTime,
+    timePeriods: scheduleData.timePeriods.length
+  });
+  
+  // 检查新的结束时间是否超出范围
+  if (newEndTime > scheduleData.timePeriods.length + 1) {
+    console.error('移动课程失败: 结束时间超出范围', { 
+      newEndTime, 
+      maxTime: scheduleData.timePeriods.length + 1 
+    });
+    return false;
+  }
+  
+  // 3. 如果位置没变，直接返回成功
   if (currentCourse.day === newDay && currentCourse.startTime === newStartTime) {
     console.log('课程位置未变化，无需移动');
     return true;
   }
   
-  // 计算课程持续时长和新的结束时间
-  const duration = currentCourse.endTime - currentCourse.startTime;
-  const newEndTime = newStartTime + duration;
+  // 4. 详细的冲突检测 - 纯粹基于格子的占用状态
+  // 目标位置需要的格子数
+  const requiredSlots = [];
   
-  // 检查新的结束时间是否有效
-  if (newEndTime > scheduleData.timePeriods.length) {
-    console.error('移动课程失败: 课程结束时间超出范围', { newStartTime, newEndTime, maxTime: scheduleData.timePeriods.length });
+  // 收集目标位置所有需要的格子
+  for (let slot = newStartTime; slot < newEndTime; slot++) {
+    requiredSlots.push({ day: newDay, time: slot });
+  }
+  
+  console.log('需要检查的格子:', requiredSlots);
+  
+  // 记录所有当前课程列表，便于调试
+  console.log('当前所有课程:', scheduleData.courses.map(c => ({
+    id: c.id,
+    title: c.title,
+    day: c.day,
+    time: `${c.startTime}-${c.endTime}`
+  })));
+  
+  // 检查这些格子是否有任何一个被占用
+  let conflictFound = false;
+  
+  scheduleData.courses.forEach(course => {
+    // 排除当前课程自身
+    if (course.id === courseId) return;
+    
+    // 只检查同一天的课程
+    if (course.day !== newDay) return;
+    
+    console.log(`检查可能冲突的课程:`, {
+      id: course.id,
+      title: course.title,
+      day: course.day,
+      time: `${course.startTime}-${course.endTime}`
+    });
+    
+    // 检查此课程占用的所有格子
+    for (let t = course.startTime; t < course.endTime; t++) {
+      // 检查是否与目标格子重叠
+      const overlap = requiredSlots.some(slot => slot.time === t);
+      
+      if (overlap) {
+        console.log(`发现冲突! 格子 [${newDay}, ${t}] 已被课程 "${course.title}" 占用`);
+        conflictFound = true;
+        // 找到冲突后继续检查，记录所有冲突点
+      }
+    }
+  });
+  
+  // 如果有冲突，拒绝移动
+  if (conflictFound) {
+    console.error('移动课程失败: 目标位置存在时间冲突');
     return false;
   }
   
-  // 3. 简化的冲突检测 - 基于格子的判断
-  // 检查目标位置的所有格子是否已被占用
-  for (let timeSlot = newStartTime; timeSlot <= newEndTime; timeSlot++) {
-    // 检查此格子是否已被其他课程占用
-    const occupyingCourse = scheduleData.courses.find(course => {
-      // 排除当前课程自身
-      if (course.id === courseId) return false;
-      
-      // 检查是否在同一天
-      if (course.day !== newDay) return false;
-      
-      // 检查是否占用同一格子
-      return (timeSlot >= course.startTime && timeSlot <= course.endTime);
-    });
-    
-    if (occupyingCourse) {
-      console.log('移动课程失败: 目标位置已被占用', {
-        day: newDay,
-        timeSlot: timeSlot,
-        occupiedBy: {
-          id: occupyingCourse.id,
-          name: occupyingCourse.title,
-          time: `${occupyingCourse.startTime}-${occupyingCourse.endTime}`
-        }
-      });
-      return false;
-    }
-  }
-  
-  // 4. 更新课程位置
+  // 5. 更新课程位置
+  console.log('验证通过，准备移动课程');
   scheduleData.courses[courseIndex] = {
     ...currentCourse,
     day: newDay,
@@ -512,7 +560,7 @@ export function moveCourse(courseId, newDay, newStartTime) {
   // 保存到本地存储
   saveScheduleToStorage();
   console.log('课程移动成功', {
-    course: { id: courseId, name: currentCourse.title },
+    course: currentCourse.title,
     from: { day: currentCourse.day, time: `${currentCourse.startTime}-${currentCourse.endTime}` },
     to: { day: newDay, time: `${newStartTime}-${newEndTime}` }
   });
