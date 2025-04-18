@@ -360,7 +360,6 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("调整字体大小发生错误:", e);
     }
   }
-
   // 渲染列表视图（增强稳定性）  
   function renderListView() {
     const listContainer = document.getElementById("list-view-container");
@@ -386,9 +385,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 为每一天创建卡片
     scheduleData.days.forEach((day) => {
-      // 如果该天没有课程，跳过
-      if (coursesByDay[day.id].length === 0) return;
-
       // 创建该天的卡片
       const dayCard = document.createElement("div");
       dayCard.className = day.id === 1 ? "card" : "card mt-4";
@@ -398,6 +394,20 @@ document.addEventListener("DOMContentLoaded", function () {
       dayTitle.className = "mb-3";
       dayTitle.textContent = day.name;
       dayCard.appendChild(dayTitle);
+      
+      // 如果该天没有课程，显示"此日无课"信息
+      if (coursesByDay[day.id].length === 0) {
+        const noCourseInfo = document.createElement("div");
+        noCourseInfo.className = "no-course-info";
+        noCourseInfo.innerHTML = '<i class="fas fa-coffee"></i> 此日无课';
+        noCourseInfo.style.textAlign = "center";
+        noCourseInfo.style.padding = "20px";
+        noCourseInfo.style.color = "var(--text-secondary)";
+        noCourseInfo.style.fontSize = "1.1rem";
+        dayCard.appendChild(noCourseInfo);
+        listContainer.appendChild(dayCard);
+        return;
+      }
 
       // 添加该天的课程
       coursesByDay[day.id]
