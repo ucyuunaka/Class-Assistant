@@ -49,8 +49,8 @@
       <div id="header-container"></div>
       <div class="container">
         <!-- 输入区域 -->
-        <section class="lesson-section">
-          <div class="input-container animate-on-scroll fade-up">
+        <section class="lesson-section animate-on-scroll fade-down">
+          <div class="input-container">
             <div class="input-header">
               <div class="input-title">记录新评价</div>
             </div>
@@ -68,12 +68,15 @@
         </section>
 
         <!-- 课评列表 -->
-        <section class="lesson-section">
-          <h2 class="section-title animate-on-scroll fade-up">历史评价</h2>
+        <section class="lesson-section animate-on-scroll fade-up">
+          <h2 class="section-title">历史评价</h2>
           <div class="message-container">
             <div class="message-list" id="messageList">
               <!-- 示例消息 -->
-              <div class="message sent" data-course="程序设计">
+              <div
+                class="message sent animate-on-scroll fade-up delay-100"
+                data-course="程序设计"
+              >
                 <div class="message-content">
                   <div class="course-name">程序设计</div>
                   <div class="message-text">今天的课程内容真的很棒！</div>
@@ -95,7 +98,10 @@
                 </div>
               </div>
 
-              <div class="message received" data-course="高等数学">
+              <div
+                class="message received animate-on-scroll fade-up delay-200"
+                data-course="高等数学"
+              >
                 <div class="message-content">
                   <div class="course-name">高等数学</div>
                   <div class="message-text">今天讲的微积分有点难理解 😵</div>
@@ -114,7 +120,7 @@
               </div>
 
               <div
-                class="message sent"
+                class="message sent animate-on-scroll fade-up delay-300"
                 data-course="计算机网络"
                 data-category="cs"
               >
@@ -138,7 +144,7 @@
               </div>
 
               <div
-                class="message received"
+                class="message received animate-on-scroll fade-up delay-400"
                 data-course="大学英语"
                 data-category="eng"
               >
@@ -160,7 +166,7 @@
               </div>
 
               <div
-                class="message sent"
+                class="message sent animate-on-scroll fade-up delay-500"
                 data-course="数据库原理"
                 data-category="cs"
               >
@@ -179,7 +185,11 @@
             </div>
 
             <!-- 空状态 -->
-            <div class="lesson-empty" id="emptyState" style="display: none">
+            <div
+              class="lesson-empty animate-on-scroll zoom-in"
+              id="emptyState"
+              style="display: none"
+            >
               <div class="lesson-empty-icon">
                 <i class="ri-chat-off-line"></i>
               </div>
@@ -189,51 +199,50 @@
         </section>
       </div>
     </main>
-
     <!-- 表情选择器 -->
     <div class="emoji-picker-container" id="emojiPickerContainer">
       <emoji-picker id="emojiPicker"></emoji-picker>
     </div>
     <!-- 页脚 - 简化为只保留容器 -->
-    <footer class="footer"></footer>
+    <footer id="footer-container" class="footer"></footer>
     <script src="../js/main.js"></script>
-    <!-- 引入新的侧边栏组件 -->
+    <!-- 引入组件 -->
     <script src="../components/sidebar/sidebar.js"></script>
-    <!-- 引入顶栏组件 -->
     <script src="../components/header/header.js"></script>
-    <!-- 初始化侧边栏组件 -->
+    <script type="module" src="../components/footer/footer.js"></script>
+    <script src="../components/scrollAnimation/scrollAnimation.js"></script>
+    <!-- 初始化组件 -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const sidebar = new Sidebar("sidebar-container");
+        // 初始化侧边栏
+        if (typeof Sidebar === "function") {
+          new Sidebar("sidebar-container");
+        }
 
-        // 初始化顶栏组件
-        const header = new Header("header-container", {
-          isHomePage: false,
-          title: "课评速记",
-          subtitle: "用简短的评价和表情记录你对课程的感受",
-          buttons: [
-            {
-              text: "添加评价",
-              url: "#",
-              isPrimary: true,
-              className: "add-review-btn",
-            },
-          ],
-          buttonPosition: "right",
-        });
+        // 初始化顶栏
+        if (typeof Header === "function") {
+          new Header("header-container", {
+            title: "课评速记",
+            subtitle: "记录与分享您的课程评价",
+            isHomePage: false,
+          });
+        }
+
+        // 初始化页脚
+        if (typeof Footer === "function") {
+          new Footer("footer-container");
+        }
+
+        // 初始化滚动动画
+        if (typeof initScrollAnimation === "function") {
+          initScrollAnimation(".animate-on-scroll", {
+            threshold: 0.15,
+            once: true,
+          });
+        }
       });
     </script>
-    <!-- 添加页脚脚本 -->
-    <script type="module" src="../components/footer/footer.js"></script>
-    <!-- 添加滚动动画脚本 -->
-    <script src="../components/scrollAnimation/scrollAnimation.js"></script>
-    <!-- 添加通知组件脚本 -->
-    <script src="../components/notifications/notifications.js"></script>
-    <!-- 添加主题管理脚本 -->
-    <script src="../js/themes.js"></script>
-    <!-- 移除这里的内联脚本 -->
-    <!-- <script> ... </script> -->
-    <!-- 添加对 lesson.js 的引用 -->
+    <!-- 页面特定脚本 -->
     <script type="module" src="../js/pages/lesson.js"></script>
   </body>
 </html>

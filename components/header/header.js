@@ -105,8 +105,7 @@ class Header {
     }
   }/**
    * 渲染普通页面样式顶栏
-   */
-  renderPageHeader() {
+   */  renderPageHeader() {
     // 根据按钮位置选择布局类
     const layoutClass = this.options.buttonPosition === 'right' ? 'page-header-right' : '';
     
@@ -117,8 +116,8 @@ class Header {
       <section class="header-component page-header${backgroundClass}">
         <div class="container ${layoutClass}">
           <div>
-            <h1 class="page-header-title animate-on-scroll fade-up">${this.options.title}</h1>
-            <p class="page-header-subtitle animate-on-scroll fade-up delay-100">${this.options.subtitle}</p>
+            <h1 class="page-header-title">${this.options.title}</h1>
+            <p class="page-header-subtitle">${this.options.subtitle}</p>
           </div>
           ${this.renderButtons('page')}
         </div>
@@ -127,12 +126,12 @@ class Header {
     
     this.container.innerHTML = html;
     
-    // 添加滚动动画初始化，确保新添加的元素能够正常应用动画
-    if (typeof initScrollAnimation === 'function') {
-      setTimeout(() => {
-        initScrollAnimation();
-      }, 100);
-    }
+    // 手动为顶栏元素添加active类，使其直接显示，而不是通过滚动动画触发
+    const titleElement = this.container.querySelector('.page-header-title');
+    const subtitleElement = this.container.querySelector('.page-header-subtitle');
+    
+    if (titleElement) titleElement.classList.add('active');
+    if (subtitleElement) subtitleElement.classList.add('active');
   }
   
   /**
