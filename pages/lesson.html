@@ -45,9 +45,10 @@
 
     <!-- 主要内容 -->
     <main class="sidebar-active">
-      <!-- 顶栏容器 - 添加ID用于组件初始化 -->
-      <div id="header-container"></div>
-      <div class="container">
+      <div class="container py-4">
+        <!-- 顶栏容器 - 添加ID用于组件初始化 -->
+        <div id="header-container" class="lesson-header-container"></div>
+
         <!-- 输入区域 -->
         <section class="lesson-section animate-on-scroll fade-down">
           <div class="input-container">
@@ -199,47 +200,44 @@
         </section>
       </div>
     </main>
+
     <!-- 表情选择器 -->
     <div class="emoji-picker-container" id="emojiPickerContainer">
       <emoji-picker id="emojiPicker"></emoji-picker>
     </div>
     <!-- 页脚 - 简化为只保留容器 -->
     <footer id="footer-container" class="footer"></footer>
+
+    <!-- 先引入主脚本 -->
     <script src="../js/main.js"></script>
+    <!-- 引入主题系统 -->
+    <script src="../js/themes.js"></script>
     <!-- 引入组件 -->
     <script src="../components/sidebar/sidebar.js"></script>
     <script src="../components/header/header.js"></script>
     <script type="module" src="../components/footer/footer.js"></script>
     <script src="../components/scrollAnimation/scrollAnimation.js"></script>
+    <script src="../components/notifications/notifications.js"></script>
+
     <!-- 初始化组件 -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // 初始化侧边栏
-        if (typeof Sidebar === "function") {
-          new Sidebar("sidebar-container");
-        }
+        const sidebar = new Sidebar("sidebar-container");
 
         // 初始化顶栏
-        if (typeof Header === "function") {
-          new Header("header-container", {
-            title: "课评速记",
-            subtitle: "记录与分享您的课程评价",
-            isHomePage: false,
-          });
-        }
-
-        // 初始化页脚
-        if (typeof Footer === "function") {
-          new Footer("footer-container");
-        }
+        const header = new Header("header-container", {
+          title: "课评速记",
+          subtitle: "记录与分享您的课程评价",
+          isHomePage: false,
+          buttonPosition: "right",
+        });
 
         // 初始化滚动动画
-        if (typeof initScrollAnimation === "function") {
-          initScrollAnimation(".animate-on-scroll", {
-            threshold: 0.15,
-            once: true,
-          });
-        }
+        initScrollAnimation(".animate-on-scroll", {
+          threshold: 0.15,
+          once: true,
+        });
       });
     </script>
     <!-- 页面特定脚本 -->

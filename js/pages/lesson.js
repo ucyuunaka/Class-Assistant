@@ -29,14 +29,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // 订阅课程数据变化
   subscribeToCourseUpdates(handleCourseUpdates);
   
-  // 初始化滚动动画
-  initScrollAnimation(".animate-on-scroll", {
-    threshold: 0.1,
-    once: true,
-  });
-  
   // 监听主题变化
   listenForThemeChanges();
+  
+  // 立即应用当前主题
+  const currentTheme = document.body.getAttribute('data-theme') || 'classic-blue-pink';
+  updateLessonUIForTheme(currentTheme);
 });
 
 // 监听主题变化事件
@@ -46,20 +44,92 @@ function listenForThemeChanges() {
     const newTheme = event.detail.theme;
     console.log('课评速记页面：主题已切换为', newTheme);
     
-    // 可以在这里处理特定于lesson页面的主题变化逻辑
-    // 例如根据主题调整特定元素的样式
+    // 应用主题变化到UI元素
     updateLessonUIForTheme(newTheme);
   });
 }
 
 // 根据主题更新UI元素
 function updateLessonUIForTheme(theme) {
-  // 主题相关的UI更新可以在这里添加
-  // 例如，为黑暗主题特别调整某些元素
-  const isDarkTheme = theme === 'dark';
+  // 检查ThemeManager是否可用
+  if (!window.ThemeManager) {
+    console.error('ThemeManager未定义，无法应用主题');
+    return;
+  }
   
-  // 大部分样式通过CSS变量和data-theme属性自动应用
-  // 这里主要处理需要JavaScript动态调整的部分
+  // 获取当前主题信息
+  const isDarkTheme = theme === 'dark';
+  const themeInfo = window.ThemeManager.getThemeInfo(theme);
+  
+  // 更新顶栏样式
+  const headerContainer = document.getElementById('header-container');
+  if (headerContainer) {
+    // 确保顶栏使用当前主题的渐变色
+    headerContainer.style.background = `linear-gradient(135deg, var(--gradient-start), var(--gradient-end))`;
+  }
+  
+  // 更新输入区域颜色
+  const inputContainer = document.querySelector('.input-container');
+  if (inputContainer) {
+    inputContainer.style.backgroundColor = 'var(--background-secondary)';
+    inputContainer.style.borderColor = 'var(--border-color)';
+  }
+  
+  // 更新输入头部
+  const inputHeader = document.querySelector('.input-header');
+  if (inputHeader) {
+    inputHeader.style.backgroundColor = 'var(--card-header-bg)';
+    inputHeader.style.color = 'var(--text-color)';
+  }
+  
+  // 更新所有消息卡片
+  const messages = document.querySelectorAll('.message');
+  messages.forEach(message => {
+    message.style.backgroundColor = 'var(--background-secondary)';
+    message.style.borderColor = 'var(--border-color)';
+    message.style.color = 'var(--text-color)';
+  });
+  
+  // 更新按钮样式
+  const buttons = document.querySelectorAll('button:not(.emoji-btn)');
+  buttons.forEach(button => {
+    if (button.classList.contains('btn')) {
+      button.style.backgroundColor = 'var(--button-primary)';
+      button.style.color = 'var(--button-text)';
+    }
+  });
+  
+  // 更新表情按钮
+  const emojiBtn = document.querySelector('.emoji-btn');
+  if (emojiBtn) {
+    emojiBtn.style.backgroundColor = isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+  }
+  
+  // 更新选择框
+  const selects = document.querySelectorAll('select');
+  selects.forEach(select => {
+    select.style.backgroundColor = 'var(--background-secondary)';
+    select.style.color = 'var(--text-color)';
+    select.style.borderColor = 'var(--border-color)';
+  });
+  
+  // 更新部分标签文字颜色
+  const labels = document.querySelectorAll('.section-title, .course-name, .message-time');
+  labels.forEach(label => {
+    label.style.color = 'var(--text-color)';
+  });
+  
+  // 空状态提示
+  const emptyState = document.querySelector('.lesson-empty');
+  if (emptyState) {
+    emptyState.style.color = 'var(--text-secondary)';
+  }
+  
+  // 更新反应气泡
+  const reactionBubbles = document.querySelectorAll('.reaction-bubble');
+  reactionBubbles.forEach(bubble => {
+    bubble.style.backgroundColor = isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+  });
 }
 
 // 初始化UI元素引用
