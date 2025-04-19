@@ -34,7 +34,33 @@ document.addEventListener("DOMContentLoaded", function () {
     threshold: 0.1,
     once: true,
   });
+  
+  // 监听主题变化
+  listenForThemeChanges();
 });
+
+// 监听主题变化事件
+function listenForThemeChanges() {
+  window.addEventListener('themeChanged', function(event) {
+    // 获取新主题
+    const newTheme = event.detail.theme;
+    console.log('课评速记页面：主题已切换为', newTheme);
+    
+    // 可以在这里处理特定于lesson页面的主题变化逻辑
+    // 例如根据主题调整特定元素的样式
+    updateLessonUIForTheme(newTheme);
+  });
+}
+
+// 根据主题更新UI元素
+function updateLessonUIForTheme(theme) {
+  // 主题相关的UI更新可以在这里添加
+  // 例如，为黑暗主题特别调整某些元素
+  const isDarkTheme = theme === 'dark';
+  
+  // 大部分样式通过CSS变量和data-theme属性自动应用
+  // 这里主要处理需要JavaScript动态调整的部分
+}
 
 // 初始化UI元素引用
 function initUI() {
