@@ -1,308 +1,203 @@
+// 课程评价页面的主要脚本
+import { getAllCourses, subscribeToCourseUpdates } from "../data/schedule_data.js";
+
+// 初始化变量
+let reactionMap = new Map(); // 存储用户选择的表情
+
+// DOM元素
+let courseSelect;
+let messageList;
+let selectedReactions;
+let emojiButton;
+let sendButton;
+let emojiPicker;
+
+// 初始化函数
 document.addEventListener("DOMContentLoaded", function () {
-  // 初始化滚动动画并存储实例
-  const scrollAnimation = initScrollAnimation(".animate-on-scroll", {
+  // 初始化界面元素
+  initUI();
+  
+  // 初始化表情选择器
+  initEmojiPicker();
+  
+  // 加载课程数据
+  renderOptionalCourses();
+  
+  // 初始化事件监听
+  initEvents();
+  
+  // 订阅课程数据变化
+  subscribeToCourseUpdates(handleCourseUpdates);
+  
+  // 初始化滚动动画
+  initScrollAnimation(".animate-on-scroll", {
     threshold: 0.1,
     once: true,
   });
+});
 
-  // DOM元素
-  const emojiButton = document.getElementById("emojiButton");
-  const emojiPickerContainer = document.getElementById(
-    "emojiPickerContainer"
-  );
-  const emojiPicker = document.getElementById("emojiPicker");
-  const selectedReactions = document.getElementById("selectedReactions");
-  const courseSelect = document.getElementById("courseSelect");
-  const sendButton = document.getElementById("sendButton");
-  const messageList = document.getElementById("messageList");
-  const filterButtons = document.querySelectorAll(".filter-btn");
-  const emptyState = document.getElementById("emptyState");
+// 初始化UI元素引用
+function initUI() {
+  courseSelect = document.getElementById("courseSelect");
+  messageList = document.getElementById("messageList");
+  selectedReactions = document.getElementById("selectedReactions");
+  emojiButton = document.getElementById("emojiButton");
+  sendButton = document.getElementById("sendButton");
+}
 
-  // 选定的表情列表
-  let selectedEmojis = [];
-
-  // 表情选择器显示/隐藏
-  emojiButton.addEventListener("click", function () {
-    emojiPickerContainer.classList.toggle("visible");
-  });
-
-  // 点击其他地方关闭表情选择器
-  document.addEventListener("click", function (e) {
-    if (
-      !emojiButton.contains(e.target) &&
-      !emojiPickerContainer.contains(e.target)
-    ) {
-      emojiPickerContainer.classList.remove("visible");
-    }
-  });
-
-  // 选择表情
-  emojiPicker.addEventListener("emoji-click", (event) => {
+// 初始化表情选择器
+function initEmojiPicker() {
+  // 创建表情选择器元素
+  emojiPicker = document.createElement("emoji-picker");
+  emojiPicker.classList.add("emoji-picker");
+  document.body.appendChild(emojiPicker);
+  emojiPicker.style.display = "none";
+  
+  // 表情选择器点击事件
+  emojiPicker.addEventListener("emoji-click", event => {
     const emoji = event.detail.unicode;
-
-    // 限制最多选择5个表情
-    if (selectedEmojis.length < 5 && !selectedEmojis.includes(emoji)) {
-      selectedEmojis.push(emoji);
-      updateSelectedEmojis();
-    }
-
-    // 自动关闭选择器
-    emojiPickerContainer.classList.remove("visible");
+    addReaction(emoji);
+    emojiPicker.style.display = "none";
   });
+}
 
-  // 更新已选表情显示
-  function updateSelectedEmojis() {
-    selectedReactions.innerHTML = "";
-    selectedEmojis.forEach((emoji, index) => {
-      const tag = document.createElement("div");
-      tag.className = "reaction-tag";
-      tag.innerHTML = `
-        <span class="reaction-tag-emoji">${emoji}</span>
-        <span class="reaction-tag-text">点击删除</span>
-      `;
-      tag.addEventListener("click", () => {
-        selectedEmojis.splice(index, 1);
-        updateSelectedEmojis();
-      });
-      selectedReactions.appendChild(tag);
-    });
+// 初始化事件监听
+function initEvents() {
+  // 表情按钮点击事件
+  emojiButton.addEventListener("click", function(e) {
+    e.stopPropagation();
+    
+    // 显示/隐藏表情选择器
+    if (emojiPicker.style.display === "none") {
+      const buttonRect = emojiButton.getBoundingClientRect();
+      emojiPicker.style.left = `${buttonRect.left}px`;
+      emojiPicker.style.top = `${buttonRect.bottom + 5}px`;
+      emojiPicker.style.display = "block";
+    } else {
+      emojiPicker.style.display = "none";
+    }
+  });
+  
+  // 点击其他地方隐藏表情选择器
+  document.addEventListener("click", function() {
+    emojiPicker.style.display = "none";
+  });
+  
+  // 发送按钮点击事件
+  sendButton.addEventListener("click", sendMessage);
+}
+
+// 渲染可选课程列表
+export function renderOptionalCourses() {
+  // 清空现有选项（保留第一个默认选项）
+  while (courseSelect.options.length > 1) {
+    courseSelect.remove(1);
   }
-
-  // 发送评价
-  sendButton.addEventListener("click", function () {    const course = courseSelect.value;
-    if (!course) {
-      window.showNotification("请选择一个课程", "warning");
-      return;
-    }    if (selectedEmojis.length === 0) {
-      window.showNotification("请至少选择一个表情评价", "warning");
-      return;
-    }
-
-    // 创建新的消息
-    addNewMessage(course, selectedEmojis);
+  
+  // 获取所有课程
+  const courses = getAllCourses();
+  
+  // 创建课程选项
+  courses.forEach(course => {
+    const option = document.createElement("option");
+    option.value = course.title;
+    option.text = course.title;
+    courseSelect.appendChild(option);
   });
+}
 
-  // 添加新消息
-  function addNewMessage(course, emojis) {
-    const now = new Date();
-    const timeStr = `${now.getFullYear()}-${String(
-      now.getMonth() + 1
-    ).padStart(2, "0")}-${String(now.getDate()).padStart(
-      2,
-      "0"
-    )} ${String(now.getHours()).padStart(2, "0")}:${String(
-      now.getMinutes()
-    ).padStart(2, "0")}`;
+// 处理课程数据更新
+function handleCourseUpdates(updateData) {
+  console.log("课程数据已更新:", updateData);
+  // 重新渲染课程下拉列表
+  renderOptionalCourses();
+}
 
-    // 从select选项获取课程分类
-    const categoryOption = Array.from(courseSelect.options).find(
-      (option) => option.value === course
-    );
-    const category = categoryOption
-      ? categoryOption.dataset.category
-      : "";
+// 添加表情反应
+function addReaction(emoji) {
+  if (!reactionMap.has(emoji)) {
+    reactionMap.set(emoji, 1);
+  } else {
+    reactionMap.set(emoji, reactionMap.get(emoji) + 1);
+  }
+  
+  renderSelectedReactions();
+}
 
-    // 创建消息HTML
-    const messageEl = document.createElement("div");
-    // 首先添加基本类名
-    messageEl.className = "message sent";
-    messageEl.dataset.course = course;
-    messageEl.dataset.category = category;
-
-    // 生成反应气泡HTML
-    let reactionsHTML = "";
-    emojis.forEach((emoji) => {
-      reactionsHTML += `
-        <div class="reaction-bubble" data-emoji="${emoji}">
-          <span class="reaction-emoji">${emoji}</span>
-          <span class="reaction-count">1</span>
-        </div>
-      `;
+// 渲染已选择的表情
+function renderSelectedReactions() {
+  selectedReactions.innerHTML = "";
+  
+  reactionMap.forEach((count, emoji) => {
+    const tag = document.createElement("div");
+    tag.classList.add("reaction-tag");
+    tag.innerHTML = `
+      <span class="reaction-emoji">${emoji}</span>
+      <span class="reaction-count">${count}</span>
+      <span class="reaction-remove" data-emoji="${emoji}">×</span>
+    `;
+    selectedReactions.appendChild(tag);
+    
+    // 添加删除事件
+    tag.querySelector(".reaction-remove").addEventListener("click", function() {
+      const emoji = this.getAttribute("data-emoji");
+      reactionMap.delete(emoji);
+      renderSelectedReactions();
     });
+  });
+}
 
-    messageEl.innerHTML = `
-      <div class="message-content">
-        <div class="course-name">${course}</div>
-        <div class="message-text">我的课程评价</div>
-        <div class="message-reactions">
-          ${reactionsHTML}
-        </div>
-        <div class="message-time">${timeStr}</div>
+// 发送消息
+function sendMessage() {
+  const courseValue = courseSelect.value;
+  if (!courseValue) {
+    window.showNotification("请选择一个课程", "error");
+    return;
+  }
+  
+  if (reactionMap.size === 0) {
+    window.showNotification("请至少添加一个表情反应", "error");
+    return;
+  }
+  
+  // 创建消息元素
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", "sent");
+  messageDiv.setAttribute("data-course", courseValue);
+  
+  // 获取当前时间
+  const now = new Date();
+  const timeString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  
+  // 构建消息内容
+  let reactionsHTML = "";
+  reactionMap.forEach((count, emoji) => {
+    reactionsHTML += `
+      <div class="reaction-bubble" data-emoji="${emoji}">
+        <span class="reaction-emoji">${emoji}</span>
+        <span class="reaction-count">${count}</span>
       </div>
     `;
-
-    // 添加到列表最前面
-    messageList.insertBefore(messageEl, messageList.firstChild);
-
-    // 设置动画 - 确保在下一帧应用类，以便观察者可以检测到
-    requestAnimationFrame(() => {
-       messageEl.classList.add("animate-on-scroll", "fade-up");
-       // 刷新滚动动画观察器以包含新元素
-       if (scrollAnimation && scrollAnimation.refresh) {
-         scrollAnimation.refresh();
-       }
-    });
-
-
-    // 更新过滤状态
-    updateFilter(
-      document.querySelector(".filter-btn.active").dataset.filter
-    );
-  }
-
-  // 课程过滤功能
-  filterButtons.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      // 更新按钮激活状态
-      filterButtons.forEach((b) => b.classList.remove("active"));
-      this.classList.add("active");
-
-      // 应用过滤
-      updateFilter(this.dataset.filter);
-    });
   });
-
-  // 更新过滤显示
-  function updateFilter(filter) {
-    const messages = document.querySelectorAll(".message");
-    let visibleCount = 0;
-
-    messages.forEach((msg) => {
-      if (filter === "all" || msg.dataset.category === filter) {
-        msg.style.display = "flex";
-        visibleCount++;
-      } else {
-        msg.style.display = "none";
-      }
-    });
-
-    // 更新空状态显示
-    emptyState.style.display = visibleCount > 0 ? "none" : "block";
-  }
-
-  // 添加反应功能
-  messageList.addEventListener("click", function (e) {
-    const reactionBubble = e.target.closest(".reaction-bubble");
-    if (reactionBubble) {
-      const countEl = reactionBubble.querySelector(".reaction-count");
-      let count = parseInt(countEl.textContent);
-      count++;
-      countEl.textContent = count;
-
-      // 添加点击动画
-      reactionBubble.style.transform = "scale(1.2)";
-      setTimeout(() => {
-        reactionBubble.style.transform = "";
-      }, 200);
-    }
-  });
-
-  // 长按消息显示快速反应选择器
-  let pressTimer;
-
-  messageList.addEventListener("mousedown", function (e) {
-    const message = e.target.closest(".message");
-    if (message) {
-      pressTimer = setTimeout(() => {
-        showQuickReactions(message);
-      }, 500);
-    }
-  });
-
-  messageList.addEventListener("mouseup", function () {
-    clearTimeout(pressTimer);
-  });
-
-  messageList.addEventListener("mouseleave", function () {
-    clearTimeout(pressTimer);
-  });
-
-  // 移动端支持
-  messageList.addEventListener("touchstart", function (e) {
-    const message = e.target.closest(".message");
-    if (message) {
-      pressTimer = setTimeout(() => {
-        showQuickReactions(message);
-      }, 500);
-    }
-  });
-
-  messageList.addEventListener("touchend", function () {
-    clearTimeout(pressTimer);
-  });
-
-  // 显示快速反应选择器
-  function showQuickReactions(message) {
-    // 移除所有现有的快速反应选择器
-    document
-      .querySelectorAll(".quick-reactions")
-      .forEach((el) => el.remove());
-
-    // 创建新的快速反应选择器
-    const quickReactions = document.createElement("div");
-    quickReactions.className = "quick-reactions";
-
-    // 常用表情
-    const commonEmojis = ["👍", "❤️", "😂", "🎉", "😢", "🔥", "👏", "🤔"];
-
-    commonEmojis.forEach((emoji) => {
-      const item = document.createElement("div");
-      item.className = "quick-reaction-item";
-      item.textContent = emoji;
-      item.addEventListener("click", function () {
-        // 检查是否已有该表情的反应
-        let reactionBubble = Array.from(
-          message.querySelectorAll(".reaction-bubble")
-        ).find((bubble) => bubble.dataset.emoji === emoji);
-
-        if (reactionBubble) {
-          // 更新已有反应
-          const countEl = reactionBubble.querySelector(".reaction-count");
-          let count = parseInt(countEl.textContent);
-          count++;
-          countEl.textContent = count;
-        } else {
-          // 创建新反应
-          const reactionsContainer =
-            message.querySelector(".message-reactions");
-          reactionBubble = document.createElement("div");
-          reactionBubble.className = "reaction-bubble";
-          reactionBubble.dataset.emoji = emoji;
-          reactionBubble.innerHTML = `
-            <span class="reaction-emoji">${emoji}</span>
-            <span class="reaction-count">1</span>
-          `;
-          reactionsContainer.appendChild(reactionBubble);
-        }
-
-        // 移除选择器
-        quickReactions.remove();
-      });
-
-      quickReactions.appendChild(item);
-    });
-
-    // 添加到消息元素
-    message.appendChild(quickReactions);
-
-    // 显示选择器
-    setTimeout(() => {
-      quickReactions.classList.add("visible");
-    }, 10);
-
-    // 点击其他地方关闭选择器
-    function closeQuickReactions(e) {
-      if (!quickReactions.contains(e.target)) {
-        quickReactions.remove();
-        document.removeEventListener("click", closeQuickReactions);
-      }
-    }
-
-    setTimeout(() => {
-      document.addEventListener("click", closeQuickReactions);
-    }, 10);
-  }
-
-  // 初始过滤设置为"全部"
-  updateFilter("all");
-});
+  
+  messageDiv.innerHTML = `
+    <div class="message-content">
+      <div class="course-name">${courseValue}</div>
+      <div class="message-text">课程评价</div>
+      <div class="message-reactions">
+        ${reactionsHTML}
+      </div>
+      <div class="message-time">${timeString}</div>
+    </div>
+  `;
+  
+  // 添加到消息列表
+  messageList.insertBefore(messageDiv, messageList.firstChild);
+  
+  // 清空表情选择
+  reactionMap.clear();
+  renderSelectedReactions();
+  
+  // 显示成功通知
+  window.showNotification("评价已发送", "success");
+}

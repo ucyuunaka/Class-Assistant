@@ -47,21 +47,9 @@
     <main class="sidebar-active">
       <!-- 顶栏容器 - 添加ID用于组件初始化 -->
       <div id="header-container"></div>
-
       <div class="container">
-        <!-- 过滤器 -->
+        <!-- 输入区域 -->
         <section class="lesson-section">
-          <div class="filter-container animate-on-scroll fade-up">
-            <button class="filter-btn active" data-filter="all">
-              全部课程
-            </button>
-            <button class="filter-btn" data-filter="math">数学类</button>
-            <button class="filter-btn" data-filter="cs">计算机类</button>
-            <button class="filter-btn" data-filter="eng">英语类</button>
-            <button class="filter-btn" data-filter="physics">物理类</button>
-          </div>
-
-          <!-- 输入区域 -->
           <div class="input-container animate-on-scroll fade-up">
             <div class="input-header">
               <div class="input-title">记录新评价</div>
@@ -69,28 +57,6 @@
             <div class="input-content">
               <select class="course-select" id="courseSelect">
                 <option value="">选择课程...</option>
-                <option value="高等数学" data-category="math">高等数学</option>
-                <option value="线性代数" data-category="math">线性代数</option>
-                <option value="概率统计" data-category="math">概率统计</option>
-                <option value="程序设计" data-category="cs">程序设计</option>
-                <option value="数据库原理" data-category="cs">
-                  数据库原理
-                </option>
-                <option value="操作系统" data-category="cs">操作系统</option>
-                <option value="计算机网络" data-category="cs">
-                  计算机网络
-                </option>
-                <option value="软件工程" data-category="cs">软件工程</option>
-                <option value="人工智能导论" data-category="cs">
-                  人工智能导论
-                </option>
-                <option value="计算机图形学" data-category="cs">
-                  计算机图形学
-                </option>
-                <option value="大学英语" data-category="eng">大学英语</option>
-                <option value="大学物理" data-category="physics">
-                  大学物理
-                </option>
               </select>
               <div class="input-action">
                 <button class="emoji-btn" id="emojiButton">😊</button>
@@ -104,15 +70,10 @@
         <!-- 课评列表 -->
         <section class="lesson-section">
           <h2 class="section-title animate-on-scroll fade-up">历史评价</h2>
-
           <div class="message-container">
             <div class="message-list" id="messageList">
               <!-- 示例消息 -->
-              <div
-                class="message sent"
-                data-course="程序设计"
-                data-category="cs"
-              >
+              <div class="message sent" data-course="程序设计">
                 <div class="message-content">
                   <div class="course-name">程序设计</div>
                   <div class="message-text">今天的课程内容真的很棒！</div>
@@ -134,11 +95,7 @@
                 </div>
               </div>
 
-              <div
-                class="message received"
-                data-course="高等数学"
-                data-category="math"
-              >
+              <div class="message received" data-course="高等数学">
                 <div class="message-content">
                   <div class="course-name">高等数学</div>
                   <div class="message-text">今天讲的微积分有点难理解 😵</div>

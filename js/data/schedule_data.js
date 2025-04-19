@@ -4,6 +4,28 @@
  * 适用于智能工程学院的课程安排
  */
 
+// 事件系统 - 用于数据变更通知
+const eventSystem = {
+  events: {},
+  subscribe: function(eventName, callback) {
+    if (!this.events[eventName]) {
+      this.events[eventName] = [];
+    }
+    this.events[eventName].push(callback);
+    return () => this.unsubscribe(eventName, callback); // 返回取消订阅函数
+  },
+  unsubscribe: function(eventName, callback) {
+    if (this.events[eventName]) {
+      this.events[eventName] = this.events[eventName].filter(cb => cb !== callback);
+    }
+  },
+  publish: function(eventName, data) {
+    if (this.events[eventName]) {
+      this.events[eventName].forEach(callback => callback(data));
+    }
+  }
+};
+
 // 导出课表数据
 export const scheduleData = {
   courses: [
@@ -329,240 +351,130 @@ export function saveScheduleToStorage() {
   }
 }
 
-// 提供添加课程的方法
+// 添加课程
 export function addCourse(courseData) {
-  // 生成新的课程ID
-  const newId = scheduleData.courses.length > 0
-    ? Math.max(...scheduleData.courses.map(c => c.id)) + 1
-    : 1;
-  
-  // 创建新课程对象
+  // 自动生成ID (使用当前最大ID + 1)
+  const maxId = scheduleData.courses.reduce((max, course) => Math.max(max, course.id || 0), 0);
   const newCourse = {
-    id: newId,
+    id: maxId + 1,
     ...courseData
   };
   
-  // 添加到课程列表
   scheduleData.courses.push(newCourse);
-  
-  // 保存到本地存储
   saveScheduleToStorage();
+  
+  // 发布课程更新事件
+  eventSystem.publish('course-updated', { type: 'add', course: newCourse });
   
   return newCourse;
 }
 
-// 提供删除课程的方法 - 增强版
-export function deleteCourse(courseId) {
-  try {
-    // 确保courseId是数字
-    const idToDelete = parseInt(courseId);
-    if (isNaN(idToDelete)) {
-      console.error('无效的课程ID:', courseId);
-      return false;
-    }
-
-    const initialLength = scheduleData.courses.length;
-    
-    // 使用严格比较
-    scheduleData.courses = scheduleData.courses.filter(course => {
-      return course.id !== idToDelete;
-    });
-    
-    // 检查是否真的删除了课程
-    const success = scheduleData.courses.length < initialLength;
-    if (success) {
-      // 保存前再次验证
-      const stillExists = scheduleData.courses.some(c => c.id === idToDelete);
-      if (!stillExists) {
-        saveScheduleToStorage();
-        return true;
-      }
-    }
-    
-    return false;
-  } catch (error) {
-    console.error('删除课程失败:', error);
-    return false;
-  }
-}
-
-// 提供清空课程的方法
-export function clearCourses() {
-  scheduleData.courses = [];
-  
-  // 保存到本地存储
-  saveScheduleToStorage();
-}
-
-// 提供更新课程的方法
+// 更新课程
 export function updateCourse(courseId, updatedData) {
   const courseIndex = scheduleData.courses.findIndex(course => course.id === courseId);
-  
   if (courseIndex === -1) return false;
   
-  // 保留原有ID和其他必要字段
-  scheduleData.courses[courseIndex] = {
-    ...scheduleData.courses[courseIndex],
-    ...updatedData,
-    id: courseId // 确保ID不会被覆盖
+  const oldCourse = { ...scheduleData.courses[courseIndex] };
+  scheduleData.courses[courseIndex] = { 
+    ...scheduleData.courses[courseIndex], 
+    ...updatedData 
   };
   
-  // 保存到本地存储
   saveScheduleToStorage();
+  
+  // 发布课程更新事件
+  eventSystem.publish('course-updated', { 
+    type: 'update', 
+    course: scheduleData.courses[courseIndex],
+    oldCourse
+  });
   
   return true;
 }
 
-// 提供移动课程的方法 - 增加详细调试信息
-export function moveCourse(courseId, newDay, newStartTime) {
-  console.log('==== 课程移动请求 ====', { courseId, newDay, newStartTime });
-  
-  // 1. 基本参数验证
-  courseId = parseInt(courseId);
-  newDay = parseInt(newDay);
-  newStartTime = parseInt(newStartTime);
-  
-  // 检查参数有效性
-  if (isNaN(courseId) || isNaN(newDay) || isNaN(newStartTime)) {
-    console.error('移动课程失败: 无效的参数', { courseId, newDay, newStartTime });
-    return false;
-  }
-  
-  // 查找课程
+// 删除课程
+export function deleteCourse(courseId) {
   const courseIndex = scheduleData.courses.findIndex(course => course.id === courseId);
-  if (courseIndex === -1) {
-    console.error('移动课程失败: 找不到课程', courseId);
-    return false;
-  }
+  if (courseIndex === -1) return false;
   
-  // 获取当前课程信息
-  const currentCourse = scheduleData.courses[courseIndex];
-  console.log('当前课程信息:', {
-    id: currentCourse.id,
-    title: currentCourse.title,
-    day: currentCourse.day,
-    startTime: currentCourse.startTime,
-    endTime: currentCourse.endTime,
-    duration: currentCourse.endTime - currentCourse.startTime
-  });
+  const deletedCourse = scheduleData.courses[courseIndex];
+  scheduleData.courses.splice(courseIndex, 1);
   
-  // 计算课程占用的格子数量
-  const courseDuration = currentCourse.endTime - currentCourse.startTime;
-  
-  // 2. 边界检查
-  // 检查日期范围 (1-7)
-  if (newDay < 1 || newDay > 7) {
-    console.error('移动课程失败: 日期超出范围', newDay);
-    return false;
-  }
-  
-  // 检查时间范围
-  console.log('时间范围检查:', { 
-    newStartTime, 
-    timePeriods: scheduleData.timePeriods.length,
-    isValid: newStartTime >= 1 && newStartTime <= scheduleData.timePeriods.length 
-  });
-  
-  if (newStartTime < 1 || newStartTime > scheduleData.timePeriods.length) {
-    console.error('移动课程失败: 开始时间超出范围', newStartTime);
-    return false;
-  }
-  
-  // 计算新的结束时间
-  const newEndTime = newStartTime + courseDuration;
-  console.log('新位置信息:', { 
-    newDay, 
-    newStartTime, 
-    courseDuration,
-    newEndTime,
-    timePeriods: scheduleData.timePeriods.length
-  });
-  
-  // 检查新的结束时间是否超出范围
-  if (newEndTime > scheduleData.timePeriods.length + 1) {
-    console.error('移动课程失败: 结束时间超出范围', { 
-      newEndTime, 
-      maxTime: scheduleData.timePeriods.length + 1 
-    });
-    return false;
-  }
-  
-  // 3. 如果位置没变，直接返回成功
-  if (currentCourse.day === newDay && currentCourse.startTime === newStartTime) {
-    console.log('课程位置未变化，无需移动');
-    return true;
-  }
-  
-  // 4. 详细的冲突检测 - 纯粹基于格子的占用状态
-  // 目标位置需要的格子数
-  const requiredSlots = [];
-  
-  // 收集目标位置所有需要的格子
-  for (let slot = newStartTime; slot < newEndTime; slot++) {
-    requiredSlots.push({ day: newDay, time: slot });
-  }
-  
-  console.log('需要检查的格子:', requiredSlots);
-  
-  // 记录所有当前课程列表，便于调试
-  console.log('当前所有课程:', scheduleData.courses.map(c => ({
-    id: c.id,
-    title: c.title,
-    day: c.day,
-    time: `${c.startTime}-${c.endTime}`
-  })));
-  
-  // 检查这些格子是否有任何一个被占用
-  let conflictFound = false;
-  
-  scheduleData.courses.forEach(course => {
-    // 排除当前课程自身
-    if (course.id === courseId) return;
-    
-    // 只检查同一天的课程
-    if (course.day !== newDay) return;
-    
-    console.log(`检查可能冲突的课程:`, {
-      id: course.id,
-      title: course.title,
-      day: course.day,
-      time: `${course.startTime}-${course.endTime}`
-    });
-    
-    // 检查此课程占用的所有格子
-    for (let t = course.startTime; t < course.endTime; t++) {
-      // 检查是否与目标格子重叠
-      const overlap = requiredSlots.some(slot => slot.time === t);
-      
-      if (overlap) {
-        console.log(`发现冲突! 格子 [${newDay}, ${t}] 已被课程 "${course.title}" 占用`);
-        conflictFound = true;
-        // 找到冲突后继续检查，记录所有冲突点
-      }
-    }
-  });
-  
-  // 如果有冲突，拒绝移动
-  if (conflictFound) {
-    console.error('移动课程失败: 目标位置存在时间冲突');
-    return false;
-  }
-  
-  // 5. 更新课程位置
-  console.log('验证通过，准备移动课程');
-  scheduleData.courses[courseIndex] = {
-    ...currentCourse,
-    day: newDay,
-    startTime: newStartTime,
-    endTime: newEndTime
-  };
-  
-  // 保存到本地存储
   saveScheduleToStorage();
-  console.log('课程移动成功', {
-    course: currentCourse.title,
-    from: { day: currentCourse.day, time: `${currentCourse.startTime}-${currentCourse.endTime}` },
-    to: { day: newDay, time: `${newStartTime}-${newEndTime}` }
+  
+  // 发布课程更新事件
+  eventSystem.publish('course-updated', { type: 'delete', course: deletedCourse });
+  
+  return true;
+}
+
+// 清空所有课程
+export function clearCourses() {
+  const oldCourses = [...scheduleData.courses];
+  scheduleData.courses = [];
+  
+  saveScheduleToStorage();
+  
+  // 发布课程更新事件
+  eventSystem.publish('course-updated', { type: 'clear', oldCourses });
+  
+  return true;
+}
+
+// 订阅课程变更事件
+export function subscribeToCourseUpdates(callback) {
+  return eventSystem.subscribe('course-updated', callback);
+}
+
+// 获取所有课程
+export function getAllCourses() {
+  return [...scheduleData.courses];
+}
+
+// 根据ID获取课程
+export function getCourseById(id) {
+  return scheduleData.courses.find(course => course.id === id) || null;
+}
+
+// 课程数据更新后的回调函数
+export function afterCourseDataChanged() {
+  saveScheduleToStorage();
+  eventSystem.publish('course-updated', { type: 'general-update' });
+}
+
+// 移动课程到新的时间段
+export function moveCourse(courseId, targetDay, targetTime) {
+  // 将字符串ID转换为数字
+  const numericId = parseInt(courseId);
+  
+  // 查找课程索引
+  const courseIndex = scheduleData.courses.findIndex(course => course.id === numericId);
+  
+  // 如果找不到课程则返回失败
+  if (courseIndex === -1) return false;
+  
+  // 获取课程
+  const course = scheduleData.courses[courseIndex];
+  
+  // 计算课程的持续时长
+  const duration = course.endTime - course.startTime;
+  
+  // 更新课程信息
+  const oldCourse = { ...course };
+  
+  // 更新课程日期和时间
+  course.day = targetDay;
+  course.startTime = targetTime;
+  course.endTime = targetTime + duration;
+  
+  // 保存数据
+  saveScheduleToStorage();
+  
+  // 发布课程更新事件
+  eventSystem.publish('course-updated', { 
+    type: 'move', 
+    course: course,
+    oldCourse: oldCourse
   });
   
   return true;
