@@ -1,6 +1,17 @@
 /**
- * 按钮UI组件 - JavaScript功能
- * 提供按钮的交互效果和功能增强
+ * 按钮UI组件 - 提供丰富的交互效果和功能增强
+ * 
+ * 为什么需要这个组件：
+ * 1. 统一管理所有按钮交互逻辑，避免重复代码
+ * 2. 提供标准化的按钮行为（涟漪效果、加载状态等）
+ * 3. 方便扩展新功能而不影响现有业务逻辑
+ * 
+ * 主要功能：
+ * - 涟漪点击效果
+ * - 加载状态管理
+ * - 二次确认对话框
+ * - 开关切换状态
+ * - 文本颜色自适应
  */
 
 // 在文档加载完成后初始化
@@ -46,8 +57,9 @@ function initRippleEffect() {
       const ripple = document.createElement('span');
       ripple.classList.add('btn-ripple-effect');
       
-      // 计算涟漪的尺寸（取按钮宽高的较大值，再乘以1.5以确保覆盖范围）
-      const size = Math.max(button.offsetWidth, button.offsetHeight) * 1.5;
+  // 计算涟漪尺寸 - 取按钮宽高的较大值乘以1.5
+  // 为什么乘以1.5：确保涟漪效果能完全覆盖按钮区域，即使点击点在边缘
+  const size = Math.max(button.offsetWidth, button.offsetHeight) * 1.5;
       ripple.style.width = ripple.style.height = `${size}px`;
       
       // 计算涟漪的位置
@@ -84,8 +96,9 @@ function initLoadingButtons() {
       // 添加加载状态
       setButtonLoading(button, true);
       
-      // 示例：模拟异步操作
-      // 实际使用时应该在异步操作完成后移除加载状态
+  // 模拟异步操作（仅演示用）
+  // 实际业务中应在API调用完成后调用setButtonLoading(false)
+  // 为什么保留这个示例：方便开发测试加载状态效果
       if (button.hasAttribute('data-demo')) {
         setTimeout(() => {
           setButtonLoading(button, false);
@@ -137,14 +150,16 @@ function initToggleButtons() {
     const onText = button.getAttribute('data-on-text') || '开启';
     const offText = button.getAttribute('data-off-text') || '关闭';
     
-    // 检查按钮是否只包含文本节点或为空
-    const hasOnlyText = !button.children.length && button.textContent.trim();
-    const isEmpty = !button.children.length && !button.textContent.trim();
+  // 检查按钮内容类型
+  // 为什么需要这个检查：确保CSS伪元素(::before)能正确显示切换状态
+  const hasOnlyText = !button.children.length && button.textContent.trim();
+  const isEmpty = !button.children.length && !button.textContent.trim();
 
-    // 如果按钮为空或只包含文本，则清空内容，让 ::before 生效
-    if (isEmpty || hasOnlyText) {
-        button.textContent = ''; // 清空按钮文本
-    }
+  // 清空纯文本按钮内容
+  // 为什么：切换按钮的状态通过CSS伪元素显示，需要清空原始文本
+  if (isEmpty || hasOnlyText) {
+      button.textContent = ''; 
+  }
     
     // 添加点击事件
     button.addEventListener('click', function() {
@@ -195,7 +210,8 @@ function updateButtonTextColor(button) {
   // 获取计算后的背景颜色
   const bgColor = window.getComputedStyle(button).backgroundColor;
   
-  // 将RGB颜色转换为亮度值
+  // 将RGB颜色转换为亮度值（使用W3C推荐公式）
+  // 公式说明：人类对不同颜色敏感度不同(R:299 G:587 B:114)
   const rgb = bgColor.match(/\d+/g);
   if (!rgb || rgb.length < 3) return;
   
@@ -206,8 +222,9 @@ function updateButtonTextColor(button) {
   );
   
   // 根据亮度设置文本颜色
-  // 亮度 > 125 视为浅色背景，使用深色文本
-  // 亮度 <= 125 视为深色背景，使用浅色文本
+  // 阈值125依据：W3C WCAG 2.0对比度标准
+  // >125 浅色背景用深色文本(#212121)
+  // <=125 深色背景用浅色文本(#ffffff)
   button.style.color = brightness > 125 ? '#212121' : '#ffffff';
 }
 
@@ -356,11 +373,27 @@ function setToggleState(selectorOrElement, isActive) {
   return button;
 }
 
-// 暴露公共API
+/**
+ * 按钮组件公共API
+ * 
+ * 为什么设计这些API：
+ * 1. 提供标准化的方式操作按钮状态
+ * 2. 避免直接操作DOM带来的不一致性
+ * 3. 方便与其他组件集成
+ */
 window.ButtonUI = {
+  /** 设置按钮加载状态 */
   setLoading: setButtonLoading,
+  
+  /** 创建带确认功能的按钮 */
   createConfirmButton: createConfirmButton,
+  
+  /** 设置/更新按钮徽章 */
   setBadge: setButtonBadge,
+  
+  /** 设置切换按钮状态 */
   setToggleState: setToggleState,
+  
+  /** 根据背景色更新文本颜色 */
   updateTextColor: updateButtonTextColor
 };

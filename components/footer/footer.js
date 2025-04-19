@@ -1,6 +1,16 @@
 /**
- * 页脚组件加载脚本
- * 用于在所有页面中加载统一的页脚
+ * 页脚组件 - 提供全站统一的页脚内容和功能
+ * 
+ * 为什么需要这个组件：
+ * 1. 集中管理页脚内容和样式，避免重复代码
+ * 2. 自动适应不同页面路径结构
+ * 3. 提供智能链接高亮和导航功能
+ * 
+ * 主要功能：
+ * - 自动加载CSS和HTML模板
+ * - 动态更新版权年份
+ * - 高亮当前页面链接
+ * - 智能路径处理
  */
 class Footer {
   constructor() {
@@ -28,14 +38,15 @@ class Footer {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       
-      // 使用相对于网站根目录的路径
+      // 动态计算CSS路径 - 根据当前页面位置调整相对路径
+      // 为什么需要动态路径：确保在不同目录层级的页面都能正确加载资源
       let rootPath = './components/footer/footer.css';
       
-      // 如果在测试环境
+      // 测试环境路径处理
       if (window.location.pathname.includes('/components/tests/')) {
         rootPath = '../../components/footer/footer.css';
       } 
-      // 如果在pages子文件夹
+      // 页面子目录路径处理
       else if (window.location.pathname.includes('/pages/')) {
         rootPath = '../components/footer/footer.css';
       }
@@ -53,14 +64,15 @@ class Footer {
     const footer = document.querySelector('.footer');
     
     if (footer) {
-      // 构建绝对路径，确保在任何页面都能正确加载
+      // 动态构建HTML模板路径
+      // 为什么需要路径处理：页脚可能从不同层级的页面访问
       let rootPath = './';
       
-      // 如果在组件目录下
+      // 组件目录路径处理
       if (window.location.pathname.includes('/components/')) {
         rootPath = '../../';
       } 
-      // 如果在pages子文件夹
+      // 页面子目录路径处理
       else if (window.location.pathname.includes('/pages/')) {
         rootPath = '../';
       }
@@ -94,6 +106,7 @@ class Footer {
         })
         .catch(error => {
           console.error('页脚加载失败:', error);
+          // 优雅降级：显示错误信息但仍保持页脚区域可见
           footer.innerHTML = '<div class="container"><p style="color: red;">错误：无法加载页脚内容。</p></div>';
         });
     }
@@ -126,7 +139,12 @@ class Footer {
   }
   
   /**
-   * 设置页脚链接的导航功能
+   * 设置页脚链接的智能导航功能
+   * 
+   * 为什么需要特殊处理：
+   * 1. 确保在不同目录层级的页面间跳转时路径正确
+   * 2. 处理index.html的特殊情况
+   * 3. 保持SPA风格的平滑过渡
    */
   setupLinkNavigation() {
     const footerLinks = document.querySelectorAll('.footer-links a');
@@ -159,6 +177,13 @@ class Footer {
   }
 }
 
-// 创建并导出Footer实例
+/**
+ * 创建并导出Footer单例
+ * 
+ * 为什么使用单例模式：
+ * 1. 避免重复初始化
+ * 2. 确保全站使用同一个页脚实例
+ * 3. 方便其他组件访问
+ */
 const footer = new Footer();
 export default footer;
