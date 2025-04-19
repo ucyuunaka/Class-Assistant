@@ -1,7 +1,11 @@
-// filepath: d:\Users\linyu\Desktop\Class-Assistant\js\controllers\schedule_render.js
+// 课表渲染控制器
+// 负责处理课表的各种视图渲染、UI显示
+
 import { scheduleData } from "../data/schedule_data.js";
 
-// 渲染周视图课表
+/**
+ * 渲染周视图课表
+ */
 export function renderTimetable() {
   const timetableGrid = document.getElementById("timetable-grid");
   if (!timetableGrid) return;
@@ -56,8 +60,11 @@ export function renderTimetable() {
   timetableGrid.scrollLeft = scrollLeft;
 }
 
-// 创建表头
-export function createHeader() {
+/**
+ * 创建表头
+ * @returns {DocumentFragment} 表头DOM片段
+ */
+function createHeader() {
   const headerFragment = document.createDocumentFragment();
 
   // 时间表头
@@ -77,7 +84,13 @@ export function createHeader() {
   return headerFragment;
 }
 
-// 创建课程卡片
+/**
+ * 创建课程卡片
+ * @param {Object} course - 课程数据
+ * @param {boolean} isNew - 是否新添加的课程
+ * @param {boolean} isUpdated - 是否更新的课程
+ * @returns {HTMLElement} 课程卡片元素
+ */
 export function createCourseCard(course, isNew = false, isUpdated = false) {
   const card = document.createElement("div");
   card.className = `course-card ${course.color}`;
@@ -131,8 +144,11 @@ export function createCourseCard(course, isNew = false, isUpdated = false) {
   return card;
 }
 
-// 根据内容自动调整字体大小的函数
-export function adjustFontSize(card) {
+/**
+ * 根据内容自动调整字体大小
+ * @param {HTMLElement} card - 课程卡片元素
+ */
+function adjustFontSize(card) {
   const titleElement = card.querySelector(".course-title");
   const infoElements = card.querySelectorAll(".course-info");
   const locationElement = card.querySelector(".course-location");
@@ -203,7 +219,9 @@ export function adjustFontSize(card) {
   }
 }
 
-// 渲染列表视图
+/**
+ * 渲染列表视图
+ */
 export function renderListView() {
   const listContainer = document.getElementById("list-view-container");
   if (!listContainer) return;
@@ -290,8 +308,12 @@ export function renderListView() {
   listContainer.scrollTop = scrollTop;
 }
 
-// 获取课程时间范围文本
-export function getTimeRangeText(course) {
+/**
+ * 获取课程时间范围文本
+ * @param {Object} course - 课程数据
+ * @returns {string} 时间范围文本，如 "08:00-09:40"
+ */
+function getTimeRangeText(course) {
   if (scheduleData.timePeriods && scheduleData.timePeriods.length > 0) {
     const startPeriod = scheduleData.timePeriods.find(
       (period) => period.id === course.startTime
@@ -310,9 +332,12 @@ export function getTimeRangeText(course) {
   return `第${course.startTime}-${course.endTime}节`;
 }
 
-// 显示课程详情
-export function showCourseDetails(course) {
-  // 可以在这里实现课程详情查看功能
-  // 例如：弹出模态框显示课程详细信息
-  console.log("查看课程详情:", course);
+/**
+ * 获取星期名称
+ * @param {number} day - 星期索引(1-7)
+ * @returns {string} 星期名称
+ */
+export function getDayName(day) {
+  const dayNames = ["", "周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+  return dayNames[day] || `星期${day}`;
 }

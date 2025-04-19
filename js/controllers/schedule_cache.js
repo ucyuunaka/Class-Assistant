@@ -1,13 +1,18 @@
-// filepath: d:\Users\linyu\Desktop\Class-Assistant\js\controllers\schedule_cache.js
+// 课表缓存控制器
+// 用于优化课表性能，通过缓存常用数据避免重复计算
+
 import { scheduleData } from "../data/schedule_data.js";
 
-// 课程缓存数据
-export const coursesCache = {
+// 课程缓存数据结构
+const coursesCache = {
   byDay: new Map(), // 按天分组的课程
   durationById: new Map(), // 课程时长缓存
 };
 
-// 预计算课程信息并创建缓存
+/**
+ * 更新课程缓存
+ * 重新计算和分组课程信息
+ */
 export function updateCoursesCache() {
   // 重置缓存
   coursesCache.byDay.clear();
@@ -33,7 +38,13 @@ export function updateCoursesCache() {
   console.log("课程缓存已更新", coursesCache);
 }
 
-// 检查函数，使用缓存数据检查能否放置课程
+/**
+ * 检查是否可以放置课程
+ * @param {number} courseId - 课程ID
+ * @param {number} targetDay - 目标日期
+ * @param {number} targetTime - 目标时间
+ * @returns {boolean} 是否可以放置
+ */
 export function checkCanPlaceCourse(courseId, targetDay, targetTime) {
   if (!courseId || !targetDay || !targetTime) return false;
   
@@ -67,7 +78,13 @@ export function checkCanPlaceCourse(courseId, targetDay, targetTime) {
   return !hasConflict;
 }
 
-// 获取移动课程失败的原因
+/**
+ * 获取课程放置失败的具体原因
+ * @param {number} courseId - 课程ID
+ * @param {number} targetDay - 目标日期
+ * @param {number} targetTime - 目标时间
+ * @returns {string} 不可放置的原因
+ */
 export function getMoveCourseFailReason(courseId, targetDay, targetTime) {
   if (!courseId || !targetDay || !targetTime) {
     return "参数无效";
@@ -109,7 +126,13 @@ export function getMoveCourseFailReason(courseId, targetDay, targetTime) {
   return "未知原因";
 }
 
-// 获取更详细的不可放置原因
+/**
+ * 获取更详细的不可放置原因
+ * @param {number} courseId - 课程ID
+ * @param {number} targetDay - 目标日期
+ * @param {number} targetTime - 目标时间
+ * @returns {string} 不可放置的详细原因
+ */
 export function getPlacementBlockReason(courseId, targetDay, targetTime) {
   if (!courseId || !targetDay || !targetTime) {
     return "参数无效";
@@ -151,3 +174,6 @@ export function getPlacementBlockReason(courseId, targetDay, targetTime) {
   
   return "无法放置";
 }
+
+// 导出缓存对象以便可能的扩展需要
+export { coursesCache };
