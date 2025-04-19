@@ -204,22 +204,41 @@
 /* 表情选择器 */
 .emoji-picker-container {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  top: 0;
+  left: 0;
   z-index: 1000;
-  display: none;
-  box-shadow: var(--shadow-lg);
-  border-radius: var(--border-radius);
-  overflow: hidden;
 }
 
-emoji-picker {
-  --background: var(--background-secondary);
-  --border-color: var(--border-color);
-  --category-emoji-size: 1.25rem;
-  --emoji-size: 1.5rem;
-  --indicator-color: var(--primary-color);
-  height: 400px;
+.emoji-fallback {
+  display: none;
+  background-color: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 10px;
+  box-shadow: var(--shadow);
+  max-width: 300px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 5px;
+}
+
+.emoji-item {
+  cursor: pointer;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.emoji-item:hover {
+  background-color: var(--primary-light);
 }
 
 /* 空状态 */

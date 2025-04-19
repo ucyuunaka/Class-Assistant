@@ -31,6 +31,115 @@
     ></script>
     <!-- 添加页面特定样式 -->
     <link rel="stylesheet" href="../css/pages/lesson.css" />
+    
+    <!-- 添加fallback样式，在emoji-picker加载失败时使用 -->
+    <style>
+      .emoji-fallback {
+        display: none;
+        background: var(--background-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 10px;
+        box-shadow: var(--shadow);
+        max-width: 300px;
+        max-height: 200px;
+        overflow-y: auto;
+        position: absolute;
+        z-index: 1000;
+      }
+      
+      .emoji-grid {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 5px;
+      }
+      
+      .emoji-item {
+        cursor: pointer;
+        font-size: 1.5rem;
+        text-align: center;
+        padding: 5px;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+      }
+      
+      .emoji-item:hover {
+        background-color: var(--primary-light);
+      }
+    </style>
+    
+    <!-- 修复emoji-picker加载策略 -->
+    <script>
+      // 使用本地备用表情选择器，完全避免CDN加载问题
+      document.addEventListener('DOMContentLoaded', function() {
+        setupFallbackEmojiPicker();
+      });
+      
+      // 设置备用的emoji选择器
+      function setupFallbackEmojiPicker() {
+        const container = document.getElementById('emojiPickerContainer');
+        if (!container) return;
+        
+        // 创建备用选择器
+        const fallback = document.createElement('div');
+        fallback.className = 'emoji-fallback';
+        fallback.id = 'emojiFallback';
+        
+        const grid = document.createElement('div');
+        grid.className = 'emoji-grid';
+        
+        // 常用emoji列表
+        const commonEmojis = ['😊', '😂', '😍', '👍', '👎', '❤️', '🔥', '🎉', '👏', '🤔', '😢', '😎', '🙏', '💡', '⭐', '🚀', '📚', '💯', '🧠', '👨‍💻', '👩‍💻', '🤯', '😴', '🤓'];
+        
+        commonEmojis.forEach(emoji => {
+          const item = document.createElement('div');
+          item.className = 'emoji-item';
+          item.textContent = emoji;
+          item.addEventListener('click', () => {
+            // 将事件分发到window，模拟原始emoji-picker的行为
+            window.dispatchEvent(new CustomEvent('emoji-click', {
+              detail: { emoji: { unicode: emoji } }
+            }));
+            fallback.style.display = 'none';
+          });
+          grid.appendChild(item);
+        });
+        
+        fallback.appendChild(grid);
+        container.appendChild(fallback);
+        
+        // 绑定点击表情按钮事件
+        const emojiButton = document.getElementById('emojiButton');
+        if (emojiButton) {
+          emojiButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            if (fallback.style.display === 'block') {
+              fallback.style.display = 'none';
+            } else {
+              // 显示选择器并定位
+              fallback.style.display = 'block';
+              const rect = emojiButton.getBoundingClientRect();
+              fallback.style.position = 'absolute';
+              fallback.style.top = `${rect.bottom + 5}px`;
+              fallback.style.left = `${rect.left}px`;
+              
+              // 点击其他区域关闭选择器
+              const closeOnClickOutside = (event) => {
+                if (!fallback.contains(event.target) && event.target !== emojiButton) {
+                  fallback.style.display = 'none';
+                  document.removeEventListener('click', closeOnClickOutside);
+                }
+              };
+              
+              setTimeout(() => {
+                document.addEventListener('click', closeOnClickOutside);
+              }, 0);
+            }
+          });
+        }
+      }
+    </script>
   </head>
   <body>
     <!-- 侧边栏导航 - 使用ID以便组件初始化 -->
@@ -103,7 +212,7 @@
                 class="message received animate-on-scroll fade-up delay-200"
                 data-course="高等数学"
               >
-                <div class="message-content">
+                <div class="message-content"></div>
                   <div class="course-name">高等数学</div>
                   <div class="message-text">今天讲的微积分有点难理解 😵</div>
                   <div class="message-reactions">
@@ -201,10 +310,8 @@
       </div>
     </main>
 
-    <!-- 表情选择器 -->
-    <div class="emoji-picker-container" id="emojiPickerContainer">
-      <emoji-picker id="emojiPicker"></emoji-picker>
-    </div>
+    <!-- 表情选择器容器 -->
+    <div class="emoji-picker-container" id="emojiPickerContainer"></div>
     <!-- 页脚 - 简化为只保留容器 -->
     <footer id="footer-container" class="footer"></footer>
 
