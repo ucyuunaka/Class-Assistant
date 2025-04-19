@@ -153,163 +153,160 @@
     <div class="sidebar-overlay"></div>
 
     <!-- 主要内容 -->
-    <main class="sidebar-active">
-      <div class="container py-4">
-        <!-- 顶栏容器 - 添加ID用于组件初始化 -->
-        <div id="header-container" class="lesson-header-container"></div>
+    <div class="container py-4 sidebar-active">
+      <!-- 顶栏容器 - 添加ID用于组件初始化 -->
+      <div id="header-container"></div>
 
-        <!-- 输入区域 -->
-        <section class="lesson-section animate-on-scroll fade-down">
-          <div class="input-container">
-            <div class="input-header">
-              <div class="input-title">记录新评价</div>
-            </div>
-            <div class="input-content">
-              <select class="course-select" id="courseSelect">
-                <option value="">选择课程...</option>
-              </select>
-              <div class="input-action">
-                <button class="emoji-btn" id="emojiButton">😊</button>
-                <button class="send-btn" id="sendButton">发送评价</button>
-              </div>
-            </div>
-            <div class="reaction-tag-container" id="selectedReactions"></div>
+      <!-- 输入区域 -->
+      <section class="lesson-section animate-on-scroll fade-down">
+        <div class="input-container">
+          <div class="input-header">
+            <div class="input-title">记录新评价</div>
           </div>
-        </section>
-
-        <!-- 课评列表 -->
-        <section class="lesson-section animate-on-scroll fade-up">
-          <h2 class="section-title">历史评价</h2>
-          <div class="message-container">
-            <div class="message-list" id="messageList">
-              <!-- 示例消息 -->
-              <div
-                class="message sent animate-on-scroll fade-up delay-100"
-                data-course="程序设计"
-              >
-                <div class="message-content">
-                  <div class="course-name">程序设计</div>
-                  <div class="message-text">今天的课程内容真的很棒！</div>
-                  <div class="message-reactions">
-                    <div class="reaction-bubble" data-emoji="👍">
-                      <span class="reaction-emoji">👍</span>
-                      <span class="reaction-count">3</span>
-                    </div>
-                    <div class="reaction-bubble" data-emoji="❤️">
-                      <span class="reaction-emoji">❤️</span>
-                      <span class="reaction-count">2</span>
-                    </div>
-                    <div class="reaction-bubble" data-emoji="🎉">
-                      <span class="reaction-emoji">🎉</span>
-                      <span class="reaction-count">1</span>
-                    </div>
-                  </div>
-                  <div class="message-time">2025-04-08 10:30</div>
-                </div>
-              </div>
-
-              <div
-                class="message received animate-on-scroll fade-up delay-200"
-                data-course="高等数学"
-              >
-                <div class="message-content"></div>
-                  <div class="course-name">高等数学</div>
-                  <div class="message-text">今天讲的微积分有点难理解 😵</div>
-                  <div class="message-reactions">
-                    <div class="reaction-bubble" data-emoji="😢">
-                      <span class="reaction-emoji">😢</span>
-                      <span class="reaction-count">5</span>
-                    </div>
-                    <div class="reaction-bubble" data-emoji="💪">
-                      <span class="reaction-emoji">💪</span>
-                      <span class="reaction-count">2</span>
-                    </div>
-                  </div>
-                  <div class="message-time">2025-04-07 14:15</div>
-                </div>
-              </div>
-
-              <div
-                class="message sent animate-on-scroll fade-up delay-300"
-                data-course="计算机网络"
-                data-category="cs"
-              >
-                <div class="message-content">
-                  <div class="course-name">计算机网络</div>
-                  <div class="message-text">
-                    TCP/IP协议讲解很清晰，终于理解了！
-                  </div>
-                  <div class="message-reactions">
-                    <div class="reaction-bubble" data-emoji="🚀">
-                      <span class="reaction-emoji">🚀</span>
-                      <span class="reaction-count">4</span>
-                    </div>
-                    <div class="reaction-bubble" data-emoji="👏">
-                      <span class="reaction-emoji">👏</span>
-                      <span class="reaction-count">7</span>
-                    </div>
-                  </div>
-                  <div class="message-time">2025-04-06 16:45</div>
-                </div>
-              </div>
-
-              <div
-                class="message received animate-on-scroll fade-up delay-400"
-                data-course="大学英语"
-                data-category="eng"
-              >
-                <div class="message-content">
-                  <div class="course-name">大学英语</div>
-                  <div class="message-text">今天的听力练习很有挑战性</div>
-                  <div class="message-reactions">
-                    <div class="reaction-bubble" data-emoji="🎧">
-                      <span class="reaction-emoji">🎧</span>
-                      <span class="reaction-count">3</span>
-                    </div>
-                    <div class="reaction-bubble" data-emoji="🤔">
-                      <span class="reaction-emoji">🤔</span>
-                      <span class="reaction-count">2</span>
-                    </div>
-                  </div>
-                  <div class="message-time">2025-04-05 09:20</div>
-                </div>
-              </div>
-
-              <div
-                class="message sent animate-on-scroll fade-up delay-500"
-                data-course="数据库原理"
-                data-category="cs"
-              >
-                <div class="message-content">
-                  <div class="course-name">数据库原理</div>
-                  <div class="message-text">SQL优化技巧非常实用！</div>
-                  <div class="message-reactions">
-                    <div class="reaction-bubble" data-emoji="💡">
-                      <span class="reaction-emoji">💡</span>
-                      <span class="reaction-count">6</span>
-                    </div>
-                  </div>
-                  <div class="message-time">2025-04-04 13:50</div>
-                </div>
-              </div>
+          <div class="input-content">
+            <select class="course-select" id="courseSelect">
+              <option value="">选择课程...</option>
+            </select>
+            <div class="input-action">
+              <button class="emoji-btn" id="emojiButton">😊</button>
+              <button class="send-btn" id="sendButton">发送评价</button>
             </div>
+          </div>
+          <div class="reaction-tag-container" id="selectedReactions"></div>
+        </div>
+      </section>
 
-            <!-- 空状态 -->
+      <!-- 课评列表 -->
+      <section class="lesson-section animate-on-scroll fade-up">
+        <h2 class="section-title">历史评价</h2>
+        <div class="message-container">
+          <div class="message-list" id="messageList">
+            <!-- 示例消息 -->
             <div
-              class="lesson-empty animate-on-scroll zoom-in"
-              id="emptyState"
-              style="display: none"
+              class="message sent animate-on-scroll fade-up delay-100"
+              data-course="程序设计"
             >
-              <div class="lesson-empty-icon">
-                <i class="ri-chat-off-line"></i>
+              <div class="message-content">
+                <div class="course-name">程序设计</div>
+                <div class="message-text">今天的课程内容真的很棒！</div>
+                <div class="message-reactions">
+                  <div class="reaction-bubble" data-emoji="👍">
+                    <span class="reaction-emoji">👍</span>
+                    <span class="reaction-count">3</span>
+                  </div>
+                  <div class="reaction-bubble" data-emoji="❤️">
+                    <span class="reaction-emoji">❤️</span>
+                    <span class="reaction-count">2</span>
+                  </div>
+                  <div class="reaction-bubble" data-emoji="🎉">
+                    <span class="reaction-emoji">🎉</span>
+                    <span class="reaction-count">1</span>
+                  </div>
+                </div>
+                <div class="message-time">2025-04-08 10:30</div>
               </div>
-              <div class="lesson-empty-text">还没有匹配的课程评价</div>
+            </div>
+
+            <div
+              class="message received animate-on-scroll fade-up delay-200"
+              data-course="高等数学"
+            >
+              <div class="message-content"></div>
+                <div class="course-name">高等数学</div>
+                <div class="message-text">今天讲的微积分有点难理解 😵</div>
+                <div class="message-reactions">
+                  <div class="reaction-bubble" data-emoji="😢">
+                    <span class="reaction-emoji">😢</span>
+                    <span class="reaction-count">5</span>
+                  </div>
+                  <div class="reaction-bubble" data-emoji="💪">
+                    <span class="reaction-emoji">💪</span>
+                    <span class="reaction-count">2</span>
+                  </div>
+                </div>
+                <div class="message-time">2025-04-07 14:15</div>
+              </div>
+            </div>
+
+            <div
+              class="message sent animate-on-scroll fade-up delay-300"
+              data-course="计算机网络"
+              data-category="cs"
+            >
+              <div class="message-content">
+                <div class="course-name">计算机网络</div>
+                <div class="message-text">
+                  TCP/IP协议讲解很清晰，终于理解了！
+                </div>
+                <div class="message-reactions">
+                  <div class="reaction-bubble" data-emoji="🚀">
+                    <span class="reaction-emoji">🚀</span>
+                    <span class="reaction-count">4</span>
+                  </div>
+                  <div class="reaction-bubble" data-emoji="👏">
+                    <span class="reaction-emoji">👏</span>
+                    <span class="reaction-count">7</span>
+                  </div>
+                </div>
+                <div class="message-time">2025-04-06 16:45</div>
+              </div>
+            </div>
+
+            <div
+              class="message received animate-on-scroll fade-up delay-400"
+              data-course="大学英语"
+              data-category="eng"
+            >
+              <div class="message-content">
+                <div class="course-name">大学英语</div>
+                <div class="message-text">今天的听力练习很有挑战性</div>
+                <div class="message-reactions">
+                  <div class="reaction-bubble" data-emoji="🎧">
+                    <span class="reaction-emoji">🎧</span>
+                    <span class="reaction-count">3</span>
+                  </div>
+                  <div class="reaction-bubble" data-emoji="🤔">
+                    <span class="reaction-emoji">🤔</span>
+                    <span class="reaction-count">2</span>
+                  </div>
+                </div>
+                <div class="message-time">2025-04-05 09:20</div>
+              </div>
+            </div>
+
+            <div
+              class="message sent animate-on-scroll fade-up delay-500"
+              data-course="数据库原理"
+              data-category="cs"
+            >
+              <div class="message-content">
+                <div class="course-name">数据库原理</div>
+                <div class="message-text">SQL优化技巧非常实用！</div>
+                <div class="message-reactions">
+                  <div class="reaction-bubble" data-emoji="💡">
+                    <span class="reaction-emoji">💡</span>
+                    <span class="reaction-count">6</span>
+                  </div>
+                </div>
+                <div class="message-time">2025-04-04 13:50</div>
+              </div>
             </div>
           </div>
-        </section>
-      </div>
-    </main>
 
+          <!-- 空状态 -->
+          <div
+            class="lesson-empty animate-on-scroll zoom-in"
+            id="emptyState"
+            style="display: none"
+          >
+            <div class="lesson-empty-icon">
+              <i class="ri-chat-off-line"></i>
+            </div>
+            <div class="lesson-empty-text">还没有匹配的课程评价</div>
+          </div>
+        </div>
+      </section>
+    </div>
     <!-- 表情选择器容器 -->
     <div class="emoji-picker-container" id="emojiPickerContainer"></div>
     <!-- 页脚 - 简化为只保留容器 -->
